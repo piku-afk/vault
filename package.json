@@ -10,7 +10,8 @@
   },
   "scripts": {
     "format": "pnpm exec biome format --write",
-    "lint": "pnpm exec biome lint --write"
+    "lint": "pnpm exec biome lint --write",
+    "deploy:functions": "supabase functions deploy"
   },
   "devDependencies": {
     "@biomejs/biome": "2.1.3",
