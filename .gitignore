@@ -16,3 +16,4 @@ npm-debug.log*
 # miscellaneous
 .DS_Store
 .turbo
+.temp
