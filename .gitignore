@@ -1,0 +1,18 @@
+# dependency directories
+node_modules
+
+# build output
+dist
+
+# coverage reports
+coverage
+
+# logs
+npm-debug.log*
+
+# environment variable files
+.env.*
+
+# miscellaneous
+.DS_Store
+.turbo
