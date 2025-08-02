@@ -1,0 +1,12 @@
+{
+  "name": "private-web",
+  "version": "0.0.0",
+  "description": "A secure private dashboard for personal use.",
+  "author": "piku-afk",
+  "packageManager": "pnpm@10.10.0",
+  "engines": {
+    "node": "=22.15.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {}
+}
