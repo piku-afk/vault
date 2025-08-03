@@ -2,19 +2,32 @@
   "name": "private-web",
   "version": "0.0.0",
   "description": "A secure private dashboard for personal use.",
+  "private": true,
   "author": "piku-afk",
-  "packageManager": "pnpm@10.10.0",
   "engines": {
-    "node": "=22.15.0",
-    "pnpm": ">=10.0.0"
+    "node": "=22.15.0"
   },
+  "packageManager": "pnpm@10.10.0",
+  "type": "module",
   "scripts": {
     "format": "pnpm exec biome format --write",
     "lint": "pnpm exec biome lint --write",
-    "deploy:functions": "supabase functions deploy"
+    "deploy:functions": "supabase functions deploy",
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
   },
   "devDependencies": {
     "@biomejs/biome": "2.1.3",
-    "supabase": "^2.33.9"
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react-swc": "^3.11.0",
+    "supabase": "^2.33.9",
+    "typescript": "^5.9.2",
+    "vite": "^7.0.6"
   }
 }
