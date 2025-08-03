@@ -1,6 +1,7 @@
 version: '0.2'
 ignorePaths:
   - '**/config.toml'
+  - pnpm-workspace.yaml
 dictionaryDefinitions: []
 dictionaries: []
 words: []
