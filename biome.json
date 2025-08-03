@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["supabase", "package.json"]
+    "includes": ["src/**", "supabase/**", "package.json"]
   },
   "formatter": {
     "enabled": true,
