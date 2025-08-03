@@ -2,7 +2,7 @@ name: Health Check
 
 on:
   schedule:
-    - cron: '2 17 * * *' # Run every day at 17:02
+    - cron: '32 11 * * *' # Run every day at 17:02 IST (11:32 UTC)
 
   workflow_dispatch:
 
