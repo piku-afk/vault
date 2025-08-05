@@ -1,6 +1,5 @@
 import { Button, PasswordInput, Stack, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import dayjs from 'dayjs';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
 import { Fragment } from 'react';
 import { type ActionFunctionArgs, redirect, useSubmit } from 'react-router';
@@ -9,7 +8,6 @@ import { z } from 'zod/v4';
 import { ROUTES } from '#/constants/routes.ts';
 import { showErrorNotification } from '#/utils/notification.ts';
 import { supabaseClient } from '#/utils/supabaseClient.ts';
-import { setAccessToken } from '#/utils/token.ts';
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.json();
@@ -20,8 +18,6 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   if (data.session) {
-    const { access_token, expires_at } = data.session;
-    setAccessToken(access_token, expires_at ? dayjs.unix(expires_at).toDate() : undefined);
     // #TODO: redirect to two-factor page when two-factor is developed
     return redirect(ROUTES.INVESTMENTS);
   }
