@@ -9,5 +9,6 @@ words: []
 ignoreWords:
   - nwtgck
   - piku
+  - pikuh
   - supabase
 import: []

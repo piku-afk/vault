@@ -11,8 +11,6 @@ import { showErrorNotification } from '#/utils/notification.ts';
 import { supabaseClient } from '#/utils/supabaseClient.ts';
 import { setAccessToken } from '#/utils/token.ts';
 
-Component.displayName = 'Home';
-
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.json();
   const { data, error } = await supabaseClient.auth.signInWithPassword(formData);
@@ -36,7 +34,7 @@ const loginSchema = z.object({
   password: z.string().min(8, { error: 'Password must be at least 8 characters long' }).default(''),
 });
 
-export function Component() {
+export default function Login() {
   const submit = useSubmit();
   const form = useForm({
     mode: 'uncontrolled',
@@ -74,7 +72,7 @@ export function Component() {
         </Stack>
 
         <Button type='submit' fullWidth mt='xl'>
-          Sign In
+          Login
         </Button>
       </form>
     </Fragment>

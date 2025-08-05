@@ -1,3 +1,5 @@
+import { Box, Container, Group, Image, MantineProvider, Stack, Title } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
 import {
   isRouteErrorResponse,
   Links,
@@ -6,35 +8,45 @@ import {
   Scripts,
   ScrollRestoration,
 } from 'react-router';
-
 import type { Route } from './+types/root';
 
-export const links: Route.LinksFunction = () => [
-  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-  {
-    rel: 'preconnect',
-    href: 'https://fonts.gstatic.com',
-    crossOrigin: 'anonymous',
-  },
-  {
-    rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
-  },
-];
+import '@fontsource-variable/inter';
+import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
+
+import { theme } from '#/theme.ts';
+
+export const links: Route.LinksFunction = () => [{ rel: 'icon', href: '/vault.svg' }];
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang='en'>
+    <html lang='en' style={{ height: '100%' }}>
       <head>
         <meta charSet='utf-8' />
+        <title>Vault</title>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <Meta />
         <Links />
       </head>
-      <body>
-        {children}
-        <ScrollRestoration />
-        <Scripts />
+      <body style={{ height: '100%' }}>
+        <MantineProvider theme={theme}>
+          <Stack component='main' h='100%' bg='violet.0' gap='xl'>
+            <Box component='header'>
+              <Container py='lg'>
+                <Group gap='xs'>
+                  <Image src='/vault.svg' alt='Vault Icon' w='auto' h={32} />
+                  <Title order={1} size='h5' fw='normal'>
+                    Vault by pikuh
+                  </Title>
+                </Group>
+              </Container>
+            </Box>
+            {children}
+            <Notifications />
+            <ScrollRestoration />
+            <Scripts />
+          </Stack>
+        </MantineProvider>
       </body>
     </html>
   );
