@@ -1,6 +1,17 @@
-import { Button, Center, Container, PasswordInput, Stack, TextInput, Title } from '@mantine/core';
+import {
+  Button,
+  Center,
+  Container,
+  PasswordInput,
+  Stack,
+  TextInput,
+  ThemeIcon,
+  Title,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { UserLock } from 'lucide-react';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
+import { motion } from 'motion/react';
 import { type ActionFunctionArgs, redirect, useSubmit } from 'react-router';
 import { z } from 'zod/v4';
 
@@ -48,31 +59,62 @@ export function Component() {
   return (
     <Center mih='100vh'>
       <Container fluid w='100%' maw={440}>
-        <Title order={1} fw={500}>
-          Welcome back
-        </Title>
-        <Title order={2} size='h4' mt='xs' fw={400}>
-          Sign in to your account
-        </Title>
-        <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Center>
+          <ThemeIcon variant='light' size='xl'>
+            <UserLock />
+          </ThemeIcon>
+        </Center>
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}>
+          <Title mt='xl' order={1} fw={500} ta='center'>
+            Welcome back
+          </Title>
+          <Title order={2} size='h4' mt='xs' fw={400} ta='center'>
+            Sign in to your account
+          </Title>
+        </motion.div>
+
+        <motion.form
+          onSubmit={form.onSubmit(handleSubmit)}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}>
           <Stack mt='xl' gap='lg'>
-            <TextInput
-              label='Email'
-              type='email'
-              placeholder='you@example.com'
-              {...form.getInputProps('email')}
-            />
-            <PasswordInput
-              label='Password'
-              placeholder='&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;'
-              {...form.getInputProps('password')}
-            />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}>
+              <TextInput
+                label='Email'
+                type='email'
+                placeholder='you@example.com'
+                {...form.getInputProps('email')}
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}>
+              <PasswordInput
+                label='Password'
+                placeholder='&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;'
+                {...form.getInputProps('password')}
+              />
+            </motion.div>
           </Stack>
 
-          <Button type='submit' fullWidth mt='xl'>
-            Sign In
-          </Button>
-        </form>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.6 }}>
+            <Button type='submit' fullWidth mt='xl'>
+              Sign In
+            </Button>
+          </motion.div>
+        </motion.form>
       </Container>
     </Center>
   );
