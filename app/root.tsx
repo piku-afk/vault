@@ -1,4 +1,14 @@
-import { Box, Container, Group, Image, MantineProvider, Stack, Title } from '@mantine/core';
+import {
+  Box,
+  ColorSchemeScript,
+  Container,
+  Group,
+  Image,
+  MantineProvider,
+  mantineHtmlProps,
+  Stack,
+  Title,
+} from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import {
   isRouteErrorResponse,
@@ -20,11 +30,12 @@ export const links: Route.LinksFunction = () => [{ rel: 'icon', href: '/vault.sv
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang='en' style={{ height: '100%' }}>
+    <html lang='en' {...mantineHtmlProps} style={{ height: '100%' }}>
       <head>
         <meta charSet='utf-8' />
         <title>Vault</title>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <ColorSchemeScript />
         <Meta />
         <Links />
       </head>
