@@ -3,6 +3,7 @@ node_modules
 
 # build output
 dist
+build
 
 # coverage reports
 coverage
@@ -18,3 +19,5 @@ npm-debug.log*
 .DS_Store
 .turbo
 .temp
+.netlify
+.react-router
