@@ -2,7 +2,7 @@ import { type NotificationData, notifications } from '@mantine/notifications';
 
 const commonNotificationData: Omit<NotificationData, 'message' | 'title' | 'color'> = {
   autoClose: 5000,
-  position: 'top-center',
+  position: 'bottom-center',
 };
 
 export function showErrorNotification(message: string): void {

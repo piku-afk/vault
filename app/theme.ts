@@ -1,4 +1,5 @@
-import { Button, createTheme, PasswordInput, TextInput } from '@mantine/core';
+import { Button, createTheme, PasswordInput, Select, TextInput } from '@mantine/core';
+import { DateInput } from '@mantine/dates';
 
 const fontFamily = 'Inter Variable, sans-serif';
 
@@ -23,7 +24,24 @@ export const theme = createTheme({
         errorProps: { mt: 'xs' },
       },
     }),
+    Select: Select.extend({
+      defaultProps: {
+        size: 'md',
+        variant: 'default',
+        labelProps: { fw: 'normal', mb: 4 },
+        comboboxProps: { shadow: 'md' },
+        errorProps: { mt: 'xs' },
+      },
+    }),
     PasswordInput: PasswordInput.extend({
+      defaultProps: {
+        size: 'md',
+        variant: 'default',
+        labelProps: { fw: 'normal', mb: 4 },
+        errorProps: { mt: 'xs' },
+      },
+    }),
+    DateInput: DateInput.extend({
       defaultProps: {
         size: 'md',
         variant: 'default',

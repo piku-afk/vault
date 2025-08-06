@@ -14,6 +14,7 @@
     "lint": "pnpm exec biome lint --write",
     "deploy:functions": "supabase functions deploy",
     "deploy:web": "netlify deploy --prod --dir=./dist",
+    "db:types": "supabase gen types typescript --project-id qmwshhjwtqwtbjgpvbwo > app/types/database.ts",
     "dev": "react-router dev",
     "build": "react-router build",
     "typecheck": "react-router typegen && tsc",
@@ -22,6 +23,7 @@
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.6",
     "@mantine/core": "^8.2.2",
+    "@mantine/dates": "^8.2.3",
     "@mantine/form": "^8.2.2",
     "@mantine/hooks": "^8.2.2",
     "@mantine/notifications": "^8.2.2",

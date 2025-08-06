@@ -1,41 +1,42 @@
-import { ActionIcon, Box, Button, Container, Divider, Group, Image, Title } from '@mantine/core';
-import { LogOut } from 'lucide-react';
+import { ActionIcon, Box, Container, Divider, Group, Image, Menu, Title } from '@mantine/core';
+import { LogOut, Menu as MenuIcon, Plus } from 'lucide-react';
+
 import { Link, useLocation } from 'react-router';
 
 export function Header() {
   const { pathname } = useLocation();
-  const isInvestmentPage = pathname === '/investments';
+  const isInvestmentPage = pathname.includes('/investments');
 
   return (
     <Box component='header'>
       <Container py='lg'>
         <Group gap='xs'>
           <Image src='/vault.svg' alt='Vault Icon' w='auto' h={32} />
-          <Title order={1} size='h5' fw='normal'>
+          <Title order={1} size='h5' fw='normal' mr='auto'>
             Vault by pikuh
           </Title>
 
           {isInvestmentPage && (
-            <Box ml='auto'>
-              <Button
-                component={Link}
-                to='/logout'
-                size='xs'
-                display={{ base: 'none', xs: 'block' }}
-                leftSection={<LogOut size={16} />}
-                variant='default'>
-                Logout
-              </Button>
+            <Menu shadow='md' position='bottom-end'>
+              <Menu.Target>
+                <ActionIcon variant='light'>
+                  <MenuIcon size={18} />
+                </ActionIcon>
+              </Menu.Target>
 
-              <ActionIcon
-                component={Link}
-                to='/logout'
-                variant='default'
-                display={{ base: 'block', xs: 'none' }}
-                size='lg'>
-                <LogOut size={16} />
-              </ActionIcon>
-            </Box>
+              <Menu.Dropdown>
+                <Menu.Label>Actions</Menu.Label>
+                <Menu.Item component={Link} to='/investments/add' leftSection={<Plus size={16} />}>
+                  Add Transaction
+                </Menu.Item>
+
+                <Menu.Divider />
+
+                <Menu.Item component={Link} to='/logout' leftSection={<LogOut size={16} />}>
+                  Logout
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
           )}
         </Group>
       </Container>
