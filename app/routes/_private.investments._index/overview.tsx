@@ -1,7 +1,7 @@
 import { Box, SimpleGrid, Title } from '@mantine/core';
 import { useLoaderData } from 'react-router';
 
-import type { loader } from '#/routes/_private.investments._index';
+import type { loader } from '#/routes/_private.investments._index/route';
 import { formatCurrency } from '#/utils/currencyFormat';
 import { SummaryCard } from './summaryCard';
 

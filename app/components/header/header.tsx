@@ -21,7 +21,7 @@ export function Header() {
     <Box component='header'>
       <Container py='lg'>
         <Group>
-          <Anchor component={Link} to='/' c='black' mr='auto'>
+          <Anchor underline='never' component={Link} to='/' c='black' mr='auto'>
             <Group gap='xs'>
               <Image src='/vault.svg' alt='Vault Icon' w='auto' h={32} />
               <Title order={1} size='h5' fw='normal'>
@@ -41,7 +41,7 @@ export function Header() {
               <Menu.Dropdown>
                 <Menu.Label>Actions</Menu.Label>
                 <Menu.Item component={Link} to='/investments/add' leftSection={<Plus size={16} />}>
-                  Add Transaction
+                  Add Transactions
                 </Menu.Item>
 
                 <Menu.Divider />

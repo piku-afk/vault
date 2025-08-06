@@ -1,6 +1,6 @@
 import { Divider, Stack } from '@mantine/core';
 import { sql } from 'kysely';
-import { Overview } from '#/components/overview/overview';
+import { Overview } from '#/routes/_private.investments._index/overview';
 import { db } from '#/utils/kysely.server';
 
 const netInvestedSql = sql<number>`
