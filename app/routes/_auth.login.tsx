@@ -1,25 +1,25 @@
 import { Button, PasswordInput, Stack, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { createClient } from 'app/utils/supabase.server';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
 import { Fragment } from 'react';
-import { type ActionFunctionArgs, redirect, useSubmit } from 'react-router';
+import { type ActionFunctionArgs, Form, redirect, useSubmit } from 'react-router';
 import { z } from 'zod/v4';
 
-import { ROUTES } from '#/constants/routes.ts';
 import { showErrorNotification } from '#/utils/notification.ts';
-import { supabaseClient } from '#/utils/supabaseClient.ts';
 
 export async function action({ request }: ActionFunctionArgs) {
+  const { supabase, headers } = createClient(request);
   const formData = await request.json();
-  const { data, error } = await supabaseClient.auth.signInWithPassword(formData);
+
+  const { data, error } = await supabase.auth.signInWithPassword(formData);
 
   if (error) {
     showErrorNotification(error.message);
   }
 
   if (data.session) {
-    // #TODO: redirect to two-factor page when two-factor is developed
-    return redirect(ROUTES.INVESTMENTS);
+    return redirect('/', { headers });
   }
 
   return null;
@@ -51,7 +51,7 @@ export default function Login() {
         Sign in to your account
       </Title>
 
-      <form onSubmit={form.onSubmit(handleSubmit)}>
+      <Form method='post' onSubmit={form.onSubmit(handleSubmit)}>
         <Stack mt='xl' gap='lg'>
           <TextInput
             label='Email'
@@ -70,7 +70,7 @@ export default function Login() {
         <Button type='submit' fullWidth mt='xl'>
           Login
         </Button>
-      </form>
+      </Form>
     </Fragment>
   );
 }

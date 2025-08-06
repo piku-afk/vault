@@ -1,14 +1,4 @@
-import {
-  Box,
-  ColorSchemeScript,
-  Container,
-  Group,
-  Image,
-  MantineProvider,
-  mantineHtmlProps,
-  Stack,
-  Title,
-} from '@mantine/core';
+import { ColorSchemeScript, MantineProvider, mantineHtmlProps, Stack } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import {
   isRouteErrorResponse,
@@ -25,6 +15,7 @@ import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 
 import { theme } from '#/theme.ts';
+import { Header } from './components/header/header';
 
 export const links: Route.LinksFunction = () => [{ rel: 'icon', href: '/vault.svg' }];
 
@@ -42,16 +33,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body style={{ height: '100%' }}>
         <MantineProvider theme={theme}>
           <Stack component='main' h='100%' bg='violet.0' gap='xl'>
-            <Box component='header'>
-              <Container py='lg'>
-                <Group gap='xs'>
-                  <Image src='/vault.svg' alt='Vault Icon' w='auto' h={32} />
-                  <Title order={1} size='h5' fw='normal'>
-                    Vault by pikuh
-                  </Title>
-                </Group>
-              </Container>
-            </Box>
+            <Header />
             {children}
             <Notifications />
             <ScrollRestoration />
