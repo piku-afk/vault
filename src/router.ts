@@ -9,7 +9,6 @@ export const router = createBrowserRouter([
       {
         lazy: () => import('./layouts/auth/auth.layout.tsx'),
         children: [
-          { path: ROUTES.SIGN_IN, lazy: () => import('./pages/sign-in/sign-in.page.tsx') },
           { path: ROUTES.TWO_FACTOR, lazy: () => import('./pages/two-factor/two-factor.page.tsx') },
         ],
       },
