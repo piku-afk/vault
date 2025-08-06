@@ -1,4 +1,4 @@
-import { Button, Card, Divider, Grid, Group, Select, TextInput, Title } from '@mantine/core';
+import { Button, Card, Divider, Grid, Group, Select, Stack, TextInput, Title } from '@mantine/core';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
@@ -10,7 +10,10 @@ import {
   type TransactionFormValues,
   transactionSchema,
   useTransactionForm,
-} from './form-context';
+} from './transaction-form-context';
+import { GroupBy } from './group-by/group-by';
+import { Section } from '../_private.investments._index/section';
+import { Transactions } from './transactions/transactions';
 
 dayjs.extend(customParseFormat);
 
@@ -54,22 +57,22 @@ export default function InvestmentsAdd() {
   return (
     <TransactionFormProvider form={form}>
       <fetcher.Form method='post' onSubmit={form.onSubmit(handleSubmit)}>
-        <Title order={2} fw='normal'>
-          Add transactions
-        </Title>
-
-        <Divider my='lg' />
-
-        <Divider my='lg' />
-
-        <Group justify='flex-end' gap='md'>
-          <Button type='reset' variant='default' disabled={isLoading}>
-            Reset
-          </Button>
-          <Button type='submit' variant='default' loading={isLoading}>
-            Add Transaction
-          </Button>
-        </Group>
+        <Stack gap='xl'>
+          <Section title='Add transactions' />
+          <Divider />
+          <GroupBy />
+          <Divider />
+          <Transactions />
+          <Divider />
+          <Group justify='flex-end' gap='md'>
+            <Button type='reset' variant='default' disabled={isLoading}>
+              Reset
+            </Button>
+            <Button type='submit' variant='default' loading={isLoading}>
+              Add Transaction
+            </Button>
+          </Group>
+        </Stack>
       </fetcher.Form>
     </TransactionFormProvider>
   );
