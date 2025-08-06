@@ -32,7 +32,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body style={{ height: '100%' }}>
         <MantineProvider theme={theme}>
-          <Stack component='main' h='100%' bg='violet.0' gap='xl'>
+          <Stack component='main' h='100%' gap='xl'>
             <Header />
             {children}
             <Notifications />

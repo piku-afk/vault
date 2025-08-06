@@ -8,5 +8,5 @@ export async function loader({ request }: Route.LoaderArgs) {
 
   await supabase.auth.signOut();
 
-  return redirect('/login', { headers });
+  return redirect('/', { headers });
 }

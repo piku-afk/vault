@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Container, Group, Image, Title } from '@mantine/core';
+import { ActionIcon, Box, Button, Container, Divider, Group, Image, Title } from '@mantine/core';
 import { LogOut } from 'lucide-react';
 import { Link, useLocation } from 'react-router';
 
@@ -23,14 +23,14 @@ export function Header() {
                 size='xs'
                 display={{ base: 'none', xs: 'block' }}
                 leftSection={<LogOut size={16} />}
-                variant='light'>
+                variant='default'>
                 Logout
               </Button>
 
               <ActionIcon
                 component={Link}
                 to='/logout'
-                variant='light'
+                variant='default'
                 display={{ base: 'block', xs: 'none' }}
                 size='lg'>
                 <LogOut size={16} />
@@ -39,6 +39,8 @@ export function Header() {
           )}
         </Group>
       </Container>
+
+      <Divider />
     </Box>
   );
 }
