@@ -8,6 +8,8 @@ dictionaries: []
 words: []
 ignoreWords:
   - isbot
+  - kysely
+  - kyselify
   - nwtgck
   - piku
   - pikuh

@@ -60,6 +60,8 @@ export type Database = {
         Row: {
           category: string
           created_at: string
+          current_nav: number | null
+          fund_code: string | null
           fund_name: string
           fund_type: string
           id: string
@@ -68,6 +70,8 @@ export type Database = {
         Insert: {
           category: string
           created_at?: string
+          current_nav?: number | null
+          fund_code?: string | null
           fund_name: string
           fund_type: string
           id?: string
@@ -76,6 +80,8 @@ export type Database = {
         Update: {
           category?: string
           created_at?: string
+          current_nav?: number | null
+          fund_code?: string | null
           fund_name?: string
           fund_type?: string
           id?: string
