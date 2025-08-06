@@ -1,4 +1,14 @@
-import { ActionIcon, Box, Container, Divider, Group, Image, Menu, Title } from '@mantine/core';
+import {
+  ActionIcon,
+  Anchor,
+  Box,
+  Container,
+  Divider,
+  Group,
+  Image,
+  Menu,
+  Title,
+} from '@mantine/core';
 import { LogOut, Menu as MenuIcon, Plus } from 'lucide-react';
 
 import { Link, useLocation } from 'react-router';
@@ -10,11 +20,15 @@ export function Header() {
   return (
     <Box component='header'>
       <Container py='lg'>
-        <Group gap='xs'>
-          <Image src='/vault.svg' alt='Vault Icon' w='auto' h={32} />
-          <Title order={1} size='h5' fw='normal' mr='auto'>
-            Vault by pikuh
-          </Title>
+        <Group>
+          <Anchor component={Link} to='/' c='black' mr='auto'>
+            <Group gap='xs'>
+              <Image src='/vault.svg' alt='Vault Icon' w='auto' h={32} />
+              <Title order={1} size='h5' fw='normal'>
+                Vault by pikuh
+              </Title>
+            </Group>
+          </Anchor>
 
           {isInvestmentPage && (
             <Menu shadow='md' position='bottom-end'>
