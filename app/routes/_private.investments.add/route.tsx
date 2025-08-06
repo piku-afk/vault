@@ -1,81 +1,82 @@
-import { Button, Card, Grid, Group, Select, TextInput, Title } from '@mantine/core';
-import { DateInput } from '@mantine/dates';
-import { useForm } from '@mantine/form';
+import { Button, Card, Divider, Grid, Group, Select, TextInput, Title } from '@mantine/core';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
-import { useEffect } from 'react';
-import { Form, useSubmit } from 'react-router';
-import { z } from 'zod/v4';
-import { createClient } from '#/utils/supabase.server';
-import type { Route } from './+types/_private.investments.add';
+import { useFetcher, useSubmit } from 'react-router';
+
+import { db } from '#/utils/kysely.server';
+import {
+  TransactionFormProvider,
+  type TransactionFormValues,
+  transactionSchema,
+  useTransactionForm,
+} from './form-context';
 
 dayjs.extend(customParseFormat);
 
-const transactionSchema = z.object({
-  date: z.string().refine(
-    (val) => {
-      return dayjs(val, 'YYYY-MM-DD', true).isValid();
-    },
-    {
-      message: 'Invalid date format. Use YYYY-MM-DD',
-    }
-  ),
-  transaction_type: z.string(),
-  fund_name: z.string(),
-  units: z.coerce.number().positive(),
-  nav: z.coerce.number().positive(),
-  amount: z.coerce.number().positive(),
-});
-
-export async function action({ request }: Route.ActionArgs) {
-  const { supabase } = createClient(request);
-  const formData: z.infer<typeof transactionSchema> = await request.json();
-
-  const { error } = await supabase.from('transaction').insert(formData);
-
-  if (error) {
-    throw new Response(error.message, { status: 400 });
-  }
-
-  return true;
+export async function action() {
+  // const { supabase } = createClient(request);
+  // const formData: z.infer<typeof transactionSchema> = await request.json();
+  // const { error } = await supabase.from('transaction').insert(formData);
+  // if (error) {
+  //   throw new Response(error.message, { status: 400 });
+  // }
+  // return true;
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
-  const { supabase } = createClient(request);
-
-  const transactionTypes = await supabase.from('transaction_type').select();
-  const fundTypes = await supabase.from('mutual_fund').select();
+export async function loader() {
+  const fundTypes = await db.selectFrom('mutual_fund').select('fund_name').execute();
+  const transactionTypes = await db.selectFrom('transaction_type').select('name').execute();
 
   return {
-    transactionTypes: transactionTypes.data?.map((item) => item.name) || [],
-    fundTypes: fundTypes.data?.map((item) => item.fund_name) || [],
+    fundTypes: fundTypes,
+    transactionTypes: transactionTypes,
   };
 }
 
-export default function InvestmentsAdd({ loaderData, actionData }: Route.ComponentProps) {
-  const { transactionTypes, fundTypes } = loaderData;
+export default function InvestmentsAdd() {
+  const fetcher = useFetcher();
   const submit = useSubmit();
-  const form = useForm({
+  const form = useTransactionForm({
     mode: 'uncontrolled',
     validate: zod4Resolver(transactionSchema),
   });
 
-  useEffect(() => {
-    if (actionData) {
-      form.reset();
-    }
-  }, [actionData, form.reset]);
-
   function handleSubmit(values: Record<string, unknown>) {
-    submit(values as z.infer<typeof transactionSchema>, {
+    submit(values as TransactionFormValues, {
       method: 'post',
       encType: 'application/json',
     });
   }
 
+  const isLoading = fetcher.state === 'submitting';
+
   return (
-    <Form method='post' onSubmit={form.onSubmit(handleSubmit)}>
+    <TransactionFormProvider form={form}>
+      <fetcher.Form method='post' onSubmit={form.onSubmit(handleSubmit)}>
+        <Title order={2} fw='normal'>
+          Add transactions
+        </Title>
+
+        <Divider my='lg' />
+
+        <Divider my='lg' />
+
+        <Group justify='flex-end' gap='md'>
+          <Button type='reset' variant='default' disabled={isLoading}>
+            Reset
+          </Button>
+          <Button type='submit' variant='default' loading={isLoading}>
+            Add Transaction
+          </Button>
+        </Group>
+      </fetcher.Form>
+    </TransactionFormProvider>
+  );
+}
+
+{
+  /* <Form method='post' onSubmit={form.onSubmit(handleSubmit)}>
       <Card withBorder bg='violet.0' p={{ base: 'md', xs: 'xl' }}>
         <Title order={2} fw='normal'>
           Add new transaction
@@ -140,6 +141,5 @@ export default function InvestmentsAdd({ loaderData, actionData }: Route.Compone
           </Button>
         </Group>
       </Card>
-    </Form>
-  );
+    </Form> */
 }
