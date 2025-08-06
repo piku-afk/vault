@@ -1,7 +1,9 @@
 import { Divider, Stack } from '@mantine/core';
 import { sql } from 'kysely';
-import { Overview } from '#/routes/_private.investments._index/overview';
-import { db } from '#/utils/kysely.server';
+
+import { db } from '#/utils/kysely.server.ts';
+import { Goals } from './goals/goals';
+import { Overview } from './overview/overview';
 
 const netInvestedSql = sql<number>`
   SUM(
@@ -44,6 +46,7 @@ export default function Investments() {
     <Stack gap='xl'>
       <Overview />
       <Divider />
+      <Goals />
     </Stack>
   );
 }
