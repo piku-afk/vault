@@ -13,7 +13,7 @@ const netInvestedSql = sql<number>`
       ELSE 0 
     END
   )
-`.as("net_invested");
+`;
 
 const netWorthSql = sql<number>`
   SUM(
@@ -23,17 +23,19 @@ const netWorthSql = sql<number>`
       ELSE 0 
     END
   )
-`.as("net_worth");
+`;
 
-const netReturnsSql = sql<number>`${netWorthSql} - ${netInvestedSql}`.as(
-  "net_returns",
-);
+const netReturnsSql = sql<number>`${netWorthSql} - ${netInvestedSql}`;
 
 export async function loader() {
   const data = await db
     .selectFrom("transaction as t")
     .innerJoin("mutual_fund as mf", "mf.fund_name", "t.fund_name")
-    .select([netInvestedSql, netWorthSql, netReturnsSql])
+    .select([
+      netInvestedSql.as("net_invested"),
+      netWorthSql.as("net_worth"),
+      netReturnsSql.as("net_returns"),
+    ])
     .executeTakeFirstOrThrow();
 
   return data;

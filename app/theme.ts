@@ -28,6 +28,8 @@ export const theme = createTheme({
       defaultProps: {
         size: 'md',
         variant: 'default',
+        checkIconPosition: 'right',
+        nothingFoundMessage: 'Nothing found',
         labelProps: { fw: 'normal', mb: 4 },
         comboboxProps: { shadow: 'md' },
         errorProps: { mt: 'xs' },

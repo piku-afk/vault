@@ -43,10 +43,11 @@ export async function loader() {
     .selectFrom("mutual_fund")
     .select(sql<string[]>`array_agg(fund_name)`.as("data"))
     .executeTakeFirstOrThrow();
+
   const transactionTypes = await db
     .selectFrom("transaction_type")
-    .select("name")
-    .execute();
+    .select(sql<string[]>`array_agg("name")`.as("data"))
+    .executeTakeFirstOrThrow();
 
   return { fundNames, transactionTypes };
 }
