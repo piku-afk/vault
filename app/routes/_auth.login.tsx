@@ -3,33 +3,22 @@ import { useForm } from "@mantine/form";
 import { createClient } from "app/utils/supabase.server";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { Fragment } from "react";
-import {
-  type ActionFunctionArgs,
-  Form,
-  redirect,
-  useLocation,
-  useNavigation,
-  useSubmit,
-} from "react-router";
+import { Form, redirect, useSubmit } from "react-router";
 import { z } from "zod/v4";
 
-import { showErrorNotification } from "#/utils/notification.ts";
+import type { Route } from "./+types/_auth.login";
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request }: Route.ActionArgs) {
   const { supabase, headers } = createClient(request);
   const formData = await request.json();
 
-  const { data, error } = await supabase.auth.signInWithPassword(formData);
+  const { error } = await supabase.auth.signInWithPassword(formData);
 
   if (error) {
-    showErrorNotification(error.message);
+    throw error;
   }
 
-  if (data.session) {
-    return redirect("/", { headers });
-  }
-
-  return null;
+  throw redirect("/", { headers });
 }
 
 const loginSchema = z.object({
@@ -42,16 +31,14 @@ const loginSchema = z.object({
 
 export default function Login() {
   const submit = useSubmit();
-  const { pathname } = useLocation();
-  const { formAction } = useNavigation();
   const form = useForm({
     mode: "uncontrolled",
     validate: zod4Resolver(loginSchema),
     initialValues: loginSchema.parse({}),
   });
 
-  function handleSubmit(values: z.infer<typeof loginSchema>) {
-    submit(values, { method: "post", encType: "application/json" });
+  async function handleSubmit(values: z.infer<typeof loginSchema>) {
+    await submit(values, { method: "post", encType: "application/json" });
   }
 
   return (
@@ -63,32 +50,25 @@ export default function Login() {
         Sign in to your account
       </Title>
 
-      <Form
-        method="post"
-        action={pathname}
-        onSubmit={form.onSubmit(handleSubmit)}
-      >
+      <Form method="post" onSubmit={form.onSubmit(handleSubmit)}>
         <Stack mt="xl" gap="lg">
           <TextInput
             label="Email"
             type="email"
             placeholder="you@example.com"
+            disabled={form.submitting}
             {...form.getInputProps("email")}
           />
 
           <PasswordInput
             label="Password"
             placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
+            disabled={form.submitting}
             {...form.getInputProps("password")}
           />
         </Stack>
 
-        <Button
-          type="submit"
-          fullWidth
-          mt="xl"
-          loading={formAction === pathname}
-        >
+        <Button type="submit" fullWidth mt="xl" loading={form.submitting}>
           Login
         </Button>
       </Form>

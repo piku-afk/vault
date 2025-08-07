@@ -9,7 +9,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   const { error } = await supabase.auth.getUser();
 
   if (error) {
-    throw redirect("/login");
+    throw redirect("/");
   }
 }
 
