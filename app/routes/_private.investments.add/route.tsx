@@ -69,7 +69,7 @@ export default function InvestmentsAdd() {
           <Divider />
           <Transactions />
           <Divider />
-          <Group justify="flex-end" gap="md">
+          <Group justify="flex-end" mb="xl" gap="md">
             <Button
               type="button"
               variant="default"

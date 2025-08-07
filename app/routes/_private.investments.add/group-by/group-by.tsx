@@ -1,4 +1,4 @@
-import { Grid } from "@mantine/core";
+import { Grid, TextInput } from "@mantine/core";
 import { Section } from "#/routes/_private.investments._index/section";
 import { DateField } from "../date-field";
 import { FundNameField } from "../fund-name-field";
@@ -54,6 +54,24 @@ export function GroupBy() {
                   form.setFieldValue(
                     `transactions.${index}.transaction_type`,
                     value,
+                  );
+                });
+              }
+            }}
+          />
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, xs: 3 }}>
+          <TextInput
+            label="Transaction amount"
+            placeholder="Enter transaction amount"
+            {...form.getInputProps("group_transaction_amount")}
+            onChange={(event) => {
+              form.getInputProps("group_transaction_amount").onChange(event);
+              if (event) {
+                form.getValues().transactions.forEach((_, index) => {
+                  form.setFieldValue(
+                    `transactions.${index}.amount`,
+                    event.target.value,
                   );
                 });
               }

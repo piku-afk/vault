@@ -24,7 +24,7 @@ export function Transactions() {
 
   return (
     <Section title={`Transactions (${form.getValues().transactions.length})`}>
-      <Stack>
+      <Stack gap="lg">
         {form.getValues().transactions.map((_, index) => (
           <Card
             key={form.key(`transactions.${index}`)}
@@ -74,6 +74,7 @@ export function Transactions() {
               </Grid.Col>
               <Grid.Col span={{ base: 12, xs: 4 }}>
                 <TextInput
+                  disabled={!!form.getValues().group_transaction_amount}
                   type="number"
                   placeholder="Enter amount"
                   {...form.getInputProps(`transactions.${index}.amount`)}

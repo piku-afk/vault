@@ -34,6 +34,7 @@ export const transactionFormSchema = z.object({
   group_date: dateSchema.nullable(),
   group_fund_name: z.string().nullable().nullable(),
   group_transaction_type: z.string().nullable().nullable(),
+  group_transaction_amount: z.string().nullable().nullable(),
   transactions: z.array(transactionSchema),
 });
 
@@ -52,6 +53,7 @@ export const defaultTransactionFormValues: z.infer<typeof transactionFormSchema>
   group_date: null,
   group_fund_name: null,
   group_transaction_type: null,
+  group_transaction_amount: null,
   transactions: [defaultTransaction],
 };
 
