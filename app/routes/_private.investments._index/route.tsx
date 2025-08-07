@@ -5,11 +5,16 @@ import { db } from "#/utils/kysely.server.ts";
 import { Goals } from "./goals/goals";
 import { Overview } from "./overview/overview";
 
+enum TRANSACTION_TYPE {
+  PURCHASE = "Purchase",
+  REDEEM = "Redeem",
+}
+
 const netInvestedSql = sql<number>`
   SUM(
     CASE 
-      WHEN t.transaction_type = 'PURCHASE' THEN t.amount 
-      WHEN t.transaction_type = 'WITHDRAWAL' THEN -t.amount 
+      WHEN t.transaction_type = ${sql.lit(TRANSACTION_TYPE.PURCHASE)} THEN t.amount 
+      WHEN t.transaction_type = ${sql.lit(TRANSACTION_TYPE.REDEEM)} THEN -t.amount 
       ELSE 0 
     END
   )
@@ -18,8 +23,8 @@ const netInvestedSql = sql<number>`
 const netWorthSql = sql<number>`
   SUM(
     CASE 
-      WHEN t.transaction_type = 'PURCHASE' THEN t.units * mf.current_nav
-      WHEN t.transaction_type = 'WITHDRAWAL' THEN -t.units * mf.current_nav
+      WHEN t.transaction_type = ${sql.lit(TRANSACTION_TYPE.PURCHASE)} THEN t.units * mf.current_nav
+      WHEN t.transaction_type = ${sql.lit(TRANSACTION_TYPE.REDEEM)} THEN -t.units * mf.current_nav
       ELSE 0 
     END
   )
