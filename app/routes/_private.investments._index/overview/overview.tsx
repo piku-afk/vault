@@ -7,8 +7,9 @@ import { Section } from "../section";
 import { SummaryCard } from "./summaryCard";
 
 export function Overview() {
-  const { net_worth, net_invested, net_returns } =
-    useLoaderData<typeof loader>();
+  const {
+    overview: { net_worth, net_invested, net_returns },
+  } = useLoaderData<typeof loader>();
 
   return (
     <Section title="Overview">
