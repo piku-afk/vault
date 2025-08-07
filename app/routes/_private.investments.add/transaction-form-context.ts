@@ -1,10 +1,12 @@
-import { createFormContext } from '@mantine/form';
-import dayjs from 'dayjs';
-import z from 'zod';
+import { createFormContext } from "@mantine/form";
+import dayjs from "dayjs";
+import z from "zod";
 
-const dateSchema = z.string().refine((val) => dayjs(val, 'YYYY-MM-DD', true).isValid(), {
-  message: 'Invalid date format. Use YYYY-MM-DD',
-});
+const dateSchema = z
+  .string()
+  .refine((val) => dayjs(val, "YYYY-MM-DD", true).isValid(), {
+    message: "Invalid date format. Use YYYY-MM-DD",
+  });
 
 export const transactionSchema = z.object({
   group_date: dateSchema.optional(),
@@ -18,11 +20,14 @@ export const transactionSchema = z.object({
       units: z.coerce.number().positive(),
       nav: z.coerce.number().positive(),
       amount: z.coerce.number().positive(),
-    })
+    }),
   ),
 });
 
 export type TransactionFormValues = z.infer<typeof transactionSchema>;
 
-export const [TransactionFormProvider, useTransactionFormContext, useTransactionForm] =
-  createFormContext<TransactionFormValues>();
+export const [
+  TransactionFormProvider,
+  useTransactionFormContext,
+  useTransactionForm,
+] = createFormContext<TransactionFormValues>();

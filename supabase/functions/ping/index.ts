@@ -1,13 +1,12 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js";
 
-const supabaseClient = createClient(
-  Deno.env.get("SUPABASE_URL") as string,
-  Deno.env.get("SUPABASE_ANON_KEY") as string,
-);
-
 Deno.serve(async () => {
   const timestamp = new Date().toISOString();
+  const supabaseClient = createClient(
+    Deno.env.get("SUPABASE_URL") as string,
+    Deno.env.get("SUPABASE_ANON_KEY") as string,
+  );
 
   try {
     const { data, error } = await supabaseClient.rpc("health_check");

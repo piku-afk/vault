@@ -1,24 +1,27 @@
-import { type NotificationData, notifications } from '@mantine/notifications';
+import { type NotificationData, notifications } from "@mantine/notifications";
 
-const commonNotificationData: Omit<NotificationData, 'message' | 'title' | 'color'> = {
+const commonNotificationData: Omit<
+  NotificationData,
+  "message" | "title" | "color"
+> = {
   autoClose: 5000,
-  position: 'bottom-center',
+  position: "bottom-center",
 };
 
 export function showErrorNotification(message: string): void {
   notifications.show({
-    title: 'Error',
+    title: "Error",
     message,
-    color: 'red',
+    color: "red",
     ...commonNotificationData,
   });
 }
 
 export function showSuccessNotification(message: string): void {
   notifications.show({
-    title: 'Success',
+    title: "Success",
     message,
-    color: 'green',
+    color: "green",
     ...commonNotificationData,
   });
 }

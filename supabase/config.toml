@@ -4,3 +4,8 @@ project_id = "qmwshhjwtqwtbjgpvbwo"
 enabled = true
 verify_jwt = false
 import_map = "./functions/ping/deno.json"
+
+[functions.update-navs]
+enabled = true
+verify_jwt = false
+import_map = "./functions/update-navs/deno.json"

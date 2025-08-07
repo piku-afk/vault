@@ -1,7 +1,7 @@
-import { Container } from '@mantine/core';
-import { Outlet, redirect } from 'react-router';
-import { createClient } from '#/utils/supabase.server';
-import type { Route } from './+types/_private';
+import { Container } from "@mantine/core";
+import { Outlet, redirect } from "react-router";
+import { createClient } from "#/utils/supabase.server";
+import type { Route } from "./+types/_private";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const { supabase } = createClient(request);
@@ -9,13 +9,13 @@ export async function loader({ request }: Route.LoaderArgs) {
   const { error } = await supabase.auth.getUser();
 
   if (error) {
-    throw redirect('/login');
+    throw redirect("/login");
   }
 }
 
 export default function PrivateLayout() {
   return (
-    <Container w='100%' size='md'>
+    <Container w="100%" size="md">
       <Outlet />
     </Container>
   );

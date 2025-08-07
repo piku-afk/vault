@@ -1,19 +1,29 @@
-import { Button, Card, Divider, Grid, Group, Select, Stack, TextInput, Title } from '@mantine/core';
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { zod4Resolver } from 'mantine-form-zod-resolver';
-import { useFetcher, useSubmit } from 'react-router';
+import {
+  Button,
+  Card,
+  Divider,
+  Grid,
+  Group,
+  Select,
+  Stack,
+  TextInput,
+  Title,
+} from "@mantine/core";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import { zod4Resolver } from "mantine-form-zod-resolver";
+import { useFetcher, useSubmit } from "react-router";
 
-import { db } from '#/utils/kysely.server';
+import { db } from "#/utils/kysely.server";
 import {
   TransactionFormProvider,
   type TransactionFormValues,
   transactionSchema,
   useTransactionForm,
-} from './transaction-form-context';
-import { GroupBy } from './group-by/group-by';
-import { Section } from '../_private.investments._index/section';
-import { Transactions } from './transactions/transactions';
+} from "./transaction-form-context";
+import { GroupBy } from "./group-by/group-by";
+import { Section } from "../_private.investments._index/section";
+import { Transactions } from "./transactions/transactions";
 
 dayjs.extend(customParseFormat);
 
@@ -28,8 +38,14 @@ export async function action() {
 }
 
 export async function loader() {
-  const fundTypes = await db.selectFrom('mutual_fund').select('fund_name').execute();
-  const transactionTypes = await db.selectFrom('transaction_type').select('name').execute();
+  const fundTypes = await db
+    .selectFrom("mutual_fund")
+    .select("fund_name")
+    .execute();
+  const transactionTypes = await db
+    .selectFrom("transaction_type")
+    .select("name")
+    .execute();
 
   return {
     fundTypes: fundTypes,
@@ -41,34 +57,34 @@ export default function InvestmentsAdd() {
   const fetcher = useFetcher();
   const submit = useSubmit();
   const form = useTransactionForm({
-    mode: 'uncontrolled',
+    mode: "uncontrolled",
     validate: zod4Resolver(transactionSchema),
   });
 
   function handleSubmit(values: Record<string, unknown>) {
     submit(values as TransactionFormValues, {
-      method: 'post',
-      encType: 'application/json',
+      method: "post",
+      encType: "application/json",
     });
   }
 
-  const isLoading = fetcher.state === 'submitting';
+  const isLoading = fetcher.state === "submitting";
 
   return (
     <TransactionFormProvider form={form}>
-      <fetcher.Form method='post' onSubmit={form.onSubmit(handleSubmit)}>
-        <Stack gap='xl'>
-          <Section title='Add transactions' />
+      <fetcher.Form method="post" onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack gap="xl">
+          <Section title="Add transactions" />
           <Divider />
           <GroupBy />
           <Divider />
           <Transactions />
           <Divider />
-          <Group justify='flex-end' gap='md'>
-            <Button type='reset' variant='default' disabled={isLoading}>
+          <Group justify="flex-end" gap="md">
+            <Button type="reset" variant="default" disabled={isLoading}>
               Reset
             </Button>
-            <Button type='submit' variant='default' loading={isLoading}>
+            <Button type="submit" variant="default" loading={isLoading}>
               Add Transaction
             </Button>
           </Group>
