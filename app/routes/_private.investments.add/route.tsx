@@ -62,14 +62,14 @@ export default function InvestmentsAdd() {
   return (
     <TransactionFormProvider form={form}>
       <fetcher.Form method="post" onSubmit={form.onSubmit(handleSubmit)}>
-        <Stack gap="xl">
+        <Stack gap="xl" pb="xl">
           <Section title="Add transactions" />
           <Divider />
           <GroupBy />
           <Divider />
           <Transactions />
           <Divider />
-          <Group justify="flex-end" mb="xl" gap="md">
+          <Group justify="flex-end" gap="md">
             <Button
               type="button"
               variant="default"

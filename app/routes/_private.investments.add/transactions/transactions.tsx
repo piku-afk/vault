@@ -22,6 +22,16 @@ import { TransactionTypeField } from "../transaction-type-field";
 export function Transactions() {
   const form = useTransactionFormContext();
 
+  function addTransaction() {
+    form.insertListItem("transactions", {
+      ...defaultTransaction,
+      date: form.getValues().group_date || "",
+      transaction_type: form.getValues().group_transaction_type || "",
+      fund_name: form.getValues().group_fund_name || "",
+      amount: form.getValues().group_transaction_amount || "",
+    });
+  }
+
   return (
     <Section title={`Transactions (${form.getValues().transactions.length})`}>
       <Stack gap="lg">
@@ -91,14 +101,7 @@ export function Transactions() {
         ml="auto"
         variant="default"
         leftSection={<Plus size={16} />}
-        onClick={() =>
-          form.insertListItem("transactions", {
-            ...defaultTransaction,
-            date: form.getValues().group_date || "",
-            transaction_type: form.getValues().group_transaction_type || "",
-            fund_name: form.getValues().group_fund_name || "",
-          })
-        }
+        onClick={addTransaction}
       >
         Add transaction
       </Button>

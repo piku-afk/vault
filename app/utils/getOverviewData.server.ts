@@ -1,12 +1,12 @@
 import { sql } from 'kysely';
 import { db } from './kysely.server';
 
-enum TRANSACTION_TYPE {
+export enum TRANSACTION_TYPE {
   PURCHASE = 'Purchase',
   REDEEM = 'Redeem',
 }
 
-const netInvestedSql = sql<number>`
+export const netInvestedSql = sql<number>`
   SUM(
     CASE 
       WHEN t.transaction_type = ${sql.lit(TRANSACTION_TYPE.PURCHASE)} THEN t.amount 
@@ -16,7 +16,7 @@ const netInvestedSql = sql<number>`
   )
 `;
 
-const netWorthSql = sql<number>`
+export const netWorthSql = sql<number>`
   SUM(
     CASE 
       WHEN t.transaction_type = ${sql.lit(TRANSACTION_TYPE.PURCHASE)} THEN t.units * mf.current_nav
@@ -26,9 +26,15 @@ const netWorthSql = sql<number>`
   )
 `;
 
-const netReturnsSql = sql<number>`${netWorthSql} - ${netInvestedSql}`;
+export const netReturnsSql = sql<number>`${netWorthSql} - ${netInvestedSql}`;
+export const netReturnsPercentageSql = sql<number>`
+  CASE 
+    WHEN ${netInvestedSql} = 0 THEN 0
+    ELSE ((${netReturnsSql}) / (${netInvestedSql})) * 100
+  END
+`;
 
-export function getOverviewData() {
+export async function getOverviewData() {
   return db
     .selectFrom('transaction as t')
     .innerJoin('mutual_fund as mf', 'mf.fund_name', 't.fund_name')
@@ -36,6 +42,7 @@ export function getOverviewData() {
       netInvestedSql.as('net_invested'),
       netWorthSql.as('net_worth'),
       netReturnsSql.as('net_returns'),
+      netReturnsPercentageSql.as('net_returns_percentage'),
     ])
     .executeTakeFirstOrThrow();
 }
