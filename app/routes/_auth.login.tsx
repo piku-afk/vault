@@ -3,7 +3,14 @@ import { useForm } from '@mantine/form';
 import { createClient } from 'app/utils/supabase.server';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
 import { Fragment } from 'react';
-import { type ActionFunctionArgs, Form, redirect, useSubmit } from 'react-router';
+import {
+  type ActionFunctionArgs,
+  Form,
+  redirect,
+  useLocation,
+  useNavigation,
+  useSubmit,
+} from 'react-router';
 import { z } from 'zod/v4';
 
 import { showErrorNotification } from '#/utils/notification.ts';
@@ -32,6 +39,8 @@ const loginSchema = z.object({
 
 export default function Login() {
   const submit = useSubmit();
+  const { pathname } = useLocation();
+  const { formAction } = useNavigation();
   const form = useForm({
     mode: 'uncontrolled',
     validate: zod4Resolver(loginSchema),
@@ -51,7 +60,7 @@ export default function Login() {
         Sign in to your account
       </Title>
 
-      <Form method='post' onSubmit={form.onSubmit(handleSubmit)}>
+      <Form method='post' action={pathname} onSubmit={form.onSubmit(handleSubmit)}>
         <Stack mt='xl' gap='lg'>
           <TextInput
             label='Email'
@@ -67,7 +76,7 @@ export default function Login() {
           />
         </Stack>
 
-        <Button type='submit' fullWidth mt='xl'>
+        <Button type='submit' fullWidth mt='xl' loading={formAction === pathname}>
           Login
         </Button>
       </Form>
