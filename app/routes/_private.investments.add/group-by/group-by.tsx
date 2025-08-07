@@ -2,11 +2,11 @@ import { Grid } from "@mantine/core";
 import { Section } from "#/routes/_private.investments._index/section";
 import { DateField } from "../date-field";
 import { FundNameField } from "../fund-name-field";
-import { useTransactionForm } from "../transaction-form-context";
+import { useTransactionFormContext } from "../transaction-form-context";
 import { TransactionTypeField } from "../transaction-type-field";
 
 export function GroupBy() {
-  const form = useTransactionForm();
+  const form = useTransactionFormContext();
 
   return (
     <Section title="Group By">
@@ -15,23 +15,49 @@ export function GroupBy() {
           <DateField
             clearable
             label="Transaction date"
+            key={form.key("group_date")}
             {...form.getInputProps("group_date")}
+            onChange={(value) => {
+              form.getInputProps("group_date").onChange(value);
+              if (value) {
+                form.getValues().transactions.forEach((_, index) => {
+                  form.setFieldValue(`transactions.${index}.date`, value);
+                });
+              }
+            }}
           />
         </Grid.Col>
         <Grid.Col span="auto">
           <FundNameField
             clearable
             label="Fund name"
-            placeholder="Search by fund name"
             {...form.getInputProps("group_fund_name")}
+            onChange={(value) => {
+              form.getInputProps("group_fund_name").onChange(value);
+              if (value) {
+                form.getValues().transactions.forEach((_, index) => {
+                  form.setFieldValue(`transactions.${index}.fund_name`, value);
+                });
+              }
+            }}
           />
         </Grid.Col>
         <Grid.Col span={{ base: 12, xs: 3 }}>
           <TransactionTypeField
             clearable
             label="Transaction type"
-            placeholder="Search by transaction type"
             {...form.getInputProps("group_transaction_type")}
+            onChange={(value) => {
+              form.getInputProps("group_transaction_type").onChange(value);
+              if (value) {
+                form.getValues().transactions.forEach((_, index) => {
+                  form.setFieldValue(
+                    `transactions.${index}.transaction_type`,
+                    value,
+                  );
+                });
+              }
+            }}
           />
         </Grid.Col>
       </Grid>

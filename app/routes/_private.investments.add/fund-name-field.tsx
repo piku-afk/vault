@@ -5,5 +5,12 @@ import type { loader } from "./route";
 export function FundNameField(props: SelectProps) {
   const { fundNames } = useLoaderData<typeof loader>();
 
-  return <Select {...props} searchable data={fundNames.data} />;
+  return (
+    <Select
+      {...props}
+      searchable
+      placeholder="Search by fund name"
+      data={fundNames.data.sort()}
+    />
+  );
 }

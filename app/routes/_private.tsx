@@ -1,6 +1,7 @@
 import { Container } from "@mantine/core";
 import { Outlet, redirect } from "react-router";
 import { createClient } from "#/utils/supabase.server";
+
 import type { Route } from "./+types/_private";
 
 export async function loader({ request }: Route.LoaderArgs) {

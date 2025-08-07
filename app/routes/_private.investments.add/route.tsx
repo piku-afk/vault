@@ -1,14 +1,4 @@
-import {
-  Button,
-  Card,
-  Divider,
-  Grid,
-  Group,
-  Select,
-  Stack,
-  TextInput,
-  Title,
-} from "@mantine/core";
+import { Button, Divider, Group, Stack } from "@mantine/core";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { sql } from "kysely";
@@ -17,25 +7,23 @@ import { useFetcher, useSubmit } from "react-router";
 
 import { db } from "#/utils/kysely.server";
 import { Section } from "../_private.investments._index/section";
+import type { Route } from "../_private.investments.add/+types/route";
 import { GroupBy } from "./group-by/group-by";
 import {
+  defaultTransactionFormValues,
   TransactionFormProvider,
   type TransactionFormValues,
-  transactionSchema,
+  transactionFormSchema,
   useTransactionForm,
 } from "./transaction-form-context";
 import { Transactions } from "./transactions/transactions";
 
 dayjs.extend(customParseFormat);
 
-export async function action() {
-  // const { supabase } = createClient(request);
-  // const formData: z.infer<typeof transactionSchema> = await request.json();
-  // const { error } = await supabase.from('transaction').insert(formData);
-  // if (error) {
-  //   throw new Response(error.message, { status: 400 });
-  // }
-  // return true;
+export async function action({ request }: Route.ActionArgs) {
+  const formData = await request.json();
+
+  await db.insertInto("transaction").values(formData).execute();
 }
 
 export async function loader() {
@@ -56,15 +44,17 @@ export default function InvestmentsAdd() {
   const fetcher = useFetcher();
   const submit = useSubmit();
   const form = useTransactionForm({
-    mode: "uncontrolled",
-    validate: zod4Resolver(transactionSchema),
+    mode: "controlled",
+    validate: zod4Resolver(transactionFormSchema),
+    initialValues: defaultTransactionFormValues,
   });
 
-  function handleSubmit(values: Record<string, unknown>) {
-    submit(values as TransactionFormValues, {
+  async function handleSubmit(values: TransactionFormValues) {
+    await submit(values.transactions, {
       method: "post",
       encType: "application/json",
     });
+    form.reset();
   }
 
   const isLoading = fetcher.state === "submitting";
@@ -80,84 +70,20 @@ export default function InvestmentsAdd() {
           <Transactions />
           <Divider />
           <Group justify="flex-end" gap="md">
-            <Button type="reset" variant="default" disabled={isLoading}>
+            <Button
+              type="button"
+              variant="default"
+              disabled={isLoading}
+              onClick={() => form.reset()}
+            >
               Reset
             </Button>
             <Button type="submit" variant="default" loading={isLoading}>
-              Add Transaction
+              Add Transactions
             </Button>
           </Group>
         </Stack>
       </fetcher.Form>
     </TransactionFormProvider>
   );
-}
-
-{
-  /* <Form method='post' onSubmit={form.onSubmit(handleSubmit)}>
-      <Card withBorder bg='violet.0' p={{ base: 'md', xs: 'xl' }}>
-        <Title order={2} fw='normal'>
-          Add new transaction
-        </Title>
-        <Grid grow mt='xl' gutter='lg'>
-          <Grid.Col span={{ base: 12, xs: 6 }}>
-            <DateInput
-              label='Date'
-              placeholder='DD/MM/YYYY'
-              valueFormat='DD/MM/YYYY'
-              {...form.getInputProps('date')}
-            />
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, xs: 6 }}>
-            <Select
-              label='Transaction Type'
-              placeholder='Select transaction type'
-              data={transactionTypes}
-              {...form.getInputProps('transaction_type')}
-            />
-          </Grid.Col>
-          <Grid.Col span={12}>
-            <Select
-              label='Fund Name'
-              placeholder='Select fund name'
-              data={fundTypes}
-              {...form.getInputProps('fund_name')}
-            />
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, xs: 4 }}>
-            <TextInput
-              type='number'
-              label='Units Allocated'
-              placeholder='Enter the units allocated'
-              {...form.getInputProps('units')}
-            />
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, xs: 4 }}>
-            <TextInput
-              type='number'
-              label='NAV'
-              placeholder='Enter NAV price'
-              {...form.getInputProps('nav')}
-            />
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, xs: 4 }}>
-            <TextInput
-              type='number'
-              label='Amount'
-              placeholder='Enter the amount invested'
-              step='0.01'
-              {...form.getInputProps('amount')}
-            />
-          </Grid.Col>
-        </Grid>
-        <Group mt='xl' justify='flex-end' gap='md'>
-          <Button type='submit' variant='default'>
-            Add Transaction
-          </Button>
-          <Button type='reset' variant='default' onClick={() => form.reset()}>
-            Reset
-          </Button>
-        </Group>
-      </Card>
-    </Form> */
 }
