@@ -1,6 +1,7 @@
-import { SimpleGrid } from "@mantine/core";
+import { Grid } from "@mantine/core";
 import { Section } from "#/routes/_private.investments._index/section";
 import { DateField } from "../date-field";
+import { FundNameField } from "../fund-name-field";
 import { useTransactionForm } from "../transaction-form-context";
 
 export function GroupBy() {
@@ -8,9 +9,23 @@ export function GroupBy() {
 
   return (
     <Section title="Group By">
-      <SimpleGrid cols={{ base: 1, xs: 3 }}>
-        <DateField clearable {...form.getInputProps("group_date")} />
-      </SimpleGrid>
+      <Grid>
+        <Grid.Col span={{ base: 12, xs: 3 }}>
+          <DateField
+            clearable
+            label="Transaction date"
+            {...form.getInputProps("group_date")}
+          />
+        </Grid.Col>
+        <Grid.Col span="auto">
+          <FundNameField
+            clearable
+            label="Fund name"
+            placeholder="Search by fund name"
+            {...form.getInputProps("group_fund_name")}
+          />
+        </Grid.Col>
+      </Grid>
     </Section>
   );
 }

@@ -11,18 +11,19 @@ import {
 } from "@mantine/core";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import { sql } from "kysely";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { useFetcher, useSubmit } from "react-router";
 
 import { db } from "#/utils/kysely.server";
+import { Section } from "../_private.investments._index/section";
+import { GroupBy } from "./group-by/group-by";
 import {
   TransactionFormProvider,
   type TransactionFormValues,
   transactionSchema,
   useTransactionForm,
 } from "./transaction-form-context";
-import { GroupBy } from "./group-by/group-by";
-import { Section } from "../_private.investments._index/section";
 import { Transactions } from "./transactions/transactions";
 
 dayjs.extend(customParseFormat);
@@ -38,19 +39,16 @@ export async function action() {
 }
 
 export async function loader() {
-  const fundTypes = await db
+  const fundNames = await db
     .selectFrom("mutual_fund")
-    .select("fund_name")
-    .execute();
+    .select(sql<string[]>`array_agg(fund_name)`.as("data"))
+    .executeTakeFirstOrThrow();
   const transactionTypes = await db
     .selectFrom("transaction_type")
     .select("name")
     .execute();
 
-  return {
-    fundTypes: fundTypes,
-    transactionTypes: transactionTypes,
-  };
+  return { fundNames, transactionTypes };
 }
 
 export default function InvestmentsAdd() {

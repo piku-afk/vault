@@ -6,11 +6,6 @@ dayjs.extend(customParseFormat);
 
 export function DateField(props: DateInputProps) {
   return (
-    <DateInput
-      label="Transaction Date"
-      valueFormat="DD/MM/YYYY"
-      placeholder="DD/MM/YYYY"
-      {...props}
-    />
+    <DateInput valueFormat="DD/MM/YYYY" placeholder="DD/MM/YYYY" {...props} />
   );
 }
