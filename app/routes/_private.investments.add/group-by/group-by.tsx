@@ -1,5 +1,5 @@
 import { Grid, TextInput } from "@mantine/core";
-import { Section } from "#/routes/_private.investments._index/section";
+import { Section } from "#/components/section";
 import { DateField } from "../date-field";
 import { FundNameField } from "../fund-name-field";
 import { useTransactionFormContext } from "../transaction-form-context";

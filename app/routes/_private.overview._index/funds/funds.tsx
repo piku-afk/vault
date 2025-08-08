@@ -1,15 +1,14 @@
 import { NumberFormatter, Table } from "@mantine/core";
 import { useLoaderData } from "react-router";
+import { Section } from "../../../components/section";
 import type { loader } from "../route";
-import { Section } from "../section";
 
 export function Funds() {
   const { funds } = useLoaderData<typeof loader>();
-  console.log(funds);
 
   return (
     <Section title="Funds">
-      <Table.ScrollContainer minWidth="36em">
+      <Table.ScrollContainer minWidth="48em">
         <Table withTableBorder>
           <Table.Thead>
             <Table.Tr>

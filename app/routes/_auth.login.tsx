@@ -6,6 +6,8 @@ import { Fragment } from "react";
 import { Form, redirect, useSubmit } from "react-router";
 import { z } from "zod/v4";
 
+import { ROUTES } from "#/constants/routes";
+
 import type { Route } from "./+types/_auth.login";
 
 export async function action({ request }: Route.ActionArgs) {
@@ -18,7 +20,7 @@ export async function action({ request }: Route.ActionArgs) {
     throw error;
   }
 
-  throw redirect("/", { headers });
+  throw redirect(ROUTES.HOME, { headers });
 }
 
 const loginSchema = z.object({

@@ -20,8 +20,8 @@ import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/notifications/styles.css";
 
+import { Header } from "#/components/header";
 import { theme } from "#/theme.ts";
-import { Header } from "./components/header/header";
 
 export const links: Route.LinksFunction = () => [
   { rel: "icon", href: "/vault.svg" },

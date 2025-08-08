@@ -1,10 +1,9 @@
-import { NumberFormatter, SimpleGrid } from "@mantine/core";
+import { SimpleGrid } from "@mantine/core";
 import { useLoaderData } from "react-router";
 
-import type { loader } from "#/routes/_private.investments._index/route";
-import { formatCurrency } from "#/utils/currencyFormat";
-import { CurrencyFormatter } from "../currenyFormatter";
-import { Section } from "../section";
+import type { loader } from "#/routes/_private.overview._index/route";
+import { Section } from "../../../components/section";
+import { CurrencyFormatter } from "../currencyFormatter";
 import { SummaryCard } from "./summaryCard";
 
 export function Overview() {
@@ -13,7 +12,7 @@ export function Overview() {
   } = useLoaderData<typeof loader>();
 
   return (
-    <Section title="Overview">
+    <Section>
       <SimpleGrid cols={{ base: 1, xs: 3 }}>
         <SummaryCard
           title="Net Worth"
@@ -26,10 +25,14 @@ export function Overview() {
         <SummaryCard
           title="Returns"
           value={
-            <CurrencyFormatter
-              prefix={`₹ ${net_returns > 0 ? "+" : "-"}`}
-              value={net_returns}
-            />
+            <>
+              <CurrencyFormatter
+                prefix={`₹ ${net_returns > 0 ? "+" : "-"}`}
+                value={net_returns}
+              />
+              &nbsp;(
+              <CurrencyFormatter suffix="%" value={net_returns_percentage} />)
+            </>
           }
         />
       </SimpleGrid>

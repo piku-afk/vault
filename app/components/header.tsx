@@ -15,7 +15,7 @@ import { Link, useLocation } from "react-router";
 
 export function Header() {
   const { pathname } = useLocation();
-  const isInvestmentPage = pathname.includes("/investments");
+  const isPublicPage = ["/", "/login"].includes(pathname);
 
   return (
     <Box component="header">
@@ -30,7 +30,7 @@ export function Header() {
             </Group>
           </Anchor>
 
-          {isInvestmentPage && (
+          {!isPublicPage && (
             <Menu shadow="md" position="bottom-end">
               <Menu.Target>
                 <ActionIcon variant="light">

@@ -1,6 +1,6 @@
 import { SimpleGrid } from "@mantine/core";
+import { Section } from "../../../components/section";
 import { SummaryCard } from "../overview/summaryCard";
-import { Section } from "../section";
 
 export function Goals() {
   return (

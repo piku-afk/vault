@@ -2,6 +2,8 @@ import { Button, Container } from "@mantine/core";
 import { createClient } from "app/utils/supabase.server";
 import { NavLink, redirect } from "react-router";
 
+import { ROUTES } from "#/constants/routes";
+
 import type { Route } from "./+types/_index";
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -10,7 +12,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   const { data } = await supabase.auth.getUser();
 
   if (data.user) {
-    return redirect("/investments");
+    return redirect(ROUTES.OVERVIEW);
   }
 }
 
