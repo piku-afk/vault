@@ -47,7 +47,7 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
 
       <Text>
         A table displaying total invested, current and returns across different
-        savings categories
+        savings categories.
       </Text>
     </Stack>
   );

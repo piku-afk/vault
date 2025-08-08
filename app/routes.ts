@@ -9,6 +9,7 @@ export default [
     layout('routes/auth/layout.tsx', [route(ROUTES.LOGIN, 'routes/auth/login.tsx')]),
     layout('routes/private/private-layout.tsx', [
       route(ROUTES.OVERVIEW, 'routes/private/overview.tsx'),
+      route(ROUTES.INVESTMENTS, 'routes/private/investments.tsx'),
     ]),
   ]),
 ] satisfies RouteConfig;

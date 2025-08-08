@@ -1,5 +1,3 @@
-import { sql } from 'kysely';
-
 import {
   netInvestedSql,
   netReturnsPercentageSql,
@@ -8,8 +6,7 @@ import {
 } from './getSummaryData.server';
 import { db } from './kysely.server';
 
-export async function getFundsData() {
-  // return fund_name, returns, current, invested
+export async function getInvestmentData() {
   return db
     .selectFrom('mutual_fund as mf')
     .innerJoin('transaction as t', 't.fund_name', 'mf.fund_name')
