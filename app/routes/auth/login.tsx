@@ -8,7 +8,7 @@ import { z } from "zod/v4";
 
 import { ROUTES } from "#/constants/routes";
 
-import type { Route } from "./+types/_auth.login";
+import type { Route } from "./+types/login";
 
 export async function action({ request }: Route.ActionArgs) {
   const { supabase, headers } = createClient(request);

@@ -2,7 +2,6 @@ import {
   ColorSchemeScript,
   MantineProvider,
   mantineHtmlProps,
-  Stack,
 } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import {
@@ -13,6 +12,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
+
 import type { Route } from "./+types/root";
 
 import "@fontsource-variable/inter";
@@ -20,7 +20,6 @@ import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/notifications/styles.css";
 
-import { Header } from "#/components/header";
 import { theme } from "#/theme.ts";
 
 export const links: Route.LinksFunction = () => [
@@ -40,13 +39,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body style={{ height: "100%" }}>
         <MantineProvider theme={theme}>
-          <Stack component="main" h="100%" gap="xl">
-            <Header />
-            {children}
-            <Notifications />
-            <ScrollRestoration />
-            <Scripts />
-          </Stack>
+          {children}
+          <Scripts />
+          <Notifications />
+          <ScrollRestoration />
         </MantineProvider>
       </body>
     </html>
