@@ -1,7 +1,7 @@
 import { Card, Text, Title } from "@mantine/core";
 import type { ReactNode } from "react";
 
-export function SummaryCard(props: { title: string; value: ReactNode }) {
+export function InfoCard(props: { title: string; value: ReactNode }) {
   return (
     <Card withBorder bg="violet.0">
       <Text size="sm" mb={6}>

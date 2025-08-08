@@ -2,7 +2,8 @@ import { createClient } from "app/utils/supabase.server";
 import { redirect } from "react-router";
 
 import { ROUTES } from "#/constants/routes";
-import type { Route } from "./+types/logout";
+
+import type { Route } from "./+types/root-layout";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const { supabase, headers } = createClient(request);

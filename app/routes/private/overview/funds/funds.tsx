@@ -1,7 +1,7 @@
 import { NumberFormatter, Table } from "@mantine/core";
 import { useLoaderData } from "react-router";
 import { Section } from "../../../components/section";
-import type { loader } from "../route";
+import type { loader } from "../overview";
 
 export function Funds() {
   const { funds } = useLoaderData<typeof loader>();

@@ -4,7 +4,7 @@ import { NavLink, redirect } from "react-router";
 
 import { ROUTES } from "#/constants/routes";
 
-import type { Route } from "./+types/_index";
+import type { Route } from "./+types/root-layout";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const { supabase } = createClient(request);
@@ -12,6 +12,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   const { data } = await supabase.auth.getUser();
 
   if (data.user) {
+    console.log(data.user);
     return redirect(ROUTES.OVERVIEW);
   }
 }

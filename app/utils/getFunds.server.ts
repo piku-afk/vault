@@ -1,10 +1,11 @@
 import { sql } from 'kysely';
+
 import {
   netInvestedSql,
   netReturnsPercentageSql,
   netReturnsSql,
   netWorthSql,
-} from './getOverviewData.server';
+} from './getSummaryData.server';
 import { db } from './kysely.server';
 
 export async function getFundsData() {

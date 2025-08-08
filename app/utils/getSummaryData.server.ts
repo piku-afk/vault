@@ -1,4 +1,5 @@
 import { sql } from 'kysely';
+
 import { db } from './kysely.server';
 
 export enum TRANSACTION_TYPE {
@@ -34,7 +35,7 @@ export const netReturnsPercentageSql = sql<number>`
   END
 `;
 
-export async function getOverviewData() {
+export async function getSummaryData() {
   return db
     .selectFrom('transaction as t')
     .innerJoin('mutual_fund as mf', 'mf.fund_name', 't.fund_name')
