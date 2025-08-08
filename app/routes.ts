@@ -8,7 +8,7 @@ export default [
     route(ROUTES.LOGOUT, 'routes/logout.tsx'),
     layout('routes/auth/layout.tsx', [route(ROUTES.LOGIN, 'routes/auth/login.tsx')]),
     layout('routes/private/private-layout.tsx', [
-      route(ROUTES.OVERVIEW, 'routes/private/overview/overview.tsx'),
+      route(ROUTES.OVERVIEW, 'routes/private/overview.tsx'),
     ]),
   ]),
 ] satisfies RouteConfig;
