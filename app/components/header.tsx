@@ -10,7 +10,6 @@ import {
   Title,
 } from "@mantine/core";
 import { LogOut, Menu as MenuIcon, Plus } from "lucide-react";
-
 import { Link, useLocation } from "react-router";
 
 export function Header() {
@@ -18,7 +17,7 @@ export function Header() {
   const isPublicPage = ["/", "/login"].includes(pathname);
 
   return (
-    <Box component="header">
+    <Box component="header" bg="violet.0">
       <Container py="lg">
         <Group>
           <Anchor underline="never" component={Link} to="/" c="black" mr="auto">
@@ -33,7 +32,7 @@ export function Header() {
           {!isPublicPage && (
             <Menu shadow="md" position="bottom-end">
               <Menu.Target>
-                <ActionIcon variant="light">
+                <ActionIcon variant="outline">
                   <MenuIcon size={18} />
                 </ActionIcon>
               </Menu.Target>

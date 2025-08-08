@@ -25,7 +25,7 @@ export default function Investments({ loaderData }: Route.ComponentProps) {
     <Section title="Funds">
       <Table.ScrollContainer minWidth="48em">
         <Table withTableBorder>
-          <Table.Thead>
+          <Table.Thead bg="violet.0">
             <Table.Tr>
               <Table.Th>Scheme Name</Table.Th>
               <Table.Th ta="right">Current</Table.Th>
