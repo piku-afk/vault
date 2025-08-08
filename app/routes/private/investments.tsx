@@ -2,16 +2,24 @@ import { NumberFormatter, Table } from "@mantine/core";
 
 import { CurrencyFormatter } from "#/components/currency-formatter";
 import { Section } from "#/components/section";
-import { getInvestmentData } from "#/utils/getInvestment.server";
+import {
+  getInvestmentData,
+  getInvestmentData2,
+} from "#/utils/getInvestment.server";
 
 import type { Route } from "./+types/investments";
 
 export async function loader() {
-  return getInvestmentData();
+  console.log(await getInvestmentData2());
+  return {
+    funds: await getInvestmentData(),
+    funds2: await getInvestmentData2(),
+  };
 }
 
 export default function Investments({ loaderData }: Route.ComponentProps) {
-  const funds = loaderData;
+  const { funds, funds2 } = loaderData;
+  console.log(funds2);
 
   return (
     <Section title="Funds">
