@@ -8,16 +8,16 @@ import { db } from './kysely.server';
 
 export async function getInvestmentData() {
   return db
-    .selectFrom('mutual_fund as mf')
-    .innerJoin('transaction as t', 't.fund_name', 'mf.fund_name')
+    .selectFrom('mutual_fund_schemes as mfs')
+    .innerJoin('transactions as t', 't.scheme_name', 'mfs.scheme_name')
     .select([
-      'mf.fund_name',
+      'mfs.scheme_name',
       netWorthSql.as('current'),
       netInvestedSql.as('invested'),
       netReturnsSql.as('returns'),
       netReturnsPercentageSql.as('returns_percentage'),
     ])
-    .groupBy(['mf.fund_name', 'mf.current_nav'])
-    .orderBy('mf.fund_name', 'asc')
+    .groupBy(['mfs.scheme_name', 'mfs.nav'])
+    .orderBy('mfs.scheme_name', 'asc')
     .execute();
 }

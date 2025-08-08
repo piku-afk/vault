@@ -27,8 +27,8 @@ export default function Investments({ loaderData }: Route.ComponentProps) {
           </Table.Thead>
           <Table.Tbody>
             {funds.map((fund) => (
-              <Table.Tr key={fund.fund_name}>
-                <Table.Td fw={500}>{fund.fund_name}</Table.Td>
+              <Table.Tr key={fund.scheme_name}>
+                <Table.Td fw={500}>{fund.scheme_name}</Table.Td>
                 <Table.Td ta="right">
                   <CurrencyFormatter value={fund.current} />
                 </Table.Td>
