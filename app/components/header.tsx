@@ -1,111 +1,77 @@
 import {
   ActionIcon,
   Anchor,
-  Avatar,
   Box,
-  Button,
   Container,
   Group,
   Image,
   Menu,
-  Text,
+  Stack,
   Title,
-  UnstyledButton,
 } from "@mantine/core";
-import { LogOut, Plus, User } from "lucide-react";
-import { Link, useLocation } from "react-router";
+import { LogOut, User } from "lucide-react";
+import { Link, matchPath, useLocation } from "react-router";
+
+import { ROUTES } from "#/constants/routes";
+
+function getPageType(pathname: string) {
+  const authRoutes = [ROUTES.LOGIN, ROUTES.LOGOUT];
+  const publicRoutes = [ROUTES.HOME, ROUTES.LOGIN, ROUTES.LOGOUT];
+
+  const isAuthPage = authRoutes.some(
+    (route) => !!matchPath(route, pathname)?.pathname,
+  );
+  const isPublicPage = publicRoutes.some(
+    (route) => !!matchPath(route, pathname)?.pathname,
+  );
+
+  return { isAuthPage, isPublicPage, isPrivatePage: !isPublicPage };
+}
 
 export function Header() {
   const { pathname } = useLocation();
-  const isPublicPage = ["/", "/login"].includes(pathname);
+  const pageType = getPageType(pathname);
 
   return (
     <Box
       component="header"
       bg="white"
-      style={{ borderBottom: "1px solid #e9ecef" }}
+      style={(theme) => ({ borderBottom: `1px solid ${theme.colors.gray[3]}` })}
     >
-      <Container size="xl" py="md">
-        <Group justify="space-between" align="center">
-          {/* Logo Section */}
-          <Anchor
-            underline="never"
-            component={Link}
-            to={isPublicPage ? "/" : "/overview"}
-            c="dark"
-          >
-            <Group gap="sm">
-              <Box
-                style={{
-                  padding: "8px",
-                  borderRadius: "12px",
-                  background:
-                    "linear-gradient(135deg, #7950f2 0%, #9775fa 100%)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Image src="/vault.svg" alt="Vault Icon" w={20} h={20} />
-              </Box>
-              <div>
-                <Title order={2} size="h4" fw={700} c="dark.8">
-                  Vault
-                </Title>
-                <Text size="xs" c="dimmed" mt={-2}>
-                  Investment Tracker
-                </Text>
-              </div>
-            </Group>
-          </Anchor>
+      <Container size="md" py="sm">
+        <Stack gap="sm">
+          <Group justify="space-between" align="center">
+            <Anchor
+              underline="never"
+              component={Link}
+              to={pageType.isPublicPage ? "/" : "/overview"}
+              c="dark"
+            >
+              <Group gap="xs">
+                <Image src="/vault.svg" alt="Vault Icon" w="auto" h={32} />
+                <div>
+                  <Title order={2} size="h4" fw={500}>
+                    Vault
+                  </Title>
+                </div>
+              </Group>
+            </Anchor>
 
-          {/* Actions */}
-          {!isPublicPage && (
-            <Group gap="xs">
-              {/* Add Transaction Button */}
-              <Button
-                component={Link}
-                to="/investments/add"
-                leftSection={<Plus size={16} />}
-                variant="gradient"
-                gradient={{ from: "violet", to: "purple" }}
-                size="sm"
-                radius="md"
-                visibleFrom="sm"
-              >
-                Add Transaction
-              </Button>
-
-              {/* Mobile Add Button */}
-              <ActionIcon
-                component={Link}
-                to="/investments/add"
-                variant="gradient"
-                gradient={{ from: "violet", to: "purple" }}
-                size="lg"
-                radius="md"
-                hiddenFrom="sm"
-              >
-                <Plus size={18} />
-              </ActionIcon>
-
-              {/* User Menu */}
-              <Menu shadow="lg" position="bottom-end" radius="md">
+            {pageType.isPrivatePage && (
+              <Menu shadow="md" position="bottom-end">
                 <Menu.Target>
-                  <UnstyledButton>
-                    <Avatar
-                      size="sm"
-                      radius="xl"
-                      variant="light"
-                      color="violet"
-                    >
-                      <User size={16} />
-                    </Avatar>
-                  </UnstyledButton>
+                  <ActionIcon variant="light">
+                    <User size={18} />
+                  </ActionIcon>
                 </Menu.Target>
 
-                <Menu.Dropdown>
+                <Menu.Dropdown miw={180}>
                   <Menu.Label>Account</Menu.Label>
+                  <Menu.Item leftSection={<User size={16} />}>
+                    Profile
+                  </Menu.Item>
+
+                  <Menu.Divider />
                   <Menu.Item
                     component={Link}
                     to="/logout"
@@ -116,9 +82,9 @@ export function Header() {
                   </Menu.Item>
                 </Menu.Dropdown>
               </Menu>
-            </Group>
-          )}
-        </Group>
+            )}
+          </Group>
+        </Stack>
       </Container>
     </Box>
   );

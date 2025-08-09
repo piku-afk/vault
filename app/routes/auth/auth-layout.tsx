@@ -4,7 +4,7 @@ import { Outlet } from "react-router";
 
 export default function AuthLayout() {
   return (
-    <Container w="100%" size="xs" p={{ xs: "xl", base: "md" }}>
+    <Container size="xs" p="xl">
       <Center>
         <ThemeIcon variant="light" size="xl">
           <UserLock />
