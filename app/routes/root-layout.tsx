@@ -12,7 +12,7 @@ export default function RootLayout() {
   const footerRef = useRef<HTMLDivElement>(null!);
 
   return (
-    <Stack mih="100vh">
+    <Stack gap={0} mih="100vh">
       <Header ref={headerRef} />
       <Main headerRef={headerRef} footerRef={footerRef} />
       <Footer ref={footerRef} />
