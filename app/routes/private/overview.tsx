@@ -3,7 +3,7 @@ import { Divider, Stack } from "@mantine/core";
 import { CategoryPerformance } from "#/components/overview/category-performance";
 import { InvestmentGoals } from "#/components/overview/investment-goals";
 import { PortfolioDiversification } from "#/components/overview/portfolio-diversification";
-import { PortfolioOverviewCards } from "#/components/overview/portfolio-overview-cards";
+import { PortfolioOverview } from "#/components/overview/portfolio-overview";
 import { QuickStatsGrid } from "#/components/overview/quick-stats-grid";
 import { RecentActivity } from "#/components/overview/recent-activity";
 import { Section } from "#/components/section";
@@ -54,9 +54,9 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
 
   return (
     <Stack mt="md" gap="xl">
-      <PortfolioOverviewCards summary={summary} />
+      <PortfolioOverview summary={summary} />
 
-      <Section title="Quick Stats">
+      {/* <Section title="Quick Stats">
         <QuickStatsGrid quickStats={quickStats} bestPerformer={bestPerformer} />
       </Section>
 
@@ -88,7 +88,7 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
         <CategoryPerformance
           summaryBySavingsCategory={summaryBySavingsCategory}
         />
-      </Section>
+      </Section> */}
     </Stack>
   );
 }
