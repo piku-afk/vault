@@ -1,4 +1,4 @@
-import { Button, Container } from "@mantine/core";
+import { Button, Center, Container } from "@mantine/core";
 import { createClient } from "app/utils/supabase.server";
 import { NavLink, redirect } from "react-router";
 
@@ -12,17 +12,18 @@ export async function loader({ request }: Route.LoaderArgs) {
   const { data } = await supabase.auth.getUser();
 
   if (data.user) {
-    console.log(data.user);
     return redirect(ROUTES.OVERVIEW);
   }
 }
 
 export default function Home() {
   return (
-    <Container>
-      <Button component={NavLink} to="/login">
-        Login
-      </Button>
+    <Container p="xl">
+      <Center>
+        <Button component={NavLink} to={ROUTES.LOGIN}>
+          Login
+        </Button>
+      </Center>
     </Container>
   );
 }

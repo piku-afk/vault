@@ -10,6 +10,7 @@ import {
   Title,
 } from "@mantine/core";
 import { LogOut, User } from "lucide-react";
+import type { RefObject } from "react";
 import { Link, matchPath, useLocation } from "react-router";
 
 import { ROUTES } from "#/constants/routes";
@@ -28,12 +29,13 @@ function getPageType(pathname: string) {
   return { isAuthPage, isPublicPage, isPrivatePage: !isPublicPage };
 }
 
-export function Header() {
+export function Header(props: { ref: RefObject<HTMLDivElement> }) {
   const { pathname } = useLocation();
   const pageType = getPageType(pathname);
 
   return (
     <Box
+      ref={props.ref}
       component="header"
       bg="white"
       style={(theme) => ({ borderBottom: `1px solid ${theme.colors.gray[3]}` })}
@@ -58,7 +60,7 @@ export function Header() {
             </Anchor>
 
             {pageType.isPrivatePage && (
-              <Menu shadow="md" position="bottom-end">
+              <Menu position="bottom-end">
                 <Menu.Target>
                   <ActionIcon variant="light">
                     <User size={18} />
@@ -67,10 +69,6 @@ export function Header() {
 
                 <Menu.Dropdown miw={180}>
                   <Menu.Label>Account</Menu.Label>
-                  <Menu.Item leftSection={<User size={16} />}>
-                    Profile
-                  </Menu.Item>
-
                   <Menu.Divider />
                   <Menu.Item
                     component={Link}

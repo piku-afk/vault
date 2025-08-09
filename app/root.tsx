@@ -1,5 +1,4 @@
 import {
-  Box,
   ColorSchemeScript,
   MantineProvider,
   mantineHtmlProps,
@@ -38,14 +37,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <MantineProvider theme={theme}>
-        <Box component="body" h="100%">
+      <body style={{ height: "100%" }}>
+        <MantineProvider theme={theme}>
           {children}
           <Scripts />
           <Notifications />
           <ScrollRestoration />
-        </Box>
-      </MantineProvider>
+        </MantineProvider>
+      </body>
     </html>
   );
 }
