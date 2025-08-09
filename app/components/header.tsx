@@ -1,15 +1,18 @@
 import {
   ActionIcon,
   Anchor,
+  Avatar,
   Box,
+  Button,
   Container,
-  Divider,
   Group,
   Image,
   Menu,
+  Text,
   Title,
+  UnstyledButton,
 } from "@mantine/core";
-import { LogOut, Menu as MenuIcon, Plus } from "lucide-react";
+import { LogOut, Plus, User } from "lucide-react";
 import { Link, useLocation } from "react-router";
 
 export function Header() {
@@ -17,52 +20,106 @@ export function Header() {
   const isPublicPage = ["/", "/login"].includes(pathname);
 
   return (
-    <Box component="header" bg="violet.0">
-      <Container py="lg">
-        <Group>
-          <Anchor underline="never" component={Link} to="/" c="black" mr="auto">
-            <Group gap="xs">
-              <Image src="/vault.svg" alt="Vault Icon" w="auto" h={32} />
-              <Title order={1} size="h5" fw="normal">
-                Vault by pikuh
-              </Title>
+    <Box
+      component="header"
+      bg="white"
+      style={{ borderBottom: "1px solid #e9ecef" }}
+    >
+      <Container size="xl" py="md">
+        <Group justify="space-between" align="center">
+          {/* Logo Section */}
+          <Anchor
+            underline="never"
+            component={Link}
+            to={isPublicPage ? "/" : "/overview"}
+            c="dark"
+          >
+            <Group gap="sm">
+              <Box
+                style={{
+                  padding: "8px",
+                  borderRadius: "12px",
+                  background:
+                    "linear-gradient(135deg, #7950f2 0%, #9775fa 100%)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Image src="/vault.svg" alt="Vault Icon" w={20} h={20} />
+              </Box>
+              <div>
+                <Title order={2} size="h4" fw={700} c="dark.8">
+                  Vault
+                </Title>
+                <Text size="xs" c="dimmed" mt={-2}>
+                  Investment Tracker
+                </Text>
+              </div>
             </Group>
           </Anchor>
 
+          {/* Actions */}
           {!isPublicPage && (
-            <Menu shadow="md" position="bottom-end">
-              <Menu.Target>
-                <ActionIcon variant="outline">
-                  <MenuIcon size={18} />
-                </ActionIcon>
-              </Menu.Target>
+            <Group gap="xs">
+              {/* Add Transaction Button */}
+              <Button
+                component={Link}
+                to="/investments/add"
+                leftSection={<Plus size={16} />}
+                variant="gradient"
+                gradient={{ from: "violet", to: "purple" }}
+                size="sm"
+                radius="md"
+                visibleFrom="sm"
+              >
+                Add Transaction
+              </Button>
 
-              <Menu.Dropdown>
-                <Menu.Label>Actions</Menu.Label>
-                <Menu.Item
-                  component={Link}
-                  to="/investments/add"
-                  leftSection={<Plus size={16} />}
-                >
-                  Add Transactions
-                </Menu.Item>
+              {/* Mobile Add Button */}
+              <ActionIcon
+                component={Link}
+                to="/investments/add"
+                variant="gradient"
+                gradient={{ from: "violet", to: "purple" }}
+                size="lg"
+                radius="md"
+                hiddenFrom="sm"
+              >
+                <Plus size={18} />
+              </ActionIcon>
 
-                <Menu.Divider />
+              {/* User Menu */}
+              <Menu shadow="lg" position="bottom-end" radius="md">
+                <Menu.Target>
+                  <UnstyledButton>
+                    <Avatar
+                      size="sm"
+                      radius="xl"
+                      variant="light"
+                      color="violet"
+                    >
+                      <User size={16} />
+                    </Avatar>
+                  </UnstyledButton>
+                </Menu.Target>
 
-                <Menu.Item
-                  component={Link}
-                  to="/logout"
-                  leftSection={<LogOut size={16} />}
-                >
-                  Logout
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
+                <Menu.Dropdown>
+                  <Menu.Label>Account</Menu.Label>
+                  <Menu.Item
+                    component={Link}
+                    to="/logout"
+                    leftSection={<LogOut size={16} />}
+                    color="red"
+                  >
+                    Logout
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            </Group>
           )}
         </Group>
       </Container>
-
-      <Divider />
     </Box>
   );
 }

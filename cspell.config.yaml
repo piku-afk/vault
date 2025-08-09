@@ -14,5 +14,6 @@ ignoreWords:
   - piku
   - pikuh
   - supabase
+  - vite
   - xirr
 import: []

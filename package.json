@@ -13,7 +13,7 @@
     "format": "pnpm exec biome format --write",
     "lint": "pnpm exec biome lint --write",
     "deploy:functions": "supabase functions deploy",
-    "deploy:web": "netlify deploy --prod --dir=./dist",
+    "deploy:web": "netlify deploy --prod",
     "db:types": "supabase gen types typescript --project-id qmwshhjwtqwtbjgpvbwo > app/types/database.ts",
     "dev": "react-router dev",
     "build": "react-router build",

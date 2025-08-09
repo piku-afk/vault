@@ -1,39 +1,19 @@
-import { sql } from 'kysely';
-
+import {
+  netInvestedSql,
+  netReturnsPercentageSql,
+  netReturnsSql,
+  netWorthSql,
+} from './investmentQueries.server';
 import { db } from './kysely.server';
 
-export enum TRANSACTION_TYPE {
-  PURCHASE = 'Purchase',
-  REDEEM = 'Redeem',
-}
-
-export const netInvestedSql = sql<number>`
-  SUM(
-    CASE 
-      WHEN t.transaction_type = ${sql.lit(TRANSACTION_TYPE.PURCHASE)} THEN t.amount 
-      WHEN t.transaction_type = ${sql.lit(TRANSACTION_TYPE.REDEEM)} THEN -t.amount 
-      ELSE 0 
-    END
-  )
-`;
-
-export const netWorthSql = sql<number>`
-  SUM(
-    CASE 
-      WHEN t.transaction_type = ${sql.lit(TRANSACTION_TYPE.PURCHASE)} THEN t.units * mfs.nav
-      WHEN t.transaction_type = ${sql.lit(TRANSACTION_TYPE.REDEEM)} THEN -t.units * mfs.nav
-      ELSE 0 
-    END
-  )
-`;
-
-export const netReturnsSql = sql<number>`${netWorthSql} - ${netInvestedSql}`;
-export const netReturnsPercentageSql = sql<number>`
-  CASE 
-    WHEN ${netInvestedSql} = 0 THEN 0
-    ELSE ((${netReturnsSql}) / (${netInvestedSql})) * 100
-  END
-`;
+// Re-export for backward compatibility
+export {
+  netInvestedSql,
+  netReturnsPercentageSql,
+  netReturnsSql,
+  netWorthSql,
+  TRANSACTION_TYPE,
+} from './investmentQueries.server';
 
 export async function getSummaryData() {
   return db
