@@ -5,7 +5,7 @@ export function Section(props: PropsWithChildren & { title?: string }) {
   return (
     <Box component="section">
       {props.title && (
-        <Title order={2} mb={props.children ? "md" : 0} fw="normal">
+        <Title order={2} mb={props.children ? "lg" : 0} fw="normal">
           {props.title}
         </Title>
       )}

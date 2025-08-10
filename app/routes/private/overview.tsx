@@ -56,6 +56,10 @@ export default function Overview(props: Route.ComponentProps) {
     <Stack mt="md" gap="xl">
       <PortfolioOverview summary={summary} />
       <Divider />
+      <CategoryPerformance
+        summaryBySavingsCategory={summaryBySavingsCategory}
+      />
+      <Divider />
       <RecentActivity transactions={recentTransactions} />
 
       {/* <Section title="Quick Stats">
@@ -84,11 +88,7 @@ export default function Overview(props: Route.ComponentProps) {
 
       <Divider />
 
-      <Section title="Category Performance">
-        <CategoryPerformance
-          summaryBySavingsCategory={summaryBySavingsCategory}
-        />
-      </Section> */}
+      */}
     </Stack>
   );
 }
