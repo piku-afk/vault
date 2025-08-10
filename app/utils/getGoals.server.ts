@@ -1,25 +1,40 @@
-import type { Tables } from '#/types/database';
+import { sql } from 'kysely';
 
+import { netWorthSql } from './investmentQueries.server';
 import { db } from './kysely.server';
 
-export async function getGoals() {
-  const goals = await db
-    .selectFrom('goal')
-    .selectAll()
-    .where('active', '=', true)
-    .orderBy('created_at', 'desc')
+export async function getGoalProgress() {
+  return db
+    .selectFrom('goal as g')
+    .innerJoin('savings_categories as sc', 'sc.name', 'g.name')
+    .innerJoin('mutual_fund_summary as mfs', 'mfs.saving_category', 'g.name')
+    .select([
+      'g.name',
+      'g.target',
+      'sc.icon',
+      netWorthSql.as('current'),
+      sql<number>`
+        CASE
+          WHEN ${netWorthSql} >= g.target 
+          THEN 0
+          ELSE g.target - ${netWorthSql}
+        END
+      `.as('remaining'),
+      sql<number>`
+        CASE
+          WHEN ${netWorthSql} >= g.target 
+          THEN 100
+          ELSE ROUND((${netWorthSql} / g.target) * 100, 2)
+        END
+      `.as('progress'),
+      sql<boolean>`
+        CASE
+          WHEN ${netWorthSql} >= g.target 
+          THEN true
+          ELSE false
+        END
+      `.as('is_complete'),
+    ])
+    .groupBy(['g.name', 'g.target', 'sc.icon'])
     .execute();
-
-  return goals;
-}
-
-export async function getGoalProgress(currentNetWorth: number) {
-  const goals = await getGoals();
-
-  return goals.map((goal: Tables<'goal'>) => ({
-    ...goal,
-    progress: Math.min((currentNetWorth / goal.target) * 100, 100),
-    remaining: Math.max(goal.target - currentNetWorth, 0),
-    achieved: currentNetWorth >= goal.target,
-  }));
 }

@@ -36,13 +36,13 @@ export function CategoryCard({
     <Card withBorder>
       <Stack gap="md">
         <Group align="flex-start">
-          <ThemeIcon mt={2} variant="default">
+          <ThemeIcon mt={2} variant="default" size="lg">
             <Image
               loading="lazy"
               src={category.icon}
               alt={category.name}
               w="auto"
-              h={18}
+              h={20}
             />
           </ThemeIcon>
           <Box>

@@ -7,7 +7,7 @@ import { PortfolioOverview } from "#/components/overview/portfolio-overview";
 import { QuickStatsGrid } from "#/components/overview/quick-stats-grid";
 import { RecentActivity } from "#/components/overview/recent-activity";
 import { Section } from "#/components/section";
-// import { getGoalProgress } from "#/utils/getGoals.server";
+import { getGoalProgress } from "#/utils/getGoals.server";
 import {
   getQuickStats,
   getRecentTransactions,
@@ -24,7 +24,6 @@ export async function loader() {
   // const summary = await getSummaryData();
   // const summaryBySavingsCategory = await getSummaryBySavingsCategory();
   // const recentTransactions = await getRecentTransactions();
-  // const goalProgress = await getGoalProgress(summary.net_worth);
   // const portfolioDiversification = await getPortfolioDiversification();
 
   return {
@@ -32,7 +31,7 @@ export async function loader() {
     summaryBySavingsCategory: getSummaryBySavingsCategory(),
     recentTransactions: getRecentTransactions(),
     quickStats: getQuickStats(),
-    // // goalProgress,
+    goalProgress: getGoalProgress(),
     // portfolioDiversification,
   };
 }
@@ -42,7 +41,7 @@ export default function Overview(props: Route.ComponentProps) {
     summary,
     summaryBySavingsCategory,
     recentTransactions,
-    // // goalProgress,
+    goalProgress,
     quickStats,
     // portfolioDiversification,
   } = props.loaderData;
@@ -51,9 +50,9 @@ export default function Overview(props: Route.ComponentProps) {
     <Stack mt="md" gap="xl">
       <PortfolioOverview summary={summary} />
       <Divider />
-      <Section title="Quick Stats">
-        <QuickStatsGrid quickStats={quickStats} />
-      </Section>
+      <InvestmentGoals goalProgress={goalProgress} />
+      <Divider />
+      <QuickStatsGrid quickStats={quickStats} />
       <Divider />
       <CategoryPerformance
         summaryBySavingsCategory={summaryBySavingsCategory}
@@ -67,13 +66,7 @@ export default function Overview(props: Route.ComponentProps) {
 
       {goalProgress.length > 0 && (
         <>
-          <Section title="Investment Goals">
-            <InvestmentGoals
-              goalProgress={goalProgress}
-              netWorth={summary.net_worth}
-            />
-          </Section>
-          <Divider />
+       
         </>
       )}
 
