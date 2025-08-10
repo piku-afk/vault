@@ -1,9 +1,9 @@
 import { sql } from 'kysely';
 
 // Base SQL fragments for investment calculations
-export const netInvestedSql = sql<number>`sum(mfs.net_invested)`;
-export const netWorthSql = sql<number>`sum(mfs.net_current)`;
-export const netReturnsSql = sql<number>`sum(mfs.returns)`;
+export const netInvestedSql = sql<number>`round(sum(mfs.net_invested))`;
+export const netWorthSql = sql<number>`round(sum(mfs.net_current))`;
+export const netReturnsSql = sql<number>`round(sum(mfs.returns))`;
 export const netReturnsPercentageSql = sql<number>`
   CASE 
     WHEN ${netInvestedSql} = 0 THEN 0
