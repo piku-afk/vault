@@ -2,7 +2,7 @@ import { sql } from 'kysely';
 
 import { db } from './kysely.server';
 
-export async function getRecentTransactions(limit: number = 10) {
+export async function getRecentTransactions() {
   const transactions = await db
     .selectFrom('transactions')
     .innerJoin('mutual_fund_schemes', 'transactions.scheme_name', 'mutual_fund_schemes.scheme_name')
@@ -14,11 +14,12 @@ export async function getRecentTransactions(limit: number = 10) {
       'transactions.scheme_name',
       'transactions.units',
       'transactions.nav',
+      'mutual_fund_schemes.logo',
       'mutual_fund_schemes.saving_category',
     ])
     .orderBy('transactions.date', 'desc')
     .orderBy('transactions.updated_at', 'desc')
-    .limit(limit)
+    .limit(8)
     .execute();
 
   return transactions;

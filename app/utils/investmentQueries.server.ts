@@ -1,9 +1,6 @@
 import { sql } from 'kysely';
 
-export enum TRANSACTION_TYPE {
-  PURCHASE = 'Purchase',
-  REDEEM = 'Redeem',
-}
+import { TRANSACTION_TYPE } from '#/constants/transaction_type';
 
 // Base SQL fragments for investment calculations
 export const netInvestedSql = sql<number>`

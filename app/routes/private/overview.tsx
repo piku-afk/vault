@@ -25,7 +25,7 @@ export async function loader() {
   const summary = await getSummaryData();
   const summaryBySavingsCategory = await getSummaryBySavingsCategory();
   const goalProgress = await getGoalProgress(summary.net_worth);
-  const recentTransactions = await getRecentTransactions(8);
+  const recentTransactions = await getRecentTransactions();
   const quickStats = await getQuickStats();
   const portfolioDiversification = await getPortfolioDiversification();
   const bestPerformer = await getBestPerformer();
@@ -41,7 +41,7 @@ export async function loader() {
   };
 }
 
-export default function Overview({ loaderData }: Route.ComponentProps) {
+export default function Overview(props: Route.ComponentProps) {
   const {
     summary,
     summaryBySavingsCategory,
@@ -50,11 +50,13 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
     quickStats,
     portfolioDiversification,
     bestPerformer,
-  } = loaderData;
+  } = props.loaderData;
 
   return (
     <Stack mt="md" gap="xl">
       <PortfolioOverview summary={summary} />
+      <Divider />
+      <RecentActivity transactions={recentTransactions} />
 
       {/* <Section title="Quick Stats">
         <QuickStatsGrid quickStats={quickStats} bestPerformer={bestPerformer} />
@@ -72,9 +74,7 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
         </>
       )}
 
-      <Section title="Recent Activity">
-        <RecentActivity transactions={recentTransactions} />
-      </Section>
+      
 
       <Section title="Portfolio Diversification">
         <PortfolioDiversification
