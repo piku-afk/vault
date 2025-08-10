@@ -1,30 +1,9 @@
 import { sql } from 'kysely';
 
-import { TRANSACTION_TYPE } from '#/constants/transaction_type';
-
 // Base SQL fragments for investment calculations
-export const netInvestedSql = sql<number>`
-  SUM(
-    CASE 
-      WHEN t.transaction_type = ${sql.lit(TRANSACTION_TYPE.PURCHASE)} THEN t.amount 
-      WHEN t.transaction_type = ${sql.lit(TRANSACTION_TYPE.REDEEM)} THEN -t.amount 
-      ELSE 0 
-    END
-  )
-`;
-
-export const netWorthSql = sql<number>`
-  SUM(
-    CASE 
-      WHEN t.transaction_type = ${sql.lit(TRANSACTION_TYPE.PURCHASE)} THEN t.units * mfs.nav
-      WHEN t.transaction_type = ${sql.lit(TRANSACTION_TYPE.REDEEM)} THEN -t.units * mfs.nav
-      ELSE 0 
-    END
-  )
-`;
-
-export const netReturnsSql = sql<number>`${netWorthSql} - ${netInvestedSql}`;
-
+export const netInvestedSql = sql<number>`sum(mfs.net_invested)`;
+export const netWorthSql = sql<number>`sum(mfs.net_current)`;
+export const netReturnsSql = sql<number>`sum(mfs.returns)`;
 export const netReturnsPercentageSql = sql<number>`
   CASE 
     WHEN ${netInvestedSql} = 0 THEN 0

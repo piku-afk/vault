@@ -15,6 +15,7 @@ export function TransactionItem({ transaction }: { transaction: Transaction }) {
     <Group align="flex-start" wrap="nowrap">
       {transaction.logo && (
         <Image
+          loading="lazy"
           radius="md"
           w="auto"
           h={28}

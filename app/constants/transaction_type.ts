@@ -1,4 +1,4 @@
 export enum TRANSACTION_TYPE {
-  PURCHASE = 'Purchase',
-  REDEEM = 'Redeem',
+  PURCHASE = 'purchase',
+  REDEEM = 'redeem',
 }

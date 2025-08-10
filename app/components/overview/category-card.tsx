@@ -3,12 +3,14 @@ import {
   Box,
   Card,
   Group,
+  Image,
   NumberFormatter,
   Progress,
   SimpleGrid,
   Skeleton,
   Stack,
   Text,
+  ThemeIcon,
 } from "@mantine/core";
 
 import { CurrencyFormatter } from "#/components/currency-formatter";
@@ -34,10 +36,19 @@ export function CategoryCard({
     <Card withBorder>
       <Stack gap="md">
         <Group align="flex-start">
+          <ThemeIcon mt={2} variant="default">
+            <Image
+              loading="lazy"
+              src={category.icon}
+              alt={category.name}
+              w="auto"
+              h={18}
+            />
+          </ThemeIcon>
           <Box>
             <Text size="lg">{category.name}</Text>
             <Text size="sm" c="dimmed">
-              {category.schemes_count}{" "}
+              {category.schemes_count}&nbsp;
               {category.schemes_count === 1 ? "Scheme" : "Schemes"}
             </Text>
           </Box>

@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { sql } from 'kysely';
 
 import { db } from './kysely.server';
@@ -24,37 +25,28 @@ export async function getRecentTransactions() {
 }
 
 export async function getQuickStats() {
-  // Get total unique schemes
   const totalSchemes = await db
-    .selectFrom('transactions')
+    .selectFrom('mutual_fund_summary')
     .select([sql<number>`COUNT(DISTINCT scheme_name)`.as('count')])
     .executeTakeFirst();
 
-  // Get monthly SIP (average monthly investment from last 6 months)
-  const sixMonthsAgo = new Date();
-  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-
   const monthlySip = await db
-    .selectFrom('transactions')
-    .select([sql<number>`AVG(amount)`.as('average')])
-    .where('transaction_type', '=', 'Purchase')
-    .where('date', '>=', sixMonthsAgo.toISOString().split('T')[0])
+    .selectFrom('mutual_fund_schemes')
+    .select(sql<number>`SUM(sip_amount)`.as('total'))
+    .where('is_active', '=', true)
     .executeTakeFirst();
 
-  // Get days since last transaction
   const lastTransaction = await db
-    .selectFrom('transactions')
-    .select('date')
-    .orderBy('date', 'desc')
+    .selectFrom('mutual_fund_schemes')
+    .select('next_sip_date')
+    .orderBy('next_sip_date', 'asc')
     .executeTakeFirst();
 
-  const daysSinceLastTransaction = lastTransaction
-    ? Math.floor((Date.now() - new Date(lastTransaction.date).getTime()) / (1000 * 60 * 60 * 24))
-    : null;
+  const daysTillNextTransaction = dayjs(lastTransaction?.next_sip_date).diff(dayjs(), 'day') + 1;
 
   return {
     totalSchemes: totalSchemes?.count || 0,
-    averageMonthlySip: monthlySip?.average || 0,
-    daysSinceLastTransaction,
+    monthlySip: monthlySip?.total || 0,
+    daysTillNextTransaction,
   };
 }

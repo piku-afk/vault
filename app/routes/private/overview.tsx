@@ -9,12 +9,11 @@ import { RecentActivity } from "#/components/overview/recent-activity";
 import { Section } from "#/components/section";
 // import { getGoalProgress } from "#/utils/getGoals.server";
 import {
-  // getQuickStats,
+  getQuickStats,
   getRecentTransactions,
 } from "#/utils/getOverviewStats.server";
 // import {
-//   getBestPerformer,
-//   getPortfolioDiversification,
+//     getPortfolioDiversification,
 // } from "#/utils/getPortfolioAnalytics.server";
 import { getSummaryBySavingsCategory } from "#/utils/getSummaryBySavingsCategory.server";
 import { getSummaryData } from "#/utils/getSummaryData.server";
@@ -26,18 +25,15 @@ export async function loader() {
   // const summaryBySavingsCategory = await getSummaryBySavingsCategory();
   // const recentTransactions = await getRecentTransactions();
   // const goalProgress = await getGoalProgress(summary.net_worth);
-  // const quickStats = await getQuickStats();
   // const portfolioDiversification = await getPortfolioDiversification();
-  // const bestPerformer = await getBestPerformer();
 
   return {
     summary: getSummaryData(),
     summaryBySavingsCategory: getSummaryBySavingsCategory(),
     recentTransactions: getRecentTransactions(),
-    // goalProgress,
-    // quickStats,
+    quickStats: getQuickStats(),
+    // // goalProgress,
     // portfolioDiversification,
-    // bestPerformer,
   };
 }
 
@@ -46,15 +42,18 @@ export default function Overview(props: Route.ComponentProps) {
     summary,
     summaryBySavingsCategory,
     recentTransactions,
-    // goalProgress,
-    // quickStats,
+    // // goalProgress,
+    quickStats,
     // portfolioDiversification,
-    // bestPerformer,
   } = props.loaderData;
 
   return (
     <Stack mt="md" gap="xl">
       <PortfolioOverview summary={summary} />
+      <Divider />
+      <Section title="Quick Stats">
+        <QuickStatsGrid quickStats={quickStats} />
+      </Section>
       <Divider />
       <CategoryPerformance
         summaryBySavingsCategory={summaryBySavingsCategory}
@@ -64,9 +63,7 @@ export default function Overview(props: Route.ComponentProps) {
 
       {/* 
 
-      {/* <Section title="Quick Stats">
-        <QuickStatsGrid quickStats={quickStats} bestPerformer={bestPerformer} />
-      </Section>
+    
 
       {goalProgress.length > 0 && (
         <>

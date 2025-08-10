@@ -37,42 +37,53 @@ export type Database = {
       }
       goal: {
         Row: {
-          active: boolean
           created_at: string
           id: string
+          is_active: boolean
           name: string
           target: number
           updated_at: string
         }
         Insert: {
-          active: boolean
           created_at?: string
           id?: string
+          is_active: boolean
           name: string
           target: number
           updated_at?: string
         }
         Update: {
-          active?: boolean
           created_at?: string
           id?: string
+          is_active?: boolean
           name?: string
           target?: number
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "goal_name_fkey"
+            columns: ["name"]
+            isOneToOne: true
+            referencedRelation: "savings_categories"
+            referencedColumns: ["name"]
+          },
+        ]
       }
       mutual_fund_schemes: {
         Row: {
           category: string
           created_at: string
           id: string
+          is_active: boolean
           logo: string | null
           nav: number
           nav_date: string
+          next_sip_date: string
           saving_category: string
           scheme_code: string
           scheme_name: string
+          sip_amount: number
           sub_category: string
           updated_at: string
         }
@@ -80,12 +91,15 @@ export type Database = {
           category: string
           created_at?: string
           id?: string
+          is_active?: boolean
           logo?: string | null
           nav: number
           nav_date: string
+          next_sip_date?: string
           saving_category?: string
           scheme_code: string
           scheme_name: string
+          sip_amount: number
           sub_category: string
           updated_at?: string
         }
@@ -93,12 +107,15 @@ export type Database = {
           category?: string
           created_at?: string
           id?: string
+          is_active?: boolean
           logo?: string | null
           nav?: number
           nav_date?: string
+          next_sip_date?: string
           saving_category?: string
           scheme_code?: string
           scheme_name?: string
+          sip_amount?: number
           sub_category?: string
           updated_at?: string
         }
@@ -129,16 +146,19 @@ export type Database = {
       savings_categories: {
         Row: {
           created_at: string
+          icon: string
           id: string
           name: string
         }
         Insert: {
           created_at?: string
+          icon?: string
           id?: string
           name: string
         }
         Update: {
           created_at?: string
+          icon?: string
           id?: string
           name?: string
         }
@@ -226,6 +246,13 @@ export type Database = {
             referencedColumns: ["scheme_name"]
           },
           {
+            foreignKeyName: "transaction_fund_name_fkey"
+            columns: ["scheme_name"]
+            isOneToOne: false
+            referencedRelation: "mutual_fund_summary"
+            referencedColumns: ["scheme_name"]
+          },
+          {
             foreignKeyName: "transaction_transaction_type_fkey"
             columns: ["transaction_type"]
             isOneToOne: false
@@ -236,7 +263,25 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      mutual_fund_summary: {
+        Row: {
+          net_current: number | null
+          net_invested: number | null
+          returns: number | null
+          returns_percentage: number | null
+          saving_category: string | null
+          scheme_name: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mutual_fund_schemes_saving_category_fkey"
+            columns: ["saving_category"]
+            isOneToOne: false
+            referencedRelation: "savings_categories"
+            referencedColumns: ["name"]
+          },
+        ]
+      }
     }
     Functions: {
       health_check: {
