@@ -1,4 +1,4 @@
-import { Badge, Box, Group, Image, Stack, Text } from "@mantine/core";
+import { Badge, Box, Group, Image, Skeleton, Stack, Text } from "@mantine/core";
 import dayjs from "dayjs";
 
 import { CurrencyFormatter } from "#/components/currency-formatter";
@@ -44,6 +44,25 @@ export function TransactionItem({ transaction }: { transaction: Transaction }) {
         <Text size="xs" c="dimmed">
           {transaction.units} units
         </Text>
+      </Stack>
+    </Group>
+  );
+}
+
+export function TransactionItemSkeleton() {
+  return (
+    <Group align="flex-start" wrap="nowrap">
+      <Skeleton height={28} width={28} radius="md" mt={2} />
+      <Box style={{ flex: 1 }}>
+        <Skeleton height={21} width="60%" mb={6} />
+        <Group gap="xs" mt={6} wrap="wrap">
+          <Skeleton height={16} width={80} radius="sm" />
+          <Skeleton height={12} width={100} />
+        </Group>
+      </Box>
+      <Stack ml="auto" gap="xs" align="flex-end" style={{ flexShrink: 0 }}>
+        <Skeleton height={16} width={80} />
+        <Skeleton height={12} width={60} />
       </Stack>
     </Group>
   );

@@ -3,13 +3,14 @@ import {
   Card,
   Group,
   NumberFormatter,
+  Skeleton,
   Text,
   Title,
 } from "@mantine/core";
 
 import { CurrencyFormatter } from "#/components/currency-formatter";
 
-export function MetricCard(props: {
+interface MetricCardProps {
   label: string;
   badgeText: string;
   badgeColor: string;
@@ -17,7 +18,9 @@ export function MetricCard(props: {
   description: string;
   prefix?: string;
   percentageValue?: number;
-}) {
+}
+
+export function MetricCard(props: MetricCardProps) {
   return (
     <Card withBorder>
       <Group mb="sm" justify="space-between" align="flex-start">
@@ -29,7 +32,7 @@ export function MetricCard(props: {
       <Title order={2} fw={500}>
         <CurrencyFormatter value={props.value} prefix={props.prefix} />
       </Title>
-      <Group mt="xs" gap="xs" align="center">
+      <Group mt={6} gap="xs" align="center">
         <Text size="xs" c="dimmed">
           {props.percentageValue ? (
             <>
@@ -52,6 +55,19 @@ export function MetricCard(props: {
           )}
         </Text>
       </Group>
+    </Card>
+  );
+}
+
+export function MetricCardSkeleton() {
+  return (
+    <Card withBorder>
+      <Group mb="md" justify="space-between">
+        <Skeleton height={14} width={120} />
+        <Skeleton height={18} width={60} />
+      </Group>
+      <Skeleton height={28} width="70%" />
+      <Skeleton mt="md" height={12} width={120} />
     </Card>
   );
 }

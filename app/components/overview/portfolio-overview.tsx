@@ -1,51 +1,58 @@
 import { SimpleGrid } from "@mantine/core";
+import { Suspense } from "react";
+import { Await } from "react-router";
 
 import { Section } from "#/components/section";
+import type { getSummaryData } from "#/utils/getSummaryData.server";
 
-import { MetricCard } from "./metric-card";
+import { MetricCard, MetricCardSkeleton } from "./metric-card";
 
 export function PortfolioOverview(props: {
-  summary: {
-    net_worth: number;
-    net_invested: number;
-    net_returns: number;
-    net_returns_percentage: number;
-  };
+  summary: ReturnType<typeof getSummaryData>;
 }) {
-  const isPositiveReturn = props.summary.net_returns > 0;
-
-  const metrics = [
-    {
-      label: "Net Worth",
-      badgeText: "Total",
-      badgeColor: "gray",
-      value: props.summary.net_worth,
-      description: "Current portfolio value",
-    },
-    {
-      label: "Net Invested",
-      badgeText: "Principal",
-      badgeColor: "gray",
-      value: props.summary.net_invested,
-      description: "Total amount invested",
-    },
-    {
-      label: "Returns",
-      badgeText: isPositiveReturn ? "Profit" : "Loss",
-      badgeColor: isPositiveReturn ? "teal" : "red",
-      value: props.summary.net_returns,
-      description: "",
-      prefix: props.summary.net_returns > 0 ? "+" : undefined,
-      percentageValue: props.summary.net_returns_percentage,
-    },
-  ];
-
   return (
     <Section title="Portfolio Overview">
       <SimpleGrid cols={{ base: 1, xs: 3 }} spacing="lg">
-        {metrics.map((metric) => (
-          <MetricCard key={metric.label} {...metric} />
-        ))}
+        <Suspense
+          fallback={Array.from(Array(3).keys()).map((item) => (
+            <MetricCardSkeleton key={item} />
+          ))}
+        >
+          <Await resolve={props.summary}>
+            {(summary) => {
+              const isPositiveReturn = summary.net_returns > 0;
+              const metrics = [
+                {
+                  label: "Net Worth",
+                  badgeText: "Total",
+                  badgeColor: "gray",
+                  value: summary.net_worth,
+                  description: "Current portfolio value",
+                },
+                {
+                  label: "Net Invested",
+                  badgeText: "Principal",
+                  badgeColor: "gray",
+                  value: summary.net_invested,
+                  description: "Total amount invested",
+                },
+                {
+                  label: "Returns",
+                  badgeText: isPositiveReturn ? "Profit" : "Loss",
+                  badgeColor: isPositiveReturn ? "teal" : "red",
+                  value: summary.net_returns,
+                  description: "",
+                  prefix: summary.net_returns > 0 ? "+" : undefined,
+                  percentageValue: summary.net_returns_percentage,
+                },
+              ];
+
+              return metrics.map((metric) => (
+                <MetricCard key={metric.label} {...metric} />
+              ));
+            }}
+          </Await>
+        </Suspense>
       </SimpleGrid>
     </Section>
   );

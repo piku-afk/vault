@@ -6,6 +6,7 @@ import {
   NumberFormatter,
   Progress,
   SimpleGrid,
+  Skeleton,
   Stack,
   Text,
 } from "@mantine/core";
@@ -34,9 +35,7 @@ export function CategoryCard({
       <Stack gap="md">
         <Group align="flex-start">
           <Box>
-            <Text fw={600} size="lg">
-              {category.name}
-            </Text>
+            <Text size="lg">{category.name}</Text>
             <Text size="sm" c="dimmed">
               {category.schemes_count}{" "}
               {category.schemes_count === 1 ? "Scheme" : "Schemes"}
@@ -89,6 +88,39 @@ export function CategoryCard({
                 prefix={isCategoryPositive ? "+" : "-"}
               />
             </Text>
+          </Box>
+        </SimpleGrid>
+      </Stack>
+    </Card>
+  );
+}
+
+export function CategoryCardSkeleton() {
+  return (
+    <Card withBorder>
+      <Stack gap="lg">
+        <Group align="flex-start">
+          <Box>
+            <Skeleton height={20} width={120} mb={6} />
+            <Skeleton height={16} width={80} />
+          </Box>
+          <Skeleton height={28} width={80} ml="auto" />
+        </Group>
+
+        <Skeleton height={8} />
+
+        <SimpleGrid cols={3} spacing="xs">
+          <Box>
+            <Skeleton height={14} width={50} mb={6} />
+            <Skeleton height={16} width={70} />
+          </Box>
+          <Box>
+            <Skeleton height={14} width={50} mb={6} />
+            <Skeleton height={16} width={70} />
+          </Box>
+          <Box>
+            <Skeleton height={14} width={50} mb={6} />
+            <Skeleton height={16} width={70} />
           </Box>
         </SimpleGrid>
       </Stack>

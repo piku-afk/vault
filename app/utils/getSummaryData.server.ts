@@ -12,7 +12,6 @@ export {
   netReturnsPercentageSql,
   netReturnsSql,
   netWorthSql,
-  TRANSACTION_TYPE,
 } from './investmentQueries.server';
 
 export async function getSummaryData() {

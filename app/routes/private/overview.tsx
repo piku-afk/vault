@@ -7,37 +7,37 @@ import { PortfolioOverview } from "#/components/overview/portfolio-overview";
 import { QuickStatsGrid } from "#/components/overview/quick-stats-grid";
 import { RecentActivity } from "#/components/overview/recent-activity";
 import { Section } from "#/components/section";
-import { getGoalProgress } from "#/utils/getGoals.server";
+// import { getGoalProgress } from "#/utils/getGoals.server";
 import {
-  getQuickStats,
+  // getQuickStats,
   getRecentTransactions,
 } from "#/utils/getOverviewStats.server";
-import {
-  getBestPerformer,
-  getPortfolioDiversification,
-} from "#/utils/getPortfolioAnalytics.server";
+// import {
+//   getBestPerformer,
+//   getPortfolioDiversification,
+// } from "#/utils/getPortfolioAnalytics.server";
 import { getSummaryBySavingsCategory } from "#/utils/getSummaryBySavingsCategory.server";
 import { getSummaryData } from "#/utils/getSummaryData.server";
 
 import type { Route } from "./+types/overview";
 
 export async function loader() {
-  const summary = await getSummaryData();
-  const summaryBySavingsCategory = await getSummaryBySavingsCategory();
-  const goalProgress = await getGoalProgress(summary.net_worth);
-  const recentTransactions = await getRecentTransactions();
-  const quickStats = await getQuickStats();
-  const portfolioDiversification = await getPortfolioDiversification();
-  const bestPerformer = await getBestPerformer();
+  // const summary = await getSummaryData();
+  // const summaryBySavingsCategory = await getSummaryBySavingsCategory();
+  // const recentTransactions = await getRecentTransactions();
+  // const goalProgress = await getGoalProgress(summary.net_worth);
+  // const quickStats = await getQuickStats();
+  // const portfolioDiversification = await getPortfolioDiversification();
+  // const bestPerformer = await getBestPerformer();
 
   return {
-    summary,
-    summaryBySavingsCategory,
-    goalProgress,
-    recentTransactions,
-    quickStats,
-    portfolioDiversification,
-    bestPerformer,
+    summary: getSummaryData(),
+    summaryBySavingsCategory: getSummaryBySavingsCategory(),
+    recentTransactions: getRecentTransactions(),
+    // goalProgress,
+    // quickStats,
+    // portfolioDiversification,
+    // bestPerformer,
   };
 }
 
@@ -45,11 +45,11 @@ export default function Overview(props: Route.ComponentProps) {
   const {
     summary,
     summaryBySavingsCategory,
-    goalProgress,
     recentTransactions,
-    quickStats,
-    portfolioDiversification,
-    bestPerformer,
+    // goalProgress,
+    // quickStats,
+    // portfolioDiversification,
+    // bestPerformer,
   } = props.loaderData;
 
   return (
@@ -61,6 +61,8 @@ export default function Overview(props: Route.ComponentProps) {
       />
       <Divider />
       <RecentActivity transactions={recentTransactions} />
+
+      {/* 
 
       {/* <Section title="Quick Stats">
         <QuickStatsGrid quickStats={quickStats} bestPerformer={bestPerformer} />
