@@ -1,49 +1,53 @@
-import { sql } from 'kysely';
+import { sql } from "kysely";
 
 import {
   netInvestedSql,
   netReturnsPercentageSql,
   netReturnsSql,
   netWorthSql,
-} from './investmentQueries.server';
-import { db } from './kysely.server';
+} from "./investmentQueries.server";
+import { db } from "./kysely.server";
 
 export async function getInvestmentData() {
   return db
-    .selectFrom('mutual_fund_schemes as mfs')
-    .innerJoin('transactions as t', 't.scheme_name', 'mfs.scheme_name')
+    .selectFrom("mutual_fund_schemes as mfs")
+    .innerJoin("transactions as t", "t.scheme_name", "mfs.scheme_name")
     .select([
-      'mfs.scheme_name',
-      netWorthSql.as('current'),
-      netInvestedSql.as('invested'),
-      netReturnsSql.as('returns'),
-      netReturnsPercentageSql.as('returns_percentage'),
+      "mfs.scheme_name",
+      netWorthSql.as("current"),
+      netInvestedSql.as("invested"),
+      netReturnsSql.as("returns"),
+      netReturnsPercentageSql.as("returns_percentage"),
     ])
-    .groupBy(['mfs.scheme_name', 'mfs.nav'])
-    .orderBy('mfs.scheme_name', 'asc')
+    .groupBy(["mfs.scheme_name", "mfs.nav"])
+    .orderBy("mfs.scheme_name", "asc")
     .execute();
 }
 
 export async function getInvestmentDataBySavingsCategory() {
   return db
-    .selectFrom('savings_categories as sc')
-    .innerJoin('mutual_fund_schemes as mfs', 'sc.name', 'mfs.saving_category')
+    .selectFrom("savings_categories as sc")
+    .innerJoin("mutual_fund_schemes as mfs", "sc.name", "mfs.saving_category")
     .leftJoin(
       db
-        .selectFrom('transactions as t')
-        .innerJoin('mutual_fund_schemes as mfs', 't.scheme_name', 'mfs.scheme_name')
+        .selectFrom("transactions as t")
+        .innerJoin(
+          "mutual_fund_schemes as mfs",
+          "t.scheme_name",
+          "mfs.scheme_name",
+        )
         .select([
-          netInvestedSql.as('invested'),
-          netWorthSql.as('current'),
-          sql<string>`t.scheme_name`.as('scheme_name'),
+          netInvestedSql.as("invested"),
+          netWorthSql.as("current"),
+          sql<string>`t.scheme_name`.as("scheme_name"),
         ])
-        .groupBy('t.scheme_name')
-        .as('agg'),
-      'agg.scheme_name',
-      'mfs.scheme_name'
+        .groupBy("t.scheme_name")
+        .as("agg"),
+      "agg.scheme_name",
+      "mfs.scheme_name",
     )
     .select([
-      'sc.name',
+      "sc.name",
       sql`
         json_agg(
           json_build_object(
@@ -58,9 +62,9 @@ export async function getInvestmentDataBySavingsCategory() {
               END
           )
         )
-      `.as('schemes'),
+      `.as("schemes"),
     ])
-    .groupBy('sc.name')
-    .orderBy('sc.name')
+    .groupBy("sc.name")
+    .orderBy("sc.name")
     .execute();
 }

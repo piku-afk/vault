@@ -1,4 +1,4 @@
-import { sql } from 'kysely';
+import { sql } from "kysely";
 
 // Base SQL fragments for investment calculations
 export const netInvestedSql = sql<number>`round(sum(mfs.net_invested))`;
