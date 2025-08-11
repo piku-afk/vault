@@ -12,7 +12,7 @@ import {
   getRecentTransactions,
 } from "#/utils/getOverviewStats.server";
 import { getCategoryAllocation } from "#/utils/getPortfolioAnalytics.server";
-import { getSummaryBySavingsCategory } from "#/utils/getSummaryBySavingsCategory.server";
+import { getSavingsCategorySummary } from "#/utils/getSummaryBySavingsCategory.server";
 import { getSummaryData } from "#/utils/getSummaryData.server";
 
 import type { Route } from "./+types/overview";
@@ -20,7 +20,7 @@ import type { Route } from "./+types/overview";
 export async function loader() {
   return {
     summary: getSummaryData(),
-    summaryBySavingsCategory: getSummaryBySavingsCategory(),
+    savingsCategorySummary: getSavingsCategorySummary(),
     recentTransactions: getRecentTransactions(),
     quickStats: getQuickStats(),
     goalProgress: getGoalProgress(),
@@ -31,7 +31,7 @@ export async function loader() {
 export default function Overview(props: Route.ComponentProps) {
   const {
     summary,
-    summaryBySavingsCategory,
+    savingsCategorySummary,
     recentTransactions,
     goalProgress,
     quickStats,
@@ -45,14 +45,16 @@ export default function Overview(props: Route.ComponentProps) {
 
       <InvestmentGoals goalProgress={goalProgress} />
       <Divider />
+
       <QuickStatsGrid quickStats={quickStats} />
       <Divider />
-      <CategoryPerformance
-        summaryBySavingsCategory={summaryBySavingsCategory}
-      />
+
+      <CategoryPerformance savingsCategorySummary={savingsCategorySummary} />
       <Divider />
+
       <PortfolioDiversification categoryAllocation={categoryAllocation} />
       <Divider />
+
       <RecentActivity transactions={recentTransactions} />
     </Stack>
   );

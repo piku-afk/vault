@@ -3,12 +3,12 @@ import { Suspense } from "react";
 import { Await } from "react-router";
 
 import { Section } from "#/components/section";
-import type { getSummaryBySavingsCategory } from "#/utils/getSummaryBySavingsCategory.server";
+import type { getSavingsCategorySummary } from "#/utils/getSummaryBySavingsCategory.server";
 
 import { CategoryCard, CategoryCardSkeleton } from "./category-card";
 
 export function CategoryPerformance(props: {
-  summaryBySavingsCategory: ReturnType<typeof getSummaryBySavingsCategory>;
+  savingsCategorySummary: ReturnType<typeof getSavingsCategorySummary>;
 }) {
   return (
     <Section title="Category Performance">
@@ -18,7 +18,7 @@ export function CategoryPerformance(props: {
             <CategoryCardSkeleton key={item} />
           ))}
         >
-          <Await resolve={props.summaryBySavingsCategory}>
+          <Await resolve={props.savingsCategorySummary}>
             {(summaryBySavingsCategory) =>
               summaryBySavingsCategory.map((category) => (
                 <CategoryCard key={category.name} category={category} />

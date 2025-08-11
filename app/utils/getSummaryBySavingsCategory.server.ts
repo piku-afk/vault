@@ -8,7 +8,7 @@ import {
 } from "./investmentQueries.server";
 import { db } from "./kysely.server";
 
-export async function getSummaryBySavingsCategory() {
+export async function getSavingsCategorySummary() {
   return db
     .selectFrom("mutual_fund_summary as mfs")
     .innerJoin("savings_categories as sc", "sc.name", "mfs.saving_category")

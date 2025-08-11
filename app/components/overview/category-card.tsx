@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 
 import { CurrencyFormatter } from "#/components/currency-formatter";
-import type { getSummaryBySavingsCategory } from "#/utils/getSummaryBySavingsCategory.server";
+import type { getSavingsCategorySummary } from "#/utils/getSummaryBySavingsCategory.server";
 
 const calculateProgressValue = (current: number, invested: number): number => {
   return invested > 0 ? Math.min((current / invested) * 100, 150) : 0;
@@ -23,7 +23,7 @@ const calculateProgressValue = (current: number, invested: number): number => {
 export function CategoryCard({
   category,
 }: {
-  category: Awaited<ReturnType<typeof getSummaryBySavingsCategory>>[number];
+  category: Awaited<ReturnType<typeof getSavingsCategorySummary>>[number];
 }) {
   const progressValue = calculateProgressValue(
     category.current,
