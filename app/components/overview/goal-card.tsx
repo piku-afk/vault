@@ -28,7 +28,11 @@ export function GoalCard({
   const color = getGoalColor(goal.progress, goal.is_complete);
 
   return (
-    <Card withBorder bg={`${color}.0`}>
+    <Card
+      withBorder
+      bg={`${color}.0`}
+      style={(theme) => ({ borderColor: theme.colors[color][3] })}
+    >
       <Stack gap="md">
         <Group justify="space-between" align="flex-start">
           <Box>
