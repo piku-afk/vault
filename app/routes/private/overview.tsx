@@ -11,7 +11,10 @@ import {
   getQuickStats,
   getRecentTransactions,
 } from "#/utils/getOverviewStats.server";
-import { getCategoryAllocation } from "#/utils/getPortfolioAnalytics.server";
+import {
+  getBestAndWorstPerformer,
+  getCategoryAllocation,
+} from "#/utils/getPortfolioAnalytics.server";
 import { getSavingsCategorySummary } from "#/utils/getSummaryBySavingsCategory.server";
 import { getSummaryData } from "#/utils/getSummaryData.server";
 
@@ -25,6 +28,7 @@ export async function loader() {
     quickStats: getQuickStats(),
     goalProgress: getGoalProgress(),
     categoryAllocation: getCategoryAllocation(),
+    bestAndWorstPerformer: getBestAndWorstPerformer(),
   };
 }
 
@@ -36,6 +40,7 @@ export default function Overview(props: Route.ComponentProps) {
     goalProgress,
     quickStats,
     categoryAllocation,
+    bestAndWorstPerformer,
   } = props.loaderData;
 
   return (
@@ -52,7 +57,10 @@ export default function Overview(props: Route.ComponentProps) {
       <CategoryPerformance savingsCategorySummary={savingsCategorySummary} />
       <Divider />
 
-      <PortfolioDiversification categoryAllocation={categoryAllocation} />
+      <PortfolioDiversification
+        categoryAllocation={categoryAllocation}
+        bestAndWorstPerformer={bestAndWorstPerformer}
+      />
       <Divider />
 
       <RecentActivity transactions={recentTransactions} />
