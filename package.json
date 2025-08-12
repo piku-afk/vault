@@ -31,7 +31,6 @@
     "@react-router/node": "^7.7.1",
     "@react-router/serve": "^7.7.1",
     "@supabase/ssr": "^0.6.1",
-    "@supabase/supabase-js": "^2.53.0",
     "dayjs": "^1.11.13",
     "isbot": "^5.1.29",
     "kysely": "^0.28.4",

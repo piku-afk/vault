@@ -38,9 +38,6 @@ importers:
       '@supabase/ssr':
         specifier: ^0.6.1
         version: 0.6.1(@supabase/supabase-js@2.53.0)
-      '@supabase/supabase-js':
-        specifier: ^2.53.0
-        version: 2.53.0
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
