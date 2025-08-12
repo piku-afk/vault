@@ -3,13 +3,13 @@ import { Suspense } from "react";
 import { Await } from "react-router";
 
 import { Section } from "#/components/section";
-import type { getSummaryData } from "#/utils/getSummaryData.server";
+import { useOverviewLoaderData } from "#/routes/private/overview";
 
 import { MetricCard, MetricCardSkeleton } from "./metric-card";
 
-export function PortfolioOverview(props: {
-  summary: ReturnType<typeof getSummaryData>;
-}) {
+export function PortfolioOverview() {
+  const loaderData = useOverviewLoaderData();
+
   return (
     <Section title="Portfolio Overview">
       <SimpleGrid cols={{ base: 1, xs: 3 }} spacing="lg">
@@ -18,7 +18,7 @@ export function PortfolioOverview(props: {
             <MetricCardSkeleton key={item} />
           ))}
         >
-          <Await resolve={props.summary}>
+          <Await resolve={loaderData.summary}>
             {(summary) => {
               const isPositiveReturn = summary.net_returns > 0;
               const metrics = [

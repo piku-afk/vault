@@ -3,13 +3,13 @@ import { Suspense } from "react";
 import { Await } from "react-router";
 
 import { Section } from "#/components/section";
-import type { getSavingsCategorySummary } from "#/utils/getSummaryBySavingsCategory.server";
+import { useOverviewLoaderData } from "#/routes/private/overview";
 
 import { CategoryCard, CategoryCardSkeleton } from "./category-card";
 
-export function CategoryPerformance(props: {
-  savingsCategorySummary: ReturnType<typeof getSavingsCategorySummary>;
-}) {
+export function CategoryPerformance() {
+  const loaderData = useOverviewLoaderData();
+
   return (
     <Section title="Category Performance">
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
@@ -18,7 +18,7 @@ export function CategoryPerformance(props: {
             <CategoryCardSkeleton key={item} />
           ))}
         >
-          <Await resolve={props.savingsCategorySummary}>
+          <Await resolve={loaderData.savingsCategorySummary}>
             {(summaryBySavingsCategory) =>
               summaryBySavingsCategory.map((category) => (
                 <CategoryCard key={category.name} category={category} />

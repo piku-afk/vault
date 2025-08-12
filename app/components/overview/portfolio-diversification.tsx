@@ -13,11 +13,11 @@ import {
   MonthlyPerformersSkeleton,
 } from "./monthly-performance";
 import { Suspense } from "react";
+import { useOverviewLoaderData } from "#/routes/private/overview";
 
-export function PortfolioDiversification(props: {
-  categoryAllocation: ReturnType<typeof getCategoryAllocation>;
-  bestAndWorstPerformer: ReturnType<typeof getBestAndWorstPerformer>;
-}) {
+export function PortfolioDiversification() {
+  const loaderData = useOverviewLoaderData();
+
   return (
     <Section title="Portfolio Diversification">
       <SimpleGrid
@@ -25,7 +25,7 @@ export function PortfolioDiversification(props: {
         spacing="lg"
         style={{ alignItems: "flex-start" }}
       >
-        <Await resolve={props.categoryAllocation}>
+        <Await resolve={loaderData.categoryAllocation}>
           {(categoryAllocation) => (
             <AllocationChart categoryAllocation={categoryAllocation} />
           )}

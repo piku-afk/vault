@@ -1,4 +1,5 @@
 import { Divider, Stack } from "@mantine/core";
+import { useLoaderData } from "react-router";
 
 import { CategoryPerformance } from "#/components/overview/category-performance";
 import { InvestmentGoals } from "#/components/overview/investment-goals";
@@ -32,9 +33,12 @@ export async function loader() {
   };
 }
 
+export function useOverviewLoaderData() {
+  return useLoaderData<typeof loader>();
+}
+
 export default function Overview(props: Route.ComponentProps) {
   const {
-    summary,
     savingsCategorySummary,
     recentTransactions,
     goalProgress,
@@ -45,25 +49,22 @@ export default function Overview(props: Route.ComponentProps) {
 
   return (
     <Stack mt="md" gap="xl">
-      <PortfolioOverview summary={summary} />
+      <PortfolioOverview />
       <Divider />
 
-      <InvestmentGoals goalProgress={goalProgress} />
+      <InvestmentGoals />
       <Divider />
 
-      <QuickStatsGrid quickStats={quickStats} />
+      <QuickStatsGrid />
       <Divider />
 
-      <CategoryPerformance savingsCategorySummary={savingsCategorySummary} />
+      <CategoryPerformance />
       <Divider />
 
-      <PortfolioDiversification
-        categoryAllocation={categoryAllocation}
-        bestAndWorstPerformer={bestAndWorstPerformer}
-      />
+      <PortfolioDiversification />
       <Divider />
 
-      <RecentActivity transactions={recentTransactions} />
+      <RecentActivity />
     </Stack>
   );
 }

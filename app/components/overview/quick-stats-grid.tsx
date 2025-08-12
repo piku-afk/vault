@@ -3,14 +3,14 @@ import { Building2, CalendarClock, ReceiptIndianRupee } from "lucide-react";
 import { Suspense } from "react";
 import { Await } from "react-router";
 
-import type { getQuickStats } from "#/utils/getOverviewStats.server";
+import { Section } from "#/components/section";
+import { useOverviewLoaderData } from "#/routes/private/overview";
 
-import { Section } from "../section";
 import { StatCard, StatCardSkeleton } from "./stat-card";
 
-export function QuickStatsGrid(props: {
-  quickStats: ReturnType<typeof getQuickStats>;
-}) {
+export function QuickStatsGrid() {
+  const loaderData = useOverviewLoaderData();
+
   return (
     <Section title="Quick Stats">
       <Grid grow gutter="lg">
@@ -21,7 +21,7 @@ export function QuickStatsGrid(props: {
             </Grid.Col>
           ))}
         >
-          <Await resolve={props.quickStats}>
+          <Await resolve={loaderData.quickStats}>
             {(quickStats) => {
               const stats = [
                 {

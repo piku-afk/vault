@@ -8,9 +8,8 @@ import {
 } from "@mantine/core";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import { use } from "react";
-import { useLoaderData } from "react-router";
 
-import type { loader } from "#/routes/private/overview";
+import { useOverviewLoaderData } from "#/routes/private/overview";
 import type { getBestAndWorstPerformer } from "#/utils/getPortfolioAnalytics.server";
 
 export function MonthlyPerformersSkeleton() {
@@ -95,7 +94,7 @@ function PerformerSection({
 }
 
 export function MonthlyPerformers() {
-  const { bestAndWorstPerformer } = useLoaderData<typeof loader>();
+  const { bestAndWorstPerformer } = useOverviewLoaderData();
   const { bestPerformer, worstPerformer } = use(bestAndWorstPerformer);
 
   return (

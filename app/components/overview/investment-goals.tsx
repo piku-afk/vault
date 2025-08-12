@@ -3,13 +3,13 @@ import { Suspense } from "react";
 import { Await } from "react-router";
 
 import { Section } from "#/components/section";
-import type { getGoalProgress } from "#/utils/getGoals.server";
+import { useOverviewLoaderData } from "#/routes/private/overview";
 
 import { GoalCard, GoalCardSkeleton } from "./goal-card";
 
-export function InvestmentGoals(props: {
-  goalProgress: ReturnType<typeof getGoalProgress>;
-}) {
+export function InvestmentGoals() {
+  const loaderData = useOverviewLoaderData();
+
   return (
     <Section title="Investment Goals">
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
@@ -18,7 +18,7 @@ export function InvestmentGoals(props: {
             <GoalCardSkeleton key={item} />
           ))}
         >
-          <Await resolve={props.goalProgress}>
+          <Await resolve={loaderData.goalProgress}>
             {(goalProgress) =>
               goalProgress.map((goal) => (
                 <GoalCard key={goal.name} goal={goal} />
