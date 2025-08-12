@@ -71,16 +71,16 @@ function PerformerSection({
           bg={`${color}.0`}
           style={(theme) => ({ borderColor: theme.colors[color][3] })}
         >
-          <Group justify="space-between" align="flex-start">
+          <Group justify="space-between" align="flex-start" wrap="nowrap">
             <Stack gap={2}>
-              <Text fw={500} size="sm">
+              <Text fw={500} size="sm" lineClamp={1}>
                 {scheme.scheme_name}
               </Text>
               <Text size="xs" c="dimmed" truncate>
                 {scheme.saving_category}
               </Text>
             </Stack>
-            <Text fw={600} size="sm">
+            <Text fw={600} size="sm" style={{ flexShrink: 0 }}>
               <NumberFormatter
                 value={scheme.nav_diff_percentage || 0}
                 suffix="%"
