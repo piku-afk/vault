@@ -1,7 +1,7 @@
 import { Container } from "@mantine/core";
 import { Outlet, redirect } from "react-router";
 
-import { Navigation } from "#/components/navigation";
+// import { Navigation } from "#/components/navigation";
 import { createClient } from "#/utils/supabase.server";
 
 import type { Route } from "./+types/private-layout";
@@ -19,7 +19,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function PrivateLayout() {
   return (
     <>
-      <Navigation />
+      {/* <Navigation /> */}
       <Container w="100%" size="md" pb="xl" pt="md">
         <Outlet />
       </Container>
