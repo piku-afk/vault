@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   Badge,
   Box,
   Card,
@@ -11,10 +12,12 @@ import {
   Stack,
   Text,
   ThemeIcon,
+  Tooltip,
 } from "@mantine/core";
 
 import { CurrencyFormatter } from "#/components/currency-formatter";
 import type { getSavingsCategorySummary } from "#/utils/getSummaryBySavingsCategory.server";
+import { Maximize2 } from "lucide-react";
 
 const calculateProgressValue = (current: number, invested: number): number => {
   return invested > 0 ? Math.min((current / invested) * 100, 150) : 0;
@@ -52,15 +55,22 @@ export function CategoryCard({
               {category.schemes_count === 1 ? "Scheme" : "Schemes"}
             </Text>
           </Box>
-          <Badge ml="auto" variant="light" color={returnColor} size="lg">
-            <NumberFormatter
-              value={category.returns_percentage}
-              suffix="%"
-              decimalScale={2}
-              allowNegative={false}
-              prefix={isCategoryPositive ? "+" : "-"}
-            />
-          </Badge>
+          <Tooltip label="Returns percentage">
+            <Badge ml="auto" variant="light" color={returnColor} size="lg">
+              <NumberFormatter
+                value={category.returns_percentage}
+                suffix="%"
+                decimalScale={2}
+                allowNegative={false}
+                prefix={isCategoryPositive ? "+" : "-"}
+              />
+            </Badge>
+          </Tooltip>
+          <Tooltip label="View details">
+            <ActionIcon variant="default">
+              <Maximize2 size={14} />
+            </ActionIcon>
+          </Tooltip>
         </Group>
 
         <Progress

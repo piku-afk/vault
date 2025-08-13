@@ -9,6 +9,7 @@ import {
   Stack,
   Text,
   ThemeIcon,
+  Tooltip,
 } from "@mantine/core";
 
 import { CurrencyFormatter } from "#/components/currency-formatter";
@@ -52,9 +53,11 @@ export function GoalCard({
               Target: <CurrencyFormatter value={goal.target} />
             </Text>
           </Box>
-          <Badge variant="light" color={color} size="lg">
-            {goal.progress}%
-          </Badge>
+          <Tooltip label="Goal Progress">
+            <Badge variant="light" color={color} size="lg">
+              {goal.progress}%
+            </Badge>
+          </Tooltip>
         </Group>
 
         <Progress value={goal.progress} color={color} size="md" />
