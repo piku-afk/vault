@@ -1,25 +1,21 @@
 import { SimpleGrid } from "@mantine/core";
+import { Suspense } from "react";
 import { Await } from "react-router";
 
 import { Section } from "#/components/section";
-import type {
-  getBestAndWorstPerformer,
-  getCategoryAllocation,
-} from "#/utils/getPortfolioAnalytics.server";
+import { useOverviewLoaderData } from "#/routes/private/overview";
 
 import { AllocationChart } from "./allocation-chart";
 import {
   MonthlyPerformers,
   MonthlyPerformersSkeleton,
 } from "./monthly-performance";
-import { Suspense } from "react";
-import { useOverviewLoaderData } from "#/routes/private/overview";
 
-export function PortfolioDiversification() {
+export function PortfolioBreakdown() {
   const loaderData = useOverviewLoaderData();
 
   return (
-    <Section title="Portfolio Diversification">
+    <Section title="Portfolio Breakdown">
       <SimpleGrid
         cols={{ base: 1, md: 2 }}
         spacing="lg"

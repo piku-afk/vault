@@ -3,7 +3,7 @@ import { useLoaderData } from "react-router";
 
 import { CategoryPerformance } from "#/components/overview/category-performance";
 import { InvestmentGoals } from "#/components/overview/investment-goals";
-import { PortfolioDiversification } from "#/components/overview/portfolio-diversification";
+import { PortfolioBreakdown } from "#/components/overview/portfolio-breakdown";
 import { PortfolioOverview } from "#/components/overview/portfolio-overview";
 import { QuickStatsGrid } from "#/components/overview/quick-stats-grid";
 import { RecentActivity } from "#/components/overview/recent-activity";
@@ -61,7 +61,7 @@ export default function Overview(props: Route.ComponentProps) {
       <CategoryPerformance />
       <Divider />
 
-      <PortfolioDiversification />
+      <PortfolioBreakdown />
       <Divider />
 
       <RecentActivity />
