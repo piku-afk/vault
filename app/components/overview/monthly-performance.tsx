@@ -2,6 +2,7 @@ import {
   Card,
   Group,
   NumberFormatter,
+  SimpleGrid,
   Skeleton,
   Stack,
   Text,
@@ -14,30 +15,22 @@ import type { getBestAndWorstPerformer } from "#/utils/getPortfolioAnalytics.ser
 
 export function MonthlyPerformersSkeleton() {
   return (
-    <Card withBorder>
-      <Stack gap="lg">
-        <Text fw={600} size="lg">
+    <Card withBorder p="sm">
+      <Stack gap="sm">
+        <Text fw={600} size="md">
           Last Month's Performance
         </Text>
-
-        {Array.from(Array(2).keys()).map((item) => (
-          <Stack key={item} gap="sm">
-            <Group gap="xs">
-              <Skeleton height={20} width={100} />
-            </Group>
-            <Stack gap="sm">
-              <Card withBorder>
-                <Group justify="space-between" align="flex-start">
-                  <Stack gap={8}>
-                    <Skeleton height={18} width={60} />
-                    <Skeleton height={12} width={120} />
-                  </Stack>
-                  <Skeleton height={16} width={50} />
-                </Group>
-              </Card>
-            </Stack>
-          </Stack>
-        ))}
+        <SimpleGrid cols={2} spacing="xs">
+          {Array.from(Array(2).keys()).map((item) => (
+            <Card key={item} withBorder p="xs">
+              <Stack gap={4}>
+                <Skeleton height={14} width={80} />
+                <Skeleton height={12} width={100} />
+                <Skeleton height={16} width={40} />
+              </Stack>
+            </Card>
+          ))}
+        </SimpleGrid>
       </Stack>
     </Card>
   );
@@ -54,42 +47,39 @@ function PerformerSection({
   const color = isBest ? "teal" : "red";
 
   return (
-    <Stack gap="xs">
-      <Group gap="xs">
-        {isBest ? (
-          <TrendingUp size={16} color={color} />
-        ) : (
-          <TrendingDown size={16} color={color} />
-        )}
-        <Text fw={500} size="sm" c={color}>
-          {isBest ? "Best Performer" : "Worst Performer"}
+    <Card
+      withBorder
+      p="xs"
+      bg={`${color}.0`}
+      style={(theme) => ({ borderColor: theme.colors[color][3] })}
+    >
+      <Stack gap={4}>
+        <Group gap={4}>
+          {isBest ? (
+            <TrendingUp size={12} color={color} />
+          ) : (
+            <TrendingDown size={12} color={color} />
+          )}
+          <Text size="xs" c={color}>
+            {isBest ? "Best" : "Worst"}
+          </Text>
+        </Group>
+        <Text size="xs" lineClamp={1}>
+          {scheme.scheme_name}
         </Text>
-      </Group>
-      <Stack gap="sm">
-        <Card
-          withBorder
-          bg={`${color}.0`}
-          style={(theme) => ({ borderColor: theme.colors[color][3] })}
-        >
-          <Group justify="space-between" align="flex-start" wrap="nowrap">
-            <Stack gap={2}>
-              <Text fw={500} size="sm" lineClamp={1}>
-                {scheme.scheme_name}
-              </Text>
-              <Text size="xs" c="dimmed" truncate>
-                {scheme.saving_category}
-              </Text>
-            </Stack>
-            <Text fw={600} size="sm" style={{ flexShrink: 0 }}>
-              <NumberFormatter
-                value={scheme.nav_diff_percentage || 0}
-                suffix="%"
-              />
-            </Text>
-          </Group>
-        </Card>
+        <Group justify="space-between" align="center">
+          <Text size="xs" c="dimmed" style={{ flex: 1 }}>
+            {scheme.saving_category}
+          </Text>
+          <Text fw={600} size="xs" c={color}>
+            <NumberFormatter
+              value={scheme.nav_diff_percentage || 0}
+              suffix="%"
+            />
+          </Text>
+        </Group>
       </Stack>
-    </Stack>
+    </Card>
   );
 }
 
@@ -98,14 +88,13 @@ export function MonthlyPerformers() {
   const { bestPerformer, worstPerformer } = use(bestAndWorstPerformer);
 
   return (
-    <Card withBorder>
-      <Stack gap="lg">
-        <Text fw={600} size="lg">
-          Last Month's Performance
-        </Text>
-
-        <PerformerSection variant="best" scheme={bestPerformer} />
-        <PerformerSection variant="worst" scheme={worstPerformer} />
+    <Card withBorder p="sm">
+      <Stack gap="sm">
+        <Text size="md">Last Month's Performance</Text>
+        <SimpleGrid cols={2} spacing="xs">
+          <PerformerSection variant="best" scheme={bestPerformer} />
+          <PerformerSection variant="worst" scheme={worstPerformer} />
+        </SimpleGrid>
       </Stack>
     </Card>
   );

@@ -27,8 +27,6 @@ export async function getCategoryAllocation() {
 }
 
 export async function getBestAndWorstPerformer() {
-  await new Promise((resolve) => setTimeout(resolve, 4_000));
-
   const baseQuery = db
     .selectFrom("mutual_fund_summary")
     .select(["scheme_name", "saving_category", "nav_diff_percentage"]);
