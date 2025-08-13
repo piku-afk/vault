@@ -1,47 +1,59 @@
-import { Button, PasswordInput, Stack, TextInput, Title } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import {
+  Alert,
+  Button,
+  Fieldset,
+  PasswordInput,
+  Stack,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { createClient } from "app/utils/supabase.server";
-import { zod4Resolver } from "mantine-form-zod-resolver";
+import { TriangleAlert } from "lucide-react";
 import { Fragment } from "react";
-import { Form, redirect, useSubmit } from "react-router";
+import { Form, redirect, useActionData } from "react-router";
 import { z } from "zod/v4";
 
 import { ROUTES } from "#/constants/routes";
 
 import type { Route } from "./+types/login";
 
+const loginSchema = z.object({
+  email: z.email(),
+  password: z
+    .string()
+    .min(8, { error: "Password must be at least 8 characters long" }),
+});
+
 export async function action({ request }: Route.ActionArgs) {
   const { supabase, headers } = createClient(request);
-  const formData = await request.json();
 
-  const { error } = await supabase.auth.signInWithPassword(formData);
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData.entries()) as z.infer<
+    typeof loginSchema
+  >;
+  const parsedData = loginSchema.safeParse(data);
+
+  if (!parsedData.success) {
+    return z.flattenError(parsedData.error);
+  }
+
+  const { error } = await supabase.auth.signInWithPassword(parsedData.data);
 
   if (error) {
-    throw error;
+    return {
+      formErrors: [error.message],
+      fieldErrors: { email: [], password: [] },
+    };
   }
 
   throw redirect(ROUTES.HOME, { headers });
 }
 
-const loginSchema = z.object({
-  email: z.email().default(""),
-  password: z
-    .string()
-    .min(8, { error: "Password must be at least 8 characters long" })
-    .default(""),
-});
-
 export default function Login() {
-  const submit = useSubmit();
-  const form = useForm({
-    mode: "uncontrolled",
-    validate: zod4Resolver(loginSchema),
-    initialValues: loginSchema.parse({}),
-  });
-
-  async function handleSubmit(values: z.infer<typeof loginSchema>) {
-    await submit(values, { method: "post", encType: "application/json" });
-  }
+  const actionData = useActionData<typeof action>();
+  const formError = actionData?.formErrors?.[0];
+  const emailError = actionData?.fieldErrors?.email?.[0];
+  const passwordError = actionData?.fieldErrors?.password?.[0];
 
   return (
     <Fragment>
@@ -52,27 +64,42 @@ export default function Login() {
         Sign in to your account
       </Title>
 
-      <Form method="post" onSubmit={form.onSubmit(handleSubmit)}>
-        <Stack mt="xl" gap="lg">
-          <TextInput
-            label="Email"
-            type="email"
-            placeholder="you@example.com"
-            disabled={form.submitting}
-            {...form.getInputProps("email")}
-          />
+      <Form method="post" action={ROUTES.LOGIN}>
+        <Fieldset variant="unstyled">
+          <Stack mt="xl" gap="lg">
+            <TextInput
+              name="email"
+              type="email"
+              label="Email"
+              autoComplete="email"
+              placeholder="you@example.com"
+              error={emailError}
+            />
 
-          <PasswordInput
-            label="Password"
-            placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
-            disabled={form.submitting}
-            {...form.getInputProps("password")}
-          />
-        </Stack>
+            <PasswordInput
+              name="password"
+              label="Password"
+              autoComplete="current-password"
+              placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
+              error={passwordError}
+            />
 
-        <Button type="submit" fullWidth mt="xl" loading={form.submitting}>
-          Login
-        </Button>
+            {formError && (
+              <Alert
+                color="red"
+                variant="light"
+                title="Error"
+                icon={<TriangleAlert />}
+              >
+                {formError}
+              </Alert>
+            )}
+          </Stack>
+
+          <Button type="submit" fullWidth mt="xl">
+            Login
+          </Button>
+        </Fieldset>
       </Form>
     </Fragment>
   );
