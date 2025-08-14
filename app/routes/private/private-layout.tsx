@@ -1,21 +1,14 @@
 import { Container } from "@mantine/core";
-import { Outlet, redirect } from "react-router";
+import { Outlet } from "react-router";
 
 // import { Navigation } from "#/components/navigation";
-import { createClient } from "#/utils/supabase.server";
+import { requireAuth } from "#/middlewares/requireAuth";
 
 import type { Route } from "./+types/private-layout";
 
-export async function loader({ request }: Route.LoaderArgs) {
-  console.log("private");
-  const { supabase } = createClient(request);
-
-  const { error } = await supabase.auth.getUser();
-
-  if (error) {
-    throw redirect("/");
-  }
-}
+export const unstable_middleware: Route.unstable_MiddlewareFunction[] = [
+  requireAuth,
+];
 
 export default function PrivateLayout() {
   return (
