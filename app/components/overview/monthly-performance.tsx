@@ -27,15 +27,16 @@ function PerformerSection({
   return (
     <Card withBorder p="xs">
       <Stack gap={4}>
-        <Group justify="space-between" align="center">
+        <Group justify="space-between" align="center" wrap="nowrap">
           <Text size="xs" lineClamp={1}>
             {scheme.scheme_name}
           </Text>
-          <Group gap={2}>
+          <Group gap={2} wrap="nowrap" style={{ flexShrink: 0 }}>
             <Badge
               variant="subtle"
               color={color}
               size="xs"
+              style={{ flexShrink: 0 }}
               leftSection={
                 isBest ? (
                   <TrendingUp size={12} color={color} />
@@ -47,7 +48,12 @@ function PerformerSection({
               {isBest ? "Best" : "Worst"}
             </Badge>
             <Tooltip label="Returns percentage">
-              <Badge size="sm" variant="light" color={color}>
+              <Badge
+                size="sm"
+                variant="light"
+                color={color}
+                style={{ flexShrink: 0 }}
+              >
                 <NumberFormatter
                   value={scheme.nav_diff_percentage || 0}
                   suffix="%"
