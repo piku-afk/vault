@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 
 import { CurrencyFormatter } from "#/components/currency-formatter";
 import { TRANSACTION_TYPE } from "#/constants/transaction_type";
-import type { getRecentTransactions } from "#/utils/getOverviewStats.server";
+import type { getRecentTransactions } from "#/database/getOverviewStats.server";
 
 type Transactions = Awaited<ReturnType<typeof getRecentTransactions>>;
 type Transaction = Transactions[number];

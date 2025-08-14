@@ -21,6 +21,7 @@ import { getSavingsCategorySummary } from "#/database/getSummaryBySavingsCategor
 import { getSummaryData } from "#/database/getSummaryData.server";
 
 export async function loader() {
+  console.log("overview");
   return {
     summary: getSummaryData(),
     savingsCategorySummary: getSavingsCategorySummary(),

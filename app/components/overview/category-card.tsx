@@ -7,6 +7,7 @@ import {
   Image,
   NumberFormatter,
   Progress,
+  SimpleGrid,
   Skeleton,
   Stack,
   Text,
@@ -16,7 +17,7 @@ import {
 import { Maximize2 } from "lucide-react";
 
 import { CurrencyFormatter } from "#/components/currency-formatter";
-import type { getSavingsCategorySummary } from "#/utils/getSummaryBySavingsCategory.server";
+import type { getSavingsCategorySummary } from "#/database/getSummaryBySavingsCategory.server";
 
 // Types
 type CategoryData = Awaited<
@@ -134,8 +135,9 @@ function CategoryStats({
   const isPositive = category.returns > 0;
 
   return (
-    <Group grow wrap="nowrap" gap="xs">
+    <SimpleGrid cols={{ base: 1, xs: 2 }} spacing="sm">
       <StatItem label="Current" value={category.current} />
+      <StatItem label="Invested" value={category.invested} />
       <StatItem
         label="Returns"
         value={category.returns}
@@ -144,7 +146,7 @@ function CategoryStats({
         allowNegative={false}
       />
       <StatItem label="Monthly SIP" value={Number(category.monthly_sip)} />
-    </Group>
+    </SimpleGrid>
   );
 }
 
@@ -191,14 +193,14 @@ export function CategoryCardSkeleton() {
 
         <Skeleton height={8} radius="xl" />
 
-        <Group justify="space-between" wrap="nowrap" gap="xs">
+        <SimpleGrid cols={{ base: 1, xs: 2 }} spacing="md">
           {Array.from(Array(4).keys()).map((item) => (
             <Box key={item} style={{ flexShrink: 0 }}>
               <Skeleton height={14} width={50} mb={6} />
               <Skeleton height={16} width={70} />
             </Box>
           ))}
-        </Group>
+        </SimpleGrid>
       </Stack>
     </Card>
   );

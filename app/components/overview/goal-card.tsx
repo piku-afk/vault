@@ -13,7 +13,7 @@ import {
 } from "@mantine/core";
 
 import { CurrencyFormatter } from "#/components/currency-formatter";
-import type { getGoalProgress } from "#/utils/getGoals.server";
+import type { getGoalProgress } from "#/database/getGoals.server";
 
 function getGoalColor(progress: number, isComplete: boolean) {
   if (isComplete) return "teal";

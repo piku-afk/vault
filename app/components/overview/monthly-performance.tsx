@@ -11,8 +11,8 @@ import {
 import { TrendingDown, TrendingUp } from "lucide-react";
 import { use } from "react";
 
+import type { getBestAndWorstPerformer } from "#/database/getPortfolioAnalytics.server";
 import { useOverviewLoaderData } from "#/routes/private/overview";
-import type { getBestAndWorstPerformer } from "#/utils/getPortfolioAnalytics.server";
 
 function PerformerSection({
   scheme,
