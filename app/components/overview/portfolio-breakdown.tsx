@@ -1,35 +1,35 @@
-import { SimpleGrid } from "@mantine/core";
+import { SimpleGrid, Stack } from "@mantine/core";
 import { Suspense } from "react";
-import { Await } from "react-router";
 
 import { Section } from "#/components/section";
-import { useOverviewLoaderData } from "#/routes/private/overview";
 
-import { AllocationChart } from "./allocation-chart";
+import { AllocationChart, AllocationChartSkeleton } from "./allocation-chart";
 import {
   MonthlyPerformers,
   MonthlyPerformersSkeleton,
 } from "./monthly-performance";
+import {
+  PerformanceCountCardSkeleton,
+  PortfolioHealth,
+} from "./portfolio-health";
 
 export function PortfolioBreakdown() {
-  const loaderData = useOverviewLoaderData();
-
   return (
     <Section title="Portfolio Breakdown">
-      <SimpleGrid
-        cols={{ base: 1, md: 2 }}
-        spacing="lg"
-        style={{ alignItems: "flex-start" }}
-      >
-        <Await resolve={loaderData.categoryAllocation}>
-          {(categoryAllocation) => (
-            <AllocationChart categoryAllocation={categoryAllocation} />
-          )}
-        </Await>
-
-        <Suspense fallback={<MonthlyPerformersSkeleton />}>
-          <MonthlyPerformers />
+      <SimpleGrid cols={{ base: 1, xs: 2 }} spacing="lg">
+        <Suspense fallback={<AllocationChartSkeleton />}>
+          <AllocationChart />
         </Suspense>
+
+        <Stack gap="lg">
+          <Suspense fallback={<MonthlyPerformersSkeleton />}>
+            <MonthlyPerformers />
+          </Suspense>
+
+          <Suspense fallback={<PerformanceCountCardSkeleton />}>
+            <PortfolioHealth />
+          </Suspense>
+        </Stack>
       </SimpleGrid>
     </Section>
   );

@@ -38,3 +38,15 @@ export async function getBestAndWorstPerformer() {
 
   return { bestPerformer, worstPerformer };
 }
+
+export async function getPositiveCounts() {
+  return await db
+    .selectFrom("mutual_fund_summary")
+    .select([
+      sql<number>`count(*) filter (where nav_diff_percentage > 0)`.as(
+        "positive",
+      ),
+      sql<number>`count(*)`.as("total"),
+    ])
+    .executeTakeFirstOrThrow();
+}

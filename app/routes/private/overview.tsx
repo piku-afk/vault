@@ -15,11 +15,10 @@ import {
 import {
   getBestAndWorstPerformer,
   getCategoryAllocation,
+  getPositiveCounts,
 } from "#/utils/getPortfolioAnalytics.server";
 import { getSavingsCategorySummary } from "#/utils/getSummaryBySavingsCategory.server";
 import { getSummaryData } from "#/utils/getSummaryData.server";
-
-import type { Route } from "./+types/overview";
 
 export async function loader() {
   return {
@@ -30,6 +29,7 @@ export async function loader() {
     goalProgress: getGoalProgress(),
     categoryAllocation: getCategoryAllocation(),
     bestAndWorstPerformer: getBestAndWorstPerformer(),
+    positiveCounts: getPositiveCounts(),
   };
 }
 
@@ -37,16 +37,7 @@ export function useOverviewLoaderData() {
   return useLoaderData<typeof loader>();
 }
 
-export default function Overview(props: Route.ComponentProps) {
-  const {
-    savingsCategorySummary,
-    recentTransactions,
-    goalProgress,
-    quickStats,
-    categoryAllocation,
-    bestAndWorstPerformer,
-  } = props.loaderData;
-
+export default function Overview() {
   return (
     <Stack mt="md" gap="xl">
       <PortfolioOverview />
