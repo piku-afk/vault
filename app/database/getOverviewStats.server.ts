@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { sql } from "kysely";
 
-import { db } from "./kysely.server";
+import { db } from "../database/kysely.server";
 
 export async function getRecentTransactions() {
   return db

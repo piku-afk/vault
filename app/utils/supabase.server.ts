@@ -3,7 +3,8 @@ import {
   parseCookieHeader,
   serializeCookieHeader,
 } from "@supabase/ssr";
-import type { Database } from "#/types/database";
+
+import type { Database } from "#/database/database";
 
 export function createClient(request: Request) {
   const headers = new Headers();

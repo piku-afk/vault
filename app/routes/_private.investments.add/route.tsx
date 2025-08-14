@@ -5,7 +5,8 @@ import { sql } from "kysely";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { useFetcher, useSubmit } from "react-router";
 
-import { db } from "#/utils/kysely.server";
+import { db } from "#/database/kysely.server";
+
 import { Section } from "../../components/section";
 import type { Route } from "../_private.investments.add/+types/route";
 import { GroupBy } from "./group-by/group-by";

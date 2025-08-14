@@ -1,10 +1,10 @@
+import { db } from "../database/kysely.server";
 import {
   netInvestedSql,
   netReturnsPercentageSql,
   netReturnsSql,
   netWorthSql,
 } from "./investmentQueries.server";
-import { db } from "./kysely.server";
 
 export async function getSavingsCategorySummary() {
   return db

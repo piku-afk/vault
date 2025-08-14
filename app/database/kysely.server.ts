@@ -3,7 +3,7 @@ import { PostgresJSDialect } from "kysely-postgres-js";
 import type { KyselifyDatabase } from "kysely-supabase";
 import postgres from "postgres";
 
-import type { Database as SupabaseDatabase } from "#/types/database.ts";
+import type { Database as SupabaseDatabase } from "#/database/database";
 
 export type Database = KyselifyDatabase<SupabaseDatabase>;
 
