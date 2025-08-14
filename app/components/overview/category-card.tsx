@@ -62,7 +62,7 @@ function StatItem({
   allowNegative = true,
 }: StatItemProps) {
   return (
-    <Box style={{ flexShrink: 0 }}>
+    <Box>
       <Text size="xs" c="dimmed" mb={2}>
         {label}
       </Text>
@@ -135,7 +135,7 @@ function CategoryStats({
   const isPositive = category.returns > 0;
 
   return (
-    <SimpleGrid cols={{ base: 1, xs: 2 }} spacing="sm">
+    <SimpleGrid cols={2} spacing="sm">
       <StatItem label="Current" value={category.current} />
       <StatItem label="Invested" value={category.invested} />
       <StatItem

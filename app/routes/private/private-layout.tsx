@@ -7,7 +7,6 @@ import { createClient } from "#/utils/supabase.server";
 import type { Route } from "./+types/private-layout";
 
 export async function loader({ request }: Route.LoaderArgs) {
-  console.log("private");
   const { supabase } = createClient(request);
 
   const { error } = await supabase.auth.getUser();
