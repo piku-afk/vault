@@ -39,7 +39,8 @@ export function PortfolioHealth() {
           </Group>
 
           <Text size="xs" c="dimmed">
-            {positivePercentage.toFixed(0)}% of schemes are profitable
+            {positivePercentage.toFixed(0)}% of schemes are profitable compared
+            to last month.
           </Text>
         </Box>
       </Stack>
@@ -53,7 +54,7 @@ export function PerformanceCountCardSkeleton() {
       <Stack gap={8}>
         <Text size="md">Portfolio Health</Text>
         <Box mt={6}>
-          <Skeleton mb={6} height={12} width="60%" />
+          <Skeleton mb={6} height={12} width="40%" />
           <Group wrap="nowrap" justify="space-between">
             <Skeleton height={14} width="90%" />
             <Skeleton height={14} width="10%" />

@@ -1,5 +1,3 @@
-import { sql } from "kysely";
-
 import {
   netInvestedSql,
   netReturnsPercentageSql,
@@ -12,12 +10,16 @@ export async function getSavingsCategorySummary() {
   return db
     .selectFrom("mutual_fund_summary as mfs")
     .innerJoin("savings_categories as sc", "sc.name", "mfs.saving_category")
-    .select([
+    .innerJoin(
+      "mutual_fund_schemes as mfs2",
+      "mfs2.scheme_name",
+      "mfs.scheme_name",
+    )
+    .select((eb) => [
       "sc.name",
       "sc.icon",
-      sql<number>`count(distinct ${sql.ref("mfs.scheme_name")})`.as(
-        "schemes_count",
-      ),
+      eb.fn.count("mfs.scheme_name").as("schemes_count"),
+      eb.fn.sum("mfs2.sip_amount").as("monthly_sip"),
       netInvestedSql.as("invested"),
       netWorthSql.as("current"),
       netReturnsSql.as("returns"),
