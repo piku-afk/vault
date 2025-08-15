@@ -15,8 +15,10 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { Maximize2 } from "lucide-react";
+import { Link } from "react-router";
 
 import { CurrencyFormatter } from "#/components/currency-formatter";
+import { ROUTES } from "#/constants/routes";
 import type { getSavingsCategorySummary } from "#/database/getSummaryBySavingsCategory.server";
 
 // Types
@@ -80,11 +82,9 @@ function StatItem({
 function CategoryHeader({
   category,
   returnColor,
-  onViewDetails,
 }: {
   category: CategoryData;
   returnColor: string;
-  onViewDetails?: () => void;
 }) {
   const isPositive = category.returns > 0;
 
@@ -117,7 +117,12 @@ function CategoryHeader({
         </Badge>
       </Tooltip>
       <Tooltip label="View details">
-        <ActionIcon variant="default" onClick={onViewDetails}>
+        <ActionIcon
+          component={Link}
+          to={ROUTES.CATEGORY_DETAILS.replace(":category", category.name)}
+          variant="default"
+          preventScrollReset
+        >
           <Maximize2 size={14} />
         </ActionIcon>
       </Tooltip>

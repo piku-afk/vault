@@ -1,5 +1,5 @@
 import { Divider, Stack } from "@mantine/core";
-import { useLoaderData } from "react-router";
+import { Outlet, useLoaderData } from "react-router";
 
 import { CategoryPerformance } from "#/components/overview/category-performance";
 import { InvestmentGoals } from "#/components/overview/investment-goals";
@@ -51,6 +51,7 @@ export default function Overview() {
 
       <CategoryPerformance />
       <Divider />
+      <Outlet />
 
       <PortfolioBreakdown />
       <Divider />
