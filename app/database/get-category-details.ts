@@ -24,7 +24,7 @@ export async function getCategoryDetails(category: string) {
       "mfs.scheme_name",
       "mfs2.logo",
       "mfs2.sub_category",
-      "mfs2.sip_amount",
+      "mfs2.sip_amount as monthly_sip",
       netInvestedSql.as("invested"),
       netWorthSql.as("current"),
       netReturnsSql.as("returns"),
