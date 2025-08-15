@@ -1,18 +1,22 @@
 import { Anchor, Box, Title } from "@mantine/core";
-import type { PropsWithChildren } from "react";
+import type { PropsWithChildren, RefObject } from "react";
+
+import { useInContainer } from "#/hooks/use-in-container";
 
 export function Section(props: PropsWithChildren & { title: string }) {
   const sectionId = props.title.toLowerCase().replace(/\s+/g, "-");
+  const { isInContainer: isInDialog, ref } = useInContainer("dialog");
 
   return (
     <Box component="section">
       {props.title && (
         <Anchor c="black" underline="never" href={`#${sectionId}`}>
           <Title
+            ref={ref as RefObject<HTMLHeadingElement>}
             id={sectionId}
-            order={2}
-            size="h3"
-            mb={props.children ? "md" : 0}
+            order={isInDialog ? 3 : 2}
+            size={isInDialog ? "h4" : "h3"}
+            mb={props.children ? (isInDialog ? "sm" : "md") : 0}
             fw={500}
           >
             {props.title}

@@ -2,6 +2,7 @@ import {
   Button,
   createTheme,
   List,
+  Modal,
   PasswordInput,
   Select,
   TextInput,
@@ -69,6 +70,11 @@ export const theme = createTheme({
         variant: "default",
         labelProps: { fw: "normal", mb: 4 },
         errorProps: { mt: "xs" },
+      },
+    }),
+    ModalRoot: Modal.Root.extend({
+      defaultProps: {
+        style: { containerName: "dialog" },
       },
     }),
   },
