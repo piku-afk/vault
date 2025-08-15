@@ -11,11 +11,11 @@ import { TransactionItem, TransactionItemSkeleton } from "./transaction-item";
 
 dayjs.extend(customParseFormat);
 
-export function RecentActivity() {
+export function TransactionHistory() {
   const loaderData = useOverviewLoaderData();
 
   return (
-    <Section title="Recent Activity">
+    <Section title="Transaction History">
       <Card withBorder>
         <List spacing="md">
           <Suspense

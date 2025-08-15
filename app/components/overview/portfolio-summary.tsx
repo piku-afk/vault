@@ -7,11 +7,11 @@ import { useOverviewLoaderData } from "#/routes/private/overview";
 
 import { MetricCard, MetricCardSkeleton } from "./metric-card";
 
-export function PortfolioOverview() {
+export function PortfolioSummary() {
   const loaderData = useOverviewLoaderData();
 
   return (
-    <Section title="Portfolio Overview">
+    <Section title="Portfolio Summary">
       <SimpleGrid cols={{ base: 1, xs: 3 }} spacing="lg">
         <Suspense
           fallback={Array.from(Array(3).keys()).map((item) => (

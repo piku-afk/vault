@@ -13,9 +13,9 @@ import {
   PortfolioHealth,
 } from "./portfolio-health";
 
-export function PortfolioBreakdown() {
+export function PortfolioAnalysis() {
   return (
-    <Section title="Portfolio Breakdown">
+    <Section title="Portfolio Analysis">
       <SimpleGrid cols={{ base: 1, xs: 2 }} spacing="lg">
         <Suspense fallback={<AllocationChartSkeleton />}>
           <AllocationChart />

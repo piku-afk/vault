@@ -3,10 +3,10 @@ import { Outlet, useLoaderData } from "react-router";
 
 import { CategoryPerformance } from "#/components/overview/category-performance";
 import { InvestmentGoals } from "#/components/overview/investment-goals";
-import { PortfolioBreakdown } from "#/components/overview/portfolio-breakdown";
-import { PortfolioOverview } from "#/components/overview/portfolio-overview";
-import { QuickStatsGrid } from "#/components/overview/quick-stats-grid";
-import { RecentActivity } from "#/components/overview/recent-activity";
+import { PortfolioAnalysis } from "#/components/overview/portfolio-analysis";
+import { PortfolioStats } from "#/components/overview/portfolio-stats";
+import { PortfolioSummary } from "#/components/overview/portfolio-summary";
+import { TransactionHistory } from "#/components/overview/transaction-history";
 import { getGoalProgress } from "#/database/getGoals.server";
 import {
   getQuickStats,
@@ -40,23 +40,23 @@ export function useOverviewLoaderData() {
 export default function Overview() {
   return (
     <Stack mt="md" gap="xl">
-      <PortfolioOverview />
+      <PortfolioSummary />
       <Divider />
 
-      <InvestmentGoals />
+      <PortfolioStats />
       <Divider />
 
-      <QuickStatsGrid />
+      <PortfolioAnalysis />
       <Divider />
 
       <CategoryPerformance />
       <Divider />
+
+      <InvestmentGoals />
+      <Divider />
       <Outlet />
 
-      <PortfolioBreakdown />
-      <Divider />
-
-      <RecentActivity />
+      <TransactionHistory />
     </Stack>
   );
 }

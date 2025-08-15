@@ -8,11 +8,11 @@ import { useOverviewLoaderData } from "#/routes/private/overview";
 
 import { StatCard, StatCardSkeleton } from "./stat-card";
 
-export function QuickStatsGrid() {
+export function PortfolioStats() {
   const loaderData = useOverviewLoaderData();
 
   return (
-    <Section title="Quick Stats">
+    <Section title="Portfolio Stats">
       <Grid grow gutter="lg">
         <Suspense
           fallback={Array.from(Array(3).keys()).map((item) => (
