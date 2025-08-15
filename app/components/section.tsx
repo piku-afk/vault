@@ -1,18 +1,8 @@
 import { Anchor, Box, Title } from "@mantine/core";
-import { type PropsWithChildren, useEffect } from "react";
+import type { PropsWithChildren } from "react";
 
 export function Section(props: PropsWithChildren & { title: string }) {
   const sectionId = props.title.toLowerCase().replace(/\s+/g, "-");
-
-  useEffect(() => {
-    // Check if the current URL hash matches this section's ID
-    if (window.location.hash === `#${sectionId}`) {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  }, [sectionId]);
 
   return (
     <Box component="section">

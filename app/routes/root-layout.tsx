@@ -1,5 +1,5 @@
 import { Stack } from "@mantine/core";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { Footer } from "#/components/footer";
 import { Header } from "#/components/header";
@@ -10,6 +10,16 @@ export default function RootLayout() {
   const headerRef = useRef<HTMLDivElement>(null!);
   // biome-ignore lint/style/noNonNullAssertion: need this for ts error
   const footerRef = useRef<HTMLDivElement>(null!);
+
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      const element = document.querySelector(hash);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, []);
 
   return (
     <Stack gap={0} mih="100vh">
