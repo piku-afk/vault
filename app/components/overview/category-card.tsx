@@ -15,7 +15,7 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { Maximize2 } from "lucide-react";
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 
 import { CurrencyFormatter } from "#/components/currency-formatter";
 import { ROUTES } from "#/constants/routes";
@@ -28,7 +28,6 @@ type CategoryData = Awaited<
 
 interface CategoryCardProps {
   category: CategoryData;
-  onViewDetails?: () => void;
 }
 
 interface StatItemProps {
@@ -38,19 +37,6 @@ interface StatItemProps {
   prefix?: string;
   allowNegative?: boolean;
 }
-
-// Constants
-const PROGRESS_MAX_VALUE = 150;
-
-// Utilities
-const calculateProgressValue = (current: number, invested: number): number => {
-  return invested > 0
-    ? Math.min(((current - invested) / invested) * 100, PROGRESS_MAX_VALUE)
-    : 0;
-};
-
-const getReturnColor = (returns: number): string =>
-  returns > 0 ? "teal" : "red";
 
 const formatSchemeCount = (count: number): string =>
   `${count} ${count === 1 ? "Scheme" : "Schemes"}`;
@@ -79,93 +65,57 @@ function StatItem({
   );
 }
 
-function CategoryHeader({
-  category,
-  returnColor,
-}: {
-  category: CategoryData;
-  returnColor: string;
-}) {
-  const isPositive = category.returns > 0;
-
-  return (
-    <Group align="flex-start">
-      <ThemeIcon mt={2} variant="default" size="lg">
-        <Image
-          loading="lazy"
-          src={category.icon}
-          alt={category.name}
-          w="auto"
-          h={20}
-        />
-      </ThemeIcon>
-      <Box>
-        <Text size="lg">{category.name}</Text>
-        <Text size="sm" c="dimmed">
-          {formatSchemeCount(Number(category.schemes_count))}
-        </Text>
-      </Box>
-      <Tooltip label="Returns percentage">
-        <Badge ml="auto" variant="light" color={returnColor} size="lg">
-          <NumberFormatter
-            value={category.returns_percentage}
-            suffix="%"
-            decimalScale={2}
-            allowNegative={false}
-            prefix={isPositive ? "+" : "-"}
-          />
-        </Badge>
-      </Tooltip>
-      <Tooltip label="View details">
-        <ActionIcon
-          component={Link}
-          to={ROUTES.CATEGORY_DETAILS.replace(":category", category.name)}
-          variant="default"
-          preventScrollReset
-        >
-          <Maximize2 size={14} />
-        </ActionIcon>
-      </Tooltip>
-    </Group>
-  );
-}
-
-function CategoryStats({
-  category,
-  returnColor,
-}: {
-  category: CategoryData;
-  returnColor: string;
-}) {
-  const isPositive = category.returns > 0;
-
-  return (
-    <SimpleGrid cols={2} spacing="sm">
-      <StatItem label="Current" value={category.current} />
-      <StatItem label="Invested" value={category.invested} />
-      <StatItem
-        label="Returns"
-        value={category.returns}
-        color={returnColor}
-        prefix={isPositive ? "+" : "-"}
-        allowNegative={false}
-      />
-      <StatItem label="Monthly SIP" value={Number(category.monthly_sip)} />
-    </SimpleGrid>
-  );
-}
-
 export function CategoryCard({ category }: CategoryCardProps) {
-  const progressValue = calculateProgressValue(
-    category.current,
-    category.invested,
-  );
-  const returnColor = getReturnColor(category.returns);
+  const navigate = useNavigate();
+  const progressValue =
+    category.invested > 0
+      ? ((category.current - category.invested) / category.invested) * 100
+      : 0;
+  const isPositive = category.returns > 0;
+  const returnColor = category.returns > 0 ? "teal" : "red";
+
+  function handleViewDetails() {
+    navigate(ROUTES.CATEGORY_DETAILS.replace(":category", category.name), {
+      preventScrollReset: true,
+    });
+  }
 
   return (
     <Card withBorder>
       <Stack gap="md">
-        <CategoryHeader category={category} returnColor={returnColor} />
+        <Group align="flex-start">
+          <ThemeIcon mt={2} variant="default" size="lg">
+            <Image
+              loading="lazy"
+              src={category.icon}
+              alt={category.name}
+              w="auto"
+              h={20}
+            />
+          </ThemeIcon>
+          <Box>
+            <Text size="lg">{category.name}</Text>
+            <Text size="sm" c="dimmed">
+              {formatSchemeCount(Number(category.schemes_count))}
+            </Text>
+          </Box>
+          <Tooltip label="Returns percentage">
+            <Badge ml="auto" variant="light" color={returnColor} size="lg">
+              <NumberFormatter
+                value={category.returns_percentage}
+                suffix="%"
+                decimalScale={2}
+                allowNegative={false}
+                prefix={isPositive ? "+" : "-"}
+              />
+            </Badge>
+          </Tooltip>
+          <Tooltip label="View details">
+            <ActionIcon variant="default" onClick={handleViewDetails}>
+              <Maximize2 size={14} />
+            </ActionIcon>
+          </Tooltip>
+        </Group>
 
         <Progress
           value={progressValue}
@@ -174,7 +124,18 @@ export function CategoryCard({ category }: CategoryCardProps) {
           radius="xl"
         />
 
-        <CategoryStats category={category} returnColor={returnColor} />
+        <SimpleGrid cols={2} spacing="sm">
+          <StatItem label="Current" value={category.current} />
+          <StatItem label="Invested" value={category.invested} />
+          <StatItem
+            label="Returns"
+            value={category.returns}
+            color={returnColor}
+            prefix={isPositive ? "+" : "-"}
+            allowNegative={false}
+          />
+          <StatItem label="Monthly SIP" value={Number(category.monthly_sip)} />
+        </SimpleGrid>
       </Stack>
     </Card>
   );
