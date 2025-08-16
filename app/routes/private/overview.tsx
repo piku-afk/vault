@@ -56,7 +56,6 @@ export default function Overview() {
         title="Category Performance"
         data={savingsCategorySummary}
       />
-      {/* <CategoryPerformance /> */}
       <Divider />
 
       <InvestmentGoals />
