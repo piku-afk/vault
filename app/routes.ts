@@ -16,6 +16,7 @@ export default [
     ]),
     layout("routes/private/private-layout.tsx", [
       route(ROUTES.OVERVIEW, "routes/private/overview.tsx", [
+        route(ROUTES.SIP_BREAKDOWN, "routes/private/sip-breakdown.tsx"),
         route(ROUTES.CATEGORY_DETAILS, "routes/private/category-details.tsx"),
       ]),
       route(ROUTES.INVESTMENTS, "routes/private/investments.tsx"),
