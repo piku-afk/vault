@@ -31,7 +31,7 @@ interface BaseFinancialData extends FinancialData {
   returns_percentage: number;
 }
 
-interface FinancialCardProps {
+interface PerformanceCardProps {
   data: BaseFinancialData;
   icon: string;
   iconAlt: string;
@@ -49,7 +49,7 @@ interface FinancialCardProps {
   }>;
 }
 
-export function FinancialCard({
+export function PerformanceCard({
   data,
   icon,
   iconAlt,
@@ -59,7 +59,7 @@ export function FinancialCard({
   actionIcon = <Maximize2 size={14} />,
   actionTooltip = "View details",
   additionalStats = [],
-}: FinancialCardProps) {
+}: PerformanceCardProps) {
   const { isInContainer: isInDialog, ref } = useInContainer("dialog");
   const progressValue = calculateProgressValue(data);
   const returnColor = getReturnsColor(data.returns);
@@ -149,7 +149,7 @@ export function FinancialCard({
   );
 }
 
-export function FinancialCardSkeleton() {
+export function PerformanceCardSkeleton() {
   const { isInContainer: isInDialog, ref } = useInContainer("dialog");
 
   const iconSize = isInDialog ? 16 : 20;

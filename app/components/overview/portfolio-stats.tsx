@@ -3,7 +3,7 @@ import { Building2, CalendarClock, ReceiptIndianRupee } from "lucide-react";
 import { Suspense } from "react";
 import { Await } from "react-router";
 
-import { Section } from "#/components/section";
+import { Section } from "#/components/shared/section";
 import { useOverviewLoaderData } from "#/routes/private/overview";
 
 import { StatCard, StatCardSkeleton } from "./stat-card";

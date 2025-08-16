@@ -2,9 +2,9 @@ import { SimpleGrid } from "@mantine/core";
 import { Suspense } from "react";
 
 import {
-  FinancialCard,
-  FinancialCardSkeleton,
-} from "#/components/shared/financial-card";
+  PerformanceCard,
+  PerformanceCardSkeleton,
+} from "#/components/shared/performance-card";
 import { Section } from "#/components/shared/section";
 import { useCategoryDetailsLoaderData } from "#/routes/private/category-details";
 
@@ -16,11 +16,11 @@ export default function FundPerformance() {
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
         <Suspense
           fallback={Array.from(Array(4).keys()).map((item) => (
-            <FinancialCardSkeleton key={item} />
+            <PerformanceCardSkeleton key={item} />
           ))}
         >
           {schemes.map((scheme) => (
-            <FinancialCard
+            <PerformanceCard
               key={scheme.scheme_name}
               data={{
                 current: scheme.current,

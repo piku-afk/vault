@@ -2,9 +2,9 @@ import { Maximize2 } from "lucide-react";
 import { useNavigate } from "react-router";
 
 import {
-  FinancialCard,
-  FinancialCardSkeleton,
-} from "#/components/shared/financial-card";
+  PerformanceCard,
+  PerformanceCardSkeleton,
+} from "#/components/shared/performance-card";
 import { ROUTES } from "#/constants/routes";
 import type { getSavingsCategorySummary } from "#/database/getSummaryBySavingsCategory.server";
 import { formatSchemeCount } from "#/utils/financialHelpers";
@@ -28,7 +28,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
   }
 
   return (
-    <FinancialCard
+    <PerformanceCard
       data={{
         current: category.current,
         invested: category.invested,
@@ -53,5 +53,5 @@ export function CategoryCard({ category }: CategoryCardProps) {
 }
 
 export function CategoryCardSkeleton() {
-  return <FinancialCardSkeleton />;
+  return <PerformanceCardSkeleton />;
 }
