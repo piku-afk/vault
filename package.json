@@ -27,6 +27,8 @@
     "@mantine/form": "^8.2.4",
     "@mantine/hooks": "^8.2.4",
     "@mantine/notifications": "^8.2.4",
+    "@nivo/core": "^0.99.0",
+    "@nivo/pie": "^0.99.0",
     "@react-router/node": "^7.8.0",
     "@react-router/serve": "^7.8.0",
     "@supabase/ssr": "^0.6.1",

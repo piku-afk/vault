@@ -17,6 +17,7 @@ export async function getSavingsCategorySummary() {
     )
     .select((eb) => [
       "sc.name",
+      "sc.color",
       "sc.icon",
       eb.fn.count("mfs.scheme_name").as("schemes_count"),
       eb.fn.sum<number>("mfs2.sip_amount").as("monthly_sip"),
@@ -25,7 +26,7 @@ export async function getSavingsCategorySummary() {
       netReturnsSql.as("returns"),
       netReturnsPercentageSql.as("returns_percentage"),
     ])
-    .groupBy(["sc.name", "sc.icon", "sc.created_at"])
+    .groupBy(["sc.name", "sc.color", "sc.icon", "sc.created_at"])
     .orderBy("sc.created_at", "asc")
     .execute();
 }

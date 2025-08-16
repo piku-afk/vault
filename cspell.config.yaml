@@ -10,9 +10,8 @@ ignoreWords:
   - isbot
   - kysely
   - kyselify
-  - nwtgck
+  - nivo
   - piku
-  - pikuh
   - pipeable
   - supabase
   - vite
