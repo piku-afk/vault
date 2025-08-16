@@ -1,4 +1,4 @@
-import { Grid } from "@mantine/core";
+import { Card, SimpleGrid, Stack, Text } from "@mantine/core";
 import { Building2, CalendarClock, ReceiptIndianRupee } from "lucide-react";
 import { Suspense } from "react";
 import { Await } from "react-router";
@@ -13,43 +13,46 @@ export function PortfolioStats() {
 
   return (
     <Section title="Portfolio Stats">
-      <Grid grow gutter="lg">
-        <Suspense
-          fallback={Array.from(Array(3).keys()).map((item) => (
-            <Grid.Col span={{ base: 6, xs: 4 }} key={item}>
-              <StatCardSkeleton />
-            </Grid.Col>
-          ))}
-        >
-          <Await resolve={loaderData.quickStats}>
-            {(quickStats) => {
-              const stats = [
-                {
-                  icon: Building2,
-                  value: quickStats.totalSchemes,
-                  label: "Total Schemes",
-                },
-                {
-                  icon: CalendarClock,
-                  value: quickStats.daysTillNextTransaction,
-                  label: "Days Till Next SIP",
-                },
-                {
-                  icon: ReceiptIndianRupee,
-                  value: quickStats.monthlySip,
-                  label: "Monthly SIP",
-                  isCurrency: true,
-                },
-              ];
-              return stats.map((stat) => (
-                <Grid.Col span={{ base: 6, xs: 4 }} key={stat.label}>
-                  <StatCard {...stat} />
-                </Grid.Col>
-              ));
-            }}
-          </Await>
-        </Suspense>
-      </Grid>
+      <SimpleGrid cols={{ base: 1, xs: 2 }} spacing="lg">
+        <Stack gap="lg">
+          <Suspense
+            fallback={Array.from(Array(3).keys()).map((item) => (
+              <StatCardSkeleton key={item} />
+            ))}
+          >
+            <Await resolve={loaderData.quickStats}>
+              {(quickStats) => {
+                const stats = [
+                  {
+                    icon: Building2,
+                    value: quickStats.totalSchemes,
+                    label: "Total Schemes",
+                  },
+                  {
+                    icon: CalendarClock,
+                    value: quickStats.daysTillNextTransaction,
+                    label: "Days Till Next SIP",
+                  },
+                  {
+                    icon: ReceiptIndianRupee,
+                    value: quickStats.monthlySip,
+                    label: "Monthly SIP",
+                    isCurrency: true,
+                  },
+                ];
+                return stats.map((stat) => (
+                  <StatCard key={stat.label} {...stat} />
+                ));
+              }}
+            </Await>
+          </Suspense>
+        </Stack>
+        <Card withBorder>
+          <Text size="xs" c="dimmed" ta="center">
+            SIP Breakdown
+          </Text>
+        </Card>
+      </SimpleGrid>
     </Section>
   );
 }
