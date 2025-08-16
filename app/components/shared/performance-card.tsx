@@ -29,6 +29,7 @@ import { StatItem } from "./stat-item";
 
 interface BaseFinancialData extends FinancialData {
   returns_percentage: number;
+  monthly_sip: number;
 }
 
 interface PerformanceCardProps {
@@ -140,6 +141,7 @@ export function PerformanceCard({
             prefix={getReturnsPrefix(data.returns)}
             allowNegative={false}
           />
+          <StatItem label="Monthly SIP" value={data.monthly_sip} />
           {additionalStats.map((stat) => (
             <StatItem key={stat.label} {...stat} />
           ))}

@@ -7,6 +7,7 @@ import { PortfolioAnalysis } from "#/components/overview/portfolio-analysis";
 import { PortfolioStats } from "#/components/overview/portfolio-stats";
 import { PortfolioSummary } from "#/components/overview/portfolio-summary";
 import { TransactionHistory } from "#/components/overview/transaction-history";
+import { PerformanceSection } from "#/components/sections/performance-section";
 import { getGoalProgress } from "#/database/getGoals.server";
 import {
   getQuickStats,
@@ -38,6 +39,8 @@ export function useOverviewLoaderData() {
 }
 
 export default function Overview() {
+  const { savingsCategorySummary } = useOverviewLoaderData();
+
   return (
     <Stack mt="md" gap="xl">
       <PortfolioSummary />
@@ -49,7 +52,11 @@ export default function Overview() {
       <PortfolioAnalysis />
       <Divider />
 
-      <CategoryPerformance />
+      <PerformanceSection
+        title="Category Performance"
+        data={savingsCategorySummary}
+      />
+      {/* <CategoryPerformance /> */}
       <Divider />
 
       <InvestmentGoals />

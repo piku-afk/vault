@@ -19,7 +19,7 @@ export async function getSavingsCategorySummary() {
       "sc.name",
       "sc.icon",
       eb.fn.count("mfs.scheme_name").as("schemes_count"),
-      eb.fn.sum("mfs2.sip_amount").as("monthly_sip"),
+      eb.fn.sum<number>("mfs2.sip_amount").as("monthly_sip"),
       netInvestedSql.as("invested"),
       netWorthSql.as("current"),
       netReturnsSql.as("returns"),
