@@ -1,7 +1,7 @@
 import { SimpleGrid, Stack } from "@mantine/core";
 import { Suspense } from "react";
 
-import { Section } from "#/components/section";
+import { Section } from "#/components/shared/section";
 
 import { AllocationChart, AllocationChartSkeleton } from "./allocation-chart";
 import {

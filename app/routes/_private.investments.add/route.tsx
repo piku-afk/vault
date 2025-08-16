@@ -7,7 +7,7 @@ import { useFetcher, useSubmit } from "react-router";
 
 import { db } from "#/database/kysely.server";
 
-import { Section } from "../../components/section";
+import { Section } from "../../components/shared/section";
 import type { Route } from "../_private.investments.add/+types/route";
 import { GroupBy } from "./group-by/group-by";
 import {

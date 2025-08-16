@@ -10,7 +10,8 @@ import {
 } from "@mantine/core";
 import { Plus } from "lucide-react";
 
-import { Section } from "../../../components/section";
+import { Section } from "#/components/shared/section";
+
 import { DateField } from "../date-field";
 import { FundNameField } from "../fund-name-field";
 import {

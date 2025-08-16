@@ -2,7 +2,7 @@ import { SimpleGrid } from "@mantine/core";
 import { Suspense } from "react";
 import { Await } from "react-router";
 
-import { Section } from "#/components/section";
+import { Section } from "#/components/shared/section";
 import { useOverviewLoaderData } from "#/routes/private/overview";
 import {
   getReturnsColor,

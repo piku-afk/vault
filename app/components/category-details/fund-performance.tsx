@@ -1,11 +1,11 @@
 import { SimpleGrid } from "@mantine/core";
 import { Suspense } from "react";
 
-import { Section } from "#/components/section";
 import {
   FinancialCard,
   FinancialCardSkeleton,
 } from "#/components/shared/financial-card";
+import { Section } from "#/components/shared/section";
 import { useCategoryDetailsLoaderData } from "#/routes/private/category-details";
 
 export default function FundPerformance() {

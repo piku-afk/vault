@@ -4,7 +4,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import { Suspense } from "react";
 import { Await } from "react-router";
 
-import { Section } from "#/components/section";
+import { Section } from "#/components/shared/section";
 import { useOverviewLoaderData } from "#/routes/private/overview";
 
 import { TransactionItem, TransactionItemSkeleton } from "./transaction-item";
