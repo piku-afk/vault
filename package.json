@@ -13,7 +13,7 @@
     "format": "pnpm exec biome format --write",
     "lint": "pnpm exec biome lint --write",
     "deploy:web": "netlify deploy --prod",
-    "db:types": "dotenv supabase gen types typescript --project-id $SUPABASE_PROJECT_ID > app/types/database.ts",
+    "db:types": "dotenv supabase gen types typescript --project-id $SUPABASE_PROJECT_ID > app/database/database.ts",
     "dev": "react-router dev",
     "build": "react-router build",
     "typecheck": "react-router typegen && tsc",
