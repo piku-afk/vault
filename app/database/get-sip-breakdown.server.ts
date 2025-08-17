@@ -10,14 +10,21 @@ export async function getSipBreakdown(category?: string) {
       .$if(!category, (qb) =>
         qb
           .select(["sc.id", "sc.name", "sc.color"])
-          .groupBy(["sc.id", "sc.name", "sc.color"]),
+          .orderBy("sc.created_at")
+          .groupBy(["sc.id", "sc.name", "sc.color", "sc.created_at"]),
       )
       // if a category is provided, group by scheme_name
       .$if(!!category, (qb) =>
         qb
           .select(["mfs.id", "mfs.sub_category as name", "mfs.color"])
           .where("mfs.saving_category", "=", category as string)
-          .groupBy(["mfs.id", "mfs.sub_category", "mfs.color"]),
+          .orderBy("mfs.created_at")
+          .groupBy([
+            "mfs.id",
+            "mfs.sub_category",
+            "mfs.color",
+            "mfs.created_at",
+          ]),
       )
       .execute()
   );
