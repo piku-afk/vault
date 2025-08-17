@@ -3,12 +3,14 @@ import type { PropsWithChildren, RefObject } from "react";
 
 import { useInContainer } from "#/hooks/use-in-container";
 
-export function Section(props: PropsWithChildren & { title: string }) {
+export function Section(
+  props: PropsWithChildren<{ title: string; ref: RefObject<HTMLDivElement> }>,
+) {
   const sectionId = props.title.toLowerCase().replace(/\s+/g, "-");
   const { isInContainer: isInDialog, ref } = useInContainer("dialog");
 
   return (
-    <Box component="section">
+    <Box ref={props.ref} component="section">
       {props.title && (
         <Anchor c="black" underline="never" href={`#${sectionId}`}>
           <Title
