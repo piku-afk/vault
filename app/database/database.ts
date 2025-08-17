@@ -78,7 +78,7 @@ export type Database = {
           is_active: boolean
           last_month_nav: number
           last_month_nav_date: string
-          logo: string | null
+          logo: string
           nav: number
           nav_date: string
           next_sip_date: string
@@ -96,7 +96,7 @@ export type Database = {
           is_active?: boolean
           last_month_nav: number
           last_month_nav_date: string
-          logo?: string | null
+          logo: string
           nav: number
           nav_date: string
           next_sip_date?: string
@@ -114,7 +114,7 @@ export type Database = {
           is_active?: boolean
           last_month_nav?: number
           last_month_nav_date?: string
-          logo?: string | null
+          logo?: string
           nav?: number
           nav_date?: string
           next_sip_date?: string
