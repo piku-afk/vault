@@ -14,8 +14,9 @@ import {
   ThemeIcon,
   Tooltip,
 } from "@mantine/core";
-import { Maximize2 } from "lucide-react";
-import type { ReactNode, RefObject } from "react";
+import { Info } from "lucide-react";
+import type { RefObject } from "react";
+import { NavLink } from "react-router";
 
 import { useInContainer } from "#/hooks/use-in-container";
 import {
@@ -38,9 +39,7 @@ interface PerformanceCardProps {
   iconAlt: string;
   title: string;
   subtitle?: string;
-  onAction?: () => void;
-  actionIcon?: ReactNode;
-  actionTooltip?: string;
+  actionRoute?: string;
   additionalStats?: Array<{
     label: string;
     value: number;
@@ -56,9 +55,7 @@ export function PerformanceCard({
   iconAlt,
   title,
   subtitle,
-  onAction,
-  actionIcon = <Maximize2 size={14} />,
-  actionTooltip = "View details",
+  actionRoute,
   additionalStats = [],
 }: PerformanceCardProps) {
   const { isInContainer: isInDialog, ref } = useInContainer("dialog");
@@ -89,9 +86,22 @@ export function PerformanceCard({
             />
           </ThemeIcon>
           <Box>
-            <Text size={titleSize} lineClamp={1}>
-              {title}
-            </Text>
+            <Group align="baseline" gap="xs">
+              <Text size={titleSize} lineClamp={1}>
+                {title}
+              </Text>
+              {actionRoute && (
+                <Tooltip label="View Details">
+                  <NavLink to={actionRoute} preventScrollReset>
+                    {({ isPending }) => (
+                      <ActionIcon variant="light" size="sm" loading={isPending}>
+                        <Info size={14} />
+                      </ActionIcon>
+                    )}
+                  </NavLink>
+                </Tooltip>
+              )}
+            </Group>
             {subtitle && (
               <Text size="xs" c="dimmed">
                 {subtitle}
@@ -115,13 +125,6 @@ export function PerformanceCard({
               />
             </Badge>
           </Tooltip>
-          {onAction && (
-            <Tooltip label={actionTooltip}>
-              <ActionIcon variant="default" onClick={onAction} size={iconSize}>
-                {actionIcon}
-              </ActionIcon>
-            </Tooltip>
-          )}
         </Group>
 
         <Progress

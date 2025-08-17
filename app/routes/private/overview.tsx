@@ -1,7 +1,6 @@
 import { Divider, Stack } from "@mantine/core";
 import { Outlet, useLoaderData } from "react-router";
 
-import { CategoryPerformance } from "#/components/overview/category-performance";
 import { InvestmentGoals } from "#/components/overview/investment-goals";
 import { PortfolioAnalysis } from "#/components/overview/portfolio-analysis";
 import { PortfolioStats } from "#/components/overview/portfolio-stats";

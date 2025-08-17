@@ -19,6 +19,7 @@ export function PerformanceSection(props: {
       current: number;
       invested: number;
       returns: number;
+      action_route?: string;
       returns_percentage: number;
       monthly_sip: number;
     }[]
@@ -42,6 +43,7 @@ export function PerformanceSection(props: {
                   iconAlt={item.name}
                   title={item.name}
                   subtitle={item.subtitle}
+                  actionRoute={item.action_route}
                 />
               ))
             }
