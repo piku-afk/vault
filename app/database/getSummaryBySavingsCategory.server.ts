@@ -1,9 +1,9 @@
 import { db } from "../database/kysely.server";
 import {
+  netCurrentSql,
   netInvestedSql,
   netReturnsPercentageSql,
   netReturnsSql,
-  netWorthSql,
 } from "./investmentQueries.server";
 
 export async function getSavingsCategorySummary() {
@@ -22,7 +22,7 @@ export async function getSavingsCategorySummary() {
       eb.fn.count("mfs.scheme_name").as("schemes_count"),
       eb.fn.sum<number>("mfs2.sip_amount").as("monthly_sip"),
       netInvestedSql.as("invested"),
-      netWorthSql.as("current"),
+      netCurrentSql.as("current"),
       netReturnsSql.as("returns"),
       netReturnsPercentageSql.as("returns_percentage"),
     ])

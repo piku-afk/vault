@@ -1,6 +1,6 @@
 import { sql } from "kysely";
 
-import { netWorthSql } from "./investmentQueries.server";
+import { netCurrentSql } from "./investmentQueries.server";
 import { db } from "./kysely.server";
 
 export async function getGoalProgress() {
@@ -12,24 +12,24 @@ export async function getGoalProgress() {
       "g.name",
       "g.target",
       "sc.icon",
-      netWorthSql.as("current"),
+      netCurrentSql.as("current"),
       sql<number>`
         CASE
-          WHEN ${netWorthSql} >= g.target 
+          WHEN ${netCurrentSql} >= g.target 
           THEN 0
-          ELSE g.target - ${netWorthSql}
+          ELSE g.target - ${netCurrentSql}
         END
       `.as("remaining"),
       sql<number>`
         CASE
-          WHEN ${netWorthSql} >= g.target 
+          WHEN ${netCurrentSql} >= g.target 
           THEN 100
-          ELSE ROUND((${netWorthSql} / g.target) * 100, 2)
+          ELSE ROUND((${netCurrentSql} / g.target) * 100, 2)
         END
       `.as("progress"),
       sql<boolean>`
         CASE
-          WHEN ${netWorthSql} >= g.target 
+          WHEN ${netCurrentSql} >= g.target 
           THEN true
           ELSE false
         END

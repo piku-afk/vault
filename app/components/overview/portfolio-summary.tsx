@@ -31,10 +31,10 @@ export function PortfolioSummary() {
 
               const metrics = [
                 {
-                  label: "Net Worth",
+                  label: "Net Current",
                   badgeText: "Total",
                   badgeColor: "gray",
-                  value: summary.net_worth,
+                  value: summary.net_current,
                   description: "Current portfolio value",
                 },
                 {

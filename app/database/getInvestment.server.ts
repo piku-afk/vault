@@ -2,10 +2,10 @@ import { sql } from "kysely";
 
 import { db } from "../database/kysely.server";
 import {
+  netCurrentSql,
   netInvestedSql,
   netReturnsPercentageSql,
   netReturnsSql,
-  netWorthSql,
 } from "./investmentQueries.server";
 
 export async function getInvestmentData() {
@@ -14,7 +14,7 @@ export async function getInvestmentData() {
     .innerJoin("transactions as t", "t.scheme_name", "mfs.scheme_name")
     .select([
       "mfs.scheme_name",
-      netWorthSql.as("current"),
+      netCurrentSql.as("current"),
       netInvestedSql.as("invested"),
       netReturnsSql.as("returns"),
       netReturnsPercentageSql.as("returns_percentage"),
@@ -38,7 +38,7 @@ export async function getInvestmentDataBySavingsCategory() {
         )
         .select([
           netInvestedSql.as("invested"),
-          netWorthSql.as("current"),
+          netCurrentSql.as("current"),
           sql<string>`t.scheme_name`.as("scheme_name"),
         ])
         .groupBy("t.scheme_name")

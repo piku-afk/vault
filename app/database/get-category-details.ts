@@ -1,8 +1,8 @@
 import {
+  netCurrentSql,
   netInvestedSql,
   netReturnsPercentageSql,
   netReturnsSql,
-  netWorthSql,
 } from "./investmentQueries.server";
 import { db } from "./kysely.server";
 
@@ -26,7 +26,7 @@ export async function getCategoryDetails(category: string) {
       "mfs2.sub_category",
       "mfs2.sip_amount as monthly_sip",
       netInvestedSql.as("invested"),
-      netWorthSql.as("current"),
+      netCurrentSql.as("current"),
       netReturnsSql.as("returns"),
       netReturnsPercentageSql.as("returns_percentage"),
     ])

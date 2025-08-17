@@ -1,7 +1,7 @@
 import { sql } from "kysely";
 
 import { db } from "../database/kysely.server";
-import { netWorthSql } from "./investmentQueries.server";
+import { netCurrentSql } from "./investmentQueries.server";
 
 export async function getCategoryAllocation() {
   const categoryAllocation = await db
@@ -9,7 +9,7 @@ export async function getCategoryAllocation() {
       db
         .selectFrom("mutual_fund_summary as mfs")
         .innerJoin("savings_categories as sc", "sc.name", "mfs.saving_category")
-        .select(["sc.name", "sc.color", netWorthSql.as("current")])
+        .select(["sc.name", "sc.color", netCurrentSql.as("current")])
         .groupBy(["sc.name", "sc.color", "sc.created_at"])
         .orderBy("sc.created_at", "asc")
         .as("summary_by_category"),

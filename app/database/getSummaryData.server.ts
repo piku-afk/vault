@@ -2,10 +2,10 @@ import { type CashFlow, xirr } from "@webcarrot/xirr";
 
 import { db } from "../database/kysely.server";
 import {
+  netCurrentSql,
   netInvestedSql,
   netReturnsPercentageSql,
   netReturnsSql,
-  netWorthSql,
 } from "./investmentQueries.server";
 
 export async function getSummaryData() {
@@ -13,7 +13,7 @@ export async function getSummaryData() {
     .selectFrom("mutual_fund_summary as mfs")
     .select([
       netInvestedSql.as("net_invested"),
-      netWorthSql.as("net_worth"),
+      netCurrentSql.as("net_current"),
       netReturnsSql.as("net_returns"),
       netReturnsPercentageSql.as("net_returns_percentage"),
     ])
