@@ -62,6 +62,7 @@ export function PortfolioStats() {
                   label: "Monthly SIP",
                   isCurrency: true,
                   showViewDetails: true,
+                  route: ROUTES.SIP_BREAKDOWN,
                 },
               ];
               return stats.map((stat) => (
@@ -81,7 +82,7 @@ export function PortfolioStats() {
                         </Text>
                         {stat.showViewDetails && (
                           <Tooltip label="View Details">
-                            <NavLink to={ROUTES.SIP_BREAKDOWN}>
+                            <NavLink to={stat.route} preventScrollReset>
                               {({ isPending }) => (
                                 <ActionIcon
                                   size="sm"
