@@ -13,6 +13,18 @@ export async function getCategoryDetails(category: string) {
     .where("name", "=", category)
     .executeTakeFirstOrThrow();
 
+  const categorySummary = db
+    .selectFrom("mutual_fund_summary as mfs")
+    .select((eb) => [
+      netInvestedSql.as("net_invested"),
+      netCurrentSql.as("net_current"),
+      netReturnsSql.as("net_returns"),
+      netReturnsPercentageSql.as("net_returns_percentage"),
+      eb.lit<number>(0).as("xirr"),
+    ])
+    .where("mfs.saving_category", "=", category)
+    .executeTakeFirstOrThrow();
+
   const schemes = db
     .selectFrom("mutual_fund_summary as mfs")
     .innerJoin(
@@ -39,5 +51,5 @@ export async function getCategoryDetails(category: string) {
     ])
     .execute();
 
-  return { categoryDetails, schemes };
+  return { categoryDetails, categorySummary, schemes };
 }

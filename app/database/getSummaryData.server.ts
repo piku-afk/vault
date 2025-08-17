@@ -9,15 +9,14 @@ import {
 } from "./investmentQueries.server";
 
 export async function getSummaryData() {
-  const summary = await db
+  return await db
     .selectFrom("mutual_fund_summary as mfs")
-    .select([
+    .select((eb) => [
       netInvestedSql.as("net_invested"),
       netCurrentSql.as("net_current"),
       netReturnsSql.as("net_returns"),
       netReturnsPercentageSql.as("net_returns_percentage"),
+      eb.lit<number>(0).as("xirr"),
     ])
     .executeTakeFirstOrThrow();
-
-  return { ...summary, xirr: 0 };
 }

@@ -1,7 +1,8 @@
-import { Container, Modal, ScrollArea, Stack } from "@mantine/core";
+import { Divider, Modal, ScrollArea, Stack } from "@mantine/core";
 import { useLoaderData, useNavigate, useParams } from "react-router";
 
 import { PerformanceSection } from "#/components/sections/performance-section";
+import { SummarySection } from "#/components/sections/summary-section";
 import { ROUTES } from "#/constants/routes";
 import { getCategoryDetails } from "#/database/get-category-details";
 
@@ -17,10 +18,10 @@ export const useCategoryDetailsLoaderData = () => {
 };
 
 export default function CategoryDetails() {
-  const { category } = useParams();
-  const fundName = `${category} Fund`;
   const navigate = useNavigate();
+  const { category } = useParams();
   const loaderData = useCategoryDetailsLoaderData();
+  const fundName = `${category} Fund`;
 
   function handleClose() {
     navigate(ROUTES.OVERVIEW, { preventScrollReset: true });
@@ -36,15 +37,19 @@ export default function CategoryDetails() {
     >
       <Modal.Overlay blur={7} />
       <Modal.Content>
-        <Modal.Body p={0}>
-          <Container w="100%" size="md" pb="xl" pt="md">
-            <Stack gap="xl">
-              <PerformanceSection
-                title={`${fundName} Performance`}
-                data={loaderData.schemes}
-              />
-            </Stack>
-          </Container>
+        <Modal.Body pb="xl" pt="md">
+          <Stack gap="xl">
+            <SummarySection
+              title={`${fundName} Summary`}
+              data={loaderData.categorySummary}
+            />
+            <Divider />
+
+            <PerformanceSection
+              title={`${fundName} Performance`}
+              data={loaderData.schemes}
+            />
+          </Stack>
         </Modal.Body>
       </Modal.Content>
     </Modal.Root>
