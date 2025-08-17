@@ -1,6 +1,6 @@
 import { db } from "../database/kysely.server";
 
-export async function getRecentTransactions() {
+export async function getRecentTransactions(category?: string) {
   return db
     .selectFrom("transactions as t")
     .innerJoin("mutual_fund_schemes as mfs", "t.scheme_name", "mfs.scheme_name")
@@ -9,15 +9,18 @@ export async function getRecentTransactions() {
       "t.date",
       "t.amount",
       "t.transaction_type",
-      "t.scheme_name",
+      "t.scheme_name as name",
       "t.units",
       "t.nav",
-      "mfs.logo",
-      "mfs.saving_category",
+      "mfs.logo as icon",
+      "mfs.saving_category as sub_text",
     ])
+    .$if(!!category, (qb) =>
+      qb.where("mfs.saving_category", "=", category as string),
+    )
     .orderBy("t.date", "desc")
     .orderBy("t.updated_at", "desc")
-    .limit(8)
+    .limit(5)
     .execute();
 }
 

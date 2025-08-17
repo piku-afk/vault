@@ -3,10 +3,10 @@ import { Outlet, useLoaderData } from "react-router";
 
 import { InvestmentGoals } from "#/components/overview/investment-goals";
 import { PortfolioAnalysis } from "#/components/overview/portfolio-analysis";
-import { TransactionHistory } from "#/components/overview/transaction-history";
 import { PerformanceSection } from "#/components/sections/performance-section";
 import { StatsSection } from "#/components/sections/stats-section";
 import { SummarySection } from "#/components/sections/summary-section";
+import { TransactionHistorySection } from "#/components/sections/transaction-history-section";
 import { getGoalProgress } from "#/database/getGoals.server";
 import {
   getQuickStats,
@@ -40,7 +40,8 @@ export function useOverviewLoaderData() {
 }
 
 export default function Overview({ loaderData }: Route.ComponentProps) {
-  const { summary, quickStats, savingsCategorySummary } = loaderData;
+  const { summary, quickStats, savingsCategorySummary, recentTransactions } =
+    loaderData;
 
   return (
     <Stack mt="md" gap="xl">
@@ -64,7 +65,7 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
       <InvestmentGoals />
       <Divider />
 
-      <TransactionHistory />
+      <TransactionHistorySection data={recentTransactions} />
     </Stack>
   );
 }

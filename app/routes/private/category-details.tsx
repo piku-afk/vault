@@ -20,6 +20,7 @@ import { ROUTES } from "#/constants/routes";
 import { getCategoryDetails } from "#/database/get-category-details";
 
 import type { Route } from "./+types/category-details";
+import { TransactionHistorySection } from "#/components/sections/transaction-history-section";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { category } = params;
@@ -74,6 +75,9 @@ export default function CategoryDetails() {
               title={`${fundName} Performance`}
               data={loaderData.schemes}
             />
+            <Divider />
+
+            <TransactionHistorySection data={loaderData.recentTransactions} />
           </Stack>
         </Modal.Body>
       </Modal.Content>

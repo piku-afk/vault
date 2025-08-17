@@ -1,3 +1,4 @@
+import { getRecentTransactions } from "./getOverviewStats.server";
 import {
   netCurrentSql,
   netInvestedSql,
@@ -67,5 +68,13 @@ export async function getCategoryDetails(category: string) {
     ])
     .execute();
 
-  return { categoryDetails, categorySummary, categoryStats, schemes };
+  const recentTransactions = getRecentTransactions(category);
+
+  return {
+    categoryDetails,
+    categorySummary,
+    categoryStats,
+    schemes,
+    recentTransactions,
+  };
 }

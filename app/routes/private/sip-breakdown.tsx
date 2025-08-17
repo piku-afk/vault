@@ -87,7 +87,6 @@ export default function SipBreakdown({ loaderData }: Route.ComponentProps) {
                     return (
                       <ResponsivePie
                         animate
-                        // margin={{ bottom: 40 }}
                         innerRadius={0.6}
                         data={data}
                         padAngle={1.2}
@@ -103,7 +102,7 @@ export default function SipBreakdown({ loaderData }: Route.ComponentProps) {
               </Suspense>
             </Box>
 
-            <SimpleGrid mt="xl" cols={2}>
+            <SimpleGrid mt="xl" cols={{ base: 2, xs: 3 }}>
               <Await resolve={loaderData.sipBreakdown}>
                 {(sipCategories) => (
                   <>
