@@ -13,28 +13,39 @@ import {
   ResponsivePie,
 } from "@nivo/pie";
 import { Suspense } from "react";
-import { Await, useLoaderData, useNavigate, useNavigation } from "react-router";
+import { Await, useNavigate, useNavigation } from "react-router";
 
 import { ROUTES } from "#/constants/routes";
-import { getSavingsCategorySummary } from "#/database/getSummaryBySavingsCategory.server";
+import { getSipBreakdown } from "#/database/get-sip-breakdown.server";
+
+import type { Route } from "./+types/sip-breakdown";
 
 const CHART_HEIGHT = { base: 300, xs: 360 };
 
-export async function loader() {
+export async function loader({ params }: Route.LoaderArgs) {
+  const { category } = params;
+  console.log("category", category);
+
+  console.log(await getSipBreakdown(category));
+
   return {
-    savingsCategorySummary: getSavingsCategorySummary(),
+    sipBreakdown: getSipBreakdown(category),
   };
 }
 
-export default function SipBreakdown() {
+export default function SipBreakdown({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const theme = useMantineTheme();
   const navigation = useNavigation();
-  const { savingsCategorySummary } = useLoaderData<typeof loader>();
   const isNavigation = Boolean(navigation.location);
 
   function handleClose() {
-    navigate(ROUTES.OVERVIEW, { preventScrollReset: true });
+    // Navigate back by removing '/sip-breakdown' from current path
+    navigate(
+      window.location.pathname.replace(/\/sip-breakdown$/, "") ||
+        ROUTES.OVERVIEW,
+      { preventScrollReset: true },
+    );
   }
 
   return (
@@ -60,11 +71,11 @@ export default function SipBreakdown() {
                 />
               }
             >
-              <Await resolve={savingsCategorySummary}>
-                {(categories) => {
+              <Await resolve={loaderData.sipBreakdown}>
+                {(sipCategories) => {
                   const data: Partial<ComputedDatum<DefaultRawDatum>>[] =
-                    categories.map((category) => ({
-                      id: category.name,
+                    sipCategories.map((category) => ({
+                      id: category.id,
                       label: category.name,
                       value: Number(category.monthly_sip),
                       color: getThemeColor(`${category.color}.5`, theme),
@@ -73,7 +84,7 @@ export default function SipBreakdown() {
                   return (
                     <ResponsivePie
                       animate
-                      margin={{ left: 72, right: 72 }}
+                      margin={{ left: 104, right: 104 }}
                       innerRadius={0.6}
                       data={data}
                       padAngle={1.2}
@@ -81,6 +92,7 @@ export default function SipBreakdown() {
                       cornerRadius={6}
                       arcLinkLabelsTextColor={getThemeColor("black", theme)}
                       arcLinkLabelsThickness={2}
+                      arcLinkLabel="label"
                       arcLinkLabelsColor={{ from: "color" }}
                       arcLabelsTextColor={getThemeColor("black", theme)}
                       tooltip={() => null}

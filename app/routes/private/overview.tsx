@@ -44,6 +44,8 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
 
   return (
     <Stack mt="md" gap="xl">
+      <Outlet />
+
       <SummarySection title="Portfolio Summary" data={summary} />
       <Divider />
 
@@ -61,7 +63,6 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
 
       <InvestmentGoals />
       <Divider />
-      <Outlet />
 
       <TransactionHistory />
     </Stack>

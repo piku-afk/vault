@@ -73,6 +73,7 @@ export type Database = {
       mutual_fund_schemes: {
         Row: {
           category: string
+          color: string
           created_at: string
           id: string
           is_active: boolean
@@ -91,6 +92,7 @@ export type Database = {
         }
         Insert: {
           category: string
+          color?: string
           created_at?: string
           id?: string
           is_active?: boolean
@@ -109,6 +111,7 @@ export type Database = {
         }
         Update: {
           category?: string
+          color?: string
           created_at?: string
           id?: string
           is_active?: boolean

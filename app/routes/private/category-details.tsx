@@ -1,5 +1,17 @@
-import { Divider, Modal, ScrollArea, Stack } from "@mantine/core";
-import { useLoaderData, useNavigate, useParams } from "react-router";
+import {
+  Divider,
+  LoadingOverlay,
+  Modal,
+  ScrollArea,
+  Stack,
+} from "@mantine/core";
+import {
+  Outlet,
+  useLoaderData,
+  useNavigate,
+  useNavigation,
+  useParams,
+} from "react-router";
 
 import { PerformanceSection } from "#/components/sections/performance-section";
 import { StatsSection } from "#/components/sections/stats-section";
@@ -21,7 +33,10 @@ export const useCategoryDetailsLoaderData = () => {
 export default function CategoryDetails() {
   const navigate = useNavigate();
   const { category } = useParams();
+  const navigation = useNavigation();
+  const isNavigation = Boolean(navigation.location);
   const loaderData = useCategoryDetailsLoaderData();
+
   const fundName = `${category} Fund`;
 
   function handleClose() {
@@ -39,7 +54,10 @@ export default function CategoryDetails() {
       <Modal.Overlay blur={7} />
       <Modal.Content>
         <Modal.Body pb="xl" pt="md">
+          <LoadingOverlay visible={isNavigation} overlayProps={{ blur: 7 }} />
           <Stack gap="xl">
+            <Outlet />
+
             <SummarySection
               title={`${fundName} Summary`}
               data={loaderData.categorySummary}
