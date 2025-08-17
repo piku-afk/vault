@@ -1,5 +1,5 @@
-import { SimpleGrid } from "@mantine/core";
-import { Suspense } from "react";
+import { NumberFormatter, SimpleGrid, Text } from "@mantine/core";
+import { Fragment, Suspense } from "react";
 import { Await } from "react-router";
 
 import { Section } from "#/components/shared/section";
@@ -45,14 +45,32 @@ export function PortfolioSummary() {
                   description: "Total amount invested",
                 },
                 {
-                  label: "Returns",
+                  label: "Net Returns",
                   badgeText: isPositiveReturn ? "Profit" : "Loss",
                   badgeColor: returnsColor,
                   value: summary.net_returns,
-                  description: "",
                   prefix: summary.net_returns > 0 ? returnsPrefix : undefined,
-                  percentageValue: summary.net_returns_percentage,
+                  description: (
+                    <Fragment>
+                      <Text component="span" size="xs" c={returnsColor}>
+                        <NumberFormatter
+                          value={Math.abs(summary.net_returns_percentage)}
+                          suffix="%"
+                          decimalScale={2}
+                          prefix={returnsPrefix}
+                        />
+                      </Text>
+                      &nbsp;return rate
+                    </Fragment>
+                  ),
                 },
+                // {
+                //   label: "XIRR",
+                //   badgeText: isPositiveReturn ? "Profit" : "Loss",
+                //   badgeColor: returnsColor,
+                //   value: summary.xirr,
+                //   description: "Compound Annual Growth Rate",
+                // },
               ];
 
               return metrics.map((metric) => (

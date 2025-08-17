@@ -9,15 +9,15 @@ import {
 } from "@mantine/core";
 
 import { CurrencyFormatter } from "#/components/currency-formatter";
+import type { ReactNode } from "react";
 
 interface MetricCardProps {
   label: string;
   badgeText: string;
   badgeColor: string;
   value: number;
-  description: string;
+  description: ReactNode;
   prefix?: string;
-  percentageValue?: number;
 }
 
 export function MetricCard(props: MetricCardProps) {
@@ -34,25 +34,7 @@ export function MetricCard(props: MetricCardProps) {
       </Title>
       <Group mt={6} gap="xs" align="center">
         <Text size="xs" c="dimmed">
-          {props.percentageValue ? (
-            <>
-              <Text
-                component="span"
-                size="xs"
-                c={props.value > 0 ? "teal" : "red"}
-              >
-                <NumberFormatter
-                  value={Math.abs(props.percentageValue)}
-                  suffix="%"
-                  decimalScale={2}
-                  prefix={props.value > 0 ? "+" : "-"}
-                />
-              </Text>
-              &nbsp;return rate
-            </>
-          ) : (
-            props.description
-          )}
+          {props.description}
         </Text>
       </Group>
     </Card>

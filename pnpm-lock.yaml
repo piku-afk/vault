@@ -44,6 +44,9 @@ importers:
       '@supabase/ssr':
         specifier: ^0.6.1
         version: 0.6.1(@supabase/supabase-js@2.53.0)
+      '@webcarrot/xirr':
+        specifier: ^3.0.1
+        version: 3.0.1
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -1860,6 +1863,9 @@ packages:
 
   '@vue/shared@3.5.18':
     resolution: {integrity: sha512-cZy8Dq+uuIXbxCZpuLd2GJdeSO/lIzIspC2WtkqIpje5QyFbvLaI5wZtdUjLHjGZrlVX6GilejatWwVYYRc8tA==}
+
+  '@webcarrot/xirr@3.0.1':
+    resolution: {integrity: sha512-7g8sl+sLfFnCK0nlaMDUD4/ZClmRZIWgMX1aKtGsa4yxABlzAFORSEq5f+Fl0XNEIjdVVlEiHW1EEWCS/0zjGw==}
 
   '@whatwg-node/disposablestack@0.0.6':
     resolution: {integrity: sha512-LOtTn+JgJvX8WfBVJtF08TGrdjuFzGJc4mkP8EdDI8ADbvO7kiexYep1o8dwnt0okb0jYclCDXF13xU7Ge4zSw==}
@@ -7345,6 +7351,8 @@ snapshots:
       '@vue/shared': 3.5.18
 
   '@vue/shared@3.5.18': {}
+
+  '@webcarrot/xirr@3.0.1': {}
 
   '@whatwg-node/disposablestack@0.0.6':
     dependencies:

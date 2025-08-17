@@ -15,5 +15,6 @@ ignoreWords:
   - pipeable
   - supabase
   - vite
+  - webcarrot
   - xirr
 import: []

@@ -1,3 +1,5 @@
+import { type CashFlow, xirr } from "@webcarrot/xirr";
+
 import { db } from "../database/kysely.server";
 import {
   netInvestedSql,
@@ -7,7 +9,7 @@ import {
 } from "./investmentQueries.server";
 
 export async function getSummaryData() {
-  return db
+  const summary = await db
     .selectFrom("mutual_fund_summary as mfs")
     .select([
       netInvestedSql.as("net_invested"),
@@ -16,4 +18,6 @@ export async function getSummaryData() {
       netReturnsPercentageSql.as("net_returns_percentage"),
     ])
     .executeTakeFirstOrThrow();
+
+  return { ...summary, xirr: 0 };
 }
