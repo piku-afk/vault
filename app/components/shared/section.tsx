@@ -4,7 +4,7 @@ import type { PropsWithChildren, RefObject } from "react";
 import { useInContainer } from "#/hooks/use-in-container";
 
 export function Section(
-  props: PropsWithChildren<{ title: string; ref: RefObject<HTMLDivElement> }>,
+  props: PropsWithChildren<{ title: string; ref?: RefObject<HTMLDivElement> }>,
 ) {
   const sectionId = props.title.toLowerCase().replace(/\s+/g, "-");
   const { isInContainer: isInDialog, ref } = useInContainer("dialog");

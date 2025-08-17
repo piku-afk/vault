@@ -1,6 +1,3 @@
-import dayjs from "dayjs";
-import { sql } from "kysely";
-
 import { db } from "../database/kysely.server";
 
 export async function getRecentTransactions() {
@@ -25,33 +22,18 @@ export async function getRecentTransactions() {
 }
 
 export async function getQuickStats() {
-  const totalSchemes = await db
-    .selectFrom("mutual_fund_summary")
-    .innerJoin(
-      "mutual_fund_schemes as mfs",
-      "mutual_fund_summary.scheme_name",
-      "mfs.scheme_name",
-    )
-    .select([sql<number>`COUNT(DISTINCT mfs.scheme_name)`.as("count")])
-    .where("mfs.is_active", "=", true)
-    .executeTakeFirst();
-
-  const monthlySip = await db
+  return db
     .selectFrom("mutual_fund_schemes")
-    .select(sql<number>`SUM(sip_amount)`.as("total"))
-    .where("is_active", "=", true)
-    .executeTakeFirst();
-
-  const lastTransaction = await db
-    .selectFrom("mutual_fund_schemes")
-    .select("next_sip_date")
-    .orderBy("next_sip_date", "asc")
-    .executeTakeFirst();
-
-  return {
-    totalSchemes: totalSchemes?.count || 0,
-    monthlySip: monthlySip?.total || 0,
-    daysTillNextTransaction:
-      dayjs(lastTransaction?.next_sip_date).diff(dayjs(), "day") + 1,
-  };
+    .select((eb) => [
+      eb.fn
+        .count<string>("scheme_name")
+        .filterWhere("is_active", "=", true)
+        .as("total_schemes"),
+      eb.fn
+        .sum<string>("sip_amount")
+        .filterWhere("is_active", "=", true)
+        .as("monthly_sip"),
+      eb.fn.min<string>("next_sip_date").as("next_sip_date"),
+    ])
+    .executeTakeFirstOrThrow();
 }

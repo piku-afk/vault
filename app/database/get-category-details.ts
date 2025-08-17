@@ -25,6 +25,22 @@ export async function getCategoryDetails(category: string) {
     .where("mfs.saving_category", "=", category)
     .executeTakeFirstOrThrow();
 
+  const categoryStats = db
+    .selectFrom("mutual_fund_schemes")
+    .select((eb) => [
+      eb.fn
+        .count<string>("scheme_name")
+        .filterWhere("is_active", "=", true)
+        .as("total_schemes"),
+      eb.fn
+        .sum<string>("sip_amount")
+        .filterWhere("is_active", "=", true)
+        .as("monthly_sip"),
+      eb.fn.min<string>("next_sip_date").as("next_sip_date"),
+    ])
+    .where("saving_category", "=", category)
+    .executeTakeFirstOrThrow();
+
   const schemes = db
     .selectFrom("mutual_fund_summary as mfs")
     .innerJoin(
@@ -51,5 +67,5 @@ export async function getCategoryDetails(category: string) {
     ])
     .execute();
 
-  return { categoryDetails, categorySummary, schemes };
+  return { categoryDetails, categorySummary, categoryStats, schemes };
 }

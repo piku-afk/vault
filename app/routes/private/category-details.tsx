@@ -2,6 +2,7 @@ import { Divider, Modal, ScrollArea, Stack } from "@mantine/core";
 import { useLoaderData, useNavigate, useParams } from "react-router";
 
 import { PerformanceSection } from "#/components/sections/performance-section";
+import { StatsSection } from "#/components/sections/stats-section";
 import { SummarySection } from "#/components/sections/summary-section";
 import { ROUTES } from "#/constants/routes";
 import { getCategoryDetails } from "#/database/get-category-details";
@@ -42,6 +43,12 @@ export default function CategoryDetails() {
             <SummarySection
               title={`${fundName} Summary`}
               data={loaderData.categorySummary}
+            />
+            <Divider />
+
+            <StatsSection
+              title={`${fundName} Stats`}
+              data={loaderData.categoryStats}
             />
             <Divider />
 

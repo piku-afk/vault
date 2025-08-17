@@ -9,6 +9,7 @@ import {
   ThemeIcon,
   Tooltip,
 } from "@mantine/core";
+import dayjs from "dayjs";
 import {
   Building2,
   CalendarClock,
@@ -18,17 +19,21 @@ import {
 import { Suspense } from "react";
 import { Await, NavLink } from "react-router";
 
-import { Section } from "#/components/shared/section";
 import { ROUTES } from "#/constants/routes";
-import { useOverviewLoaderData } from "#/routes/private/overview";
 
 import { CurrencyFormatter } from "../currency-formatter";
+import { Section } from "../shared/section";
 
-export function PortfolioStats() {
-  const loaderData = useOverviewLoaderData();
-
+export function StatsSection(props: {
+  title: string;
+  data: Promise<{
+    total_schemes: string;
+    monthly_sip: string;
+    next_sip_date: string;
+  }>;
+}) {
   return (
-    <Section title="Portfolio Stats">
+    <Section title={props.title}>
       <SimpleGrid cols={{ base: 1, xs: 3 }} spacing="lg">
         <Suspense
           fallback={Array.from(Array(3).keys()).map((item) => (
@@ -43,28 +48,30 @@ export function PortfolioStats() {
             </Card>
           ))}
         >
-          <Await resolve={loaderData.quickStats}>
+          <Await resolve={props.data}>
             {(quickStats) => {
               const stats = [
                 {
                   icon: Building2,
-                  value: quickStats.totalSchemes,
+                  value: quickStats.total_schemes,
                   label: "Total Schemes",
                 },
                 {
                   icon: CalendarClock,
-                  value: quickStats.daysTillNextTransaction,
+                  value:
+                    dayjs(quickStats.next_sip_date).diff(dayjs(), "day") + 1,
                   label: "Days Till Next SIP",
                 },
                 {
                   icon: ReceiptIndianRupee,
-                  value: quickStats.monthlySip,
+                  value: quickStats.monthly_sip,
                   label: "Monthly SIP",
                   isCurrency: true,
                   showViewDetails: true,
                   route: ROUTES.SIP_BREAKDOWN,
                 },
               ];
+
               return stats.map((stat) => (
                 <Card withBorder key={stat.label}>
                   <Group gap="sm" align="flex-start">

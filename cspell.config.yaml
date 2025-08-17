@@ -10,6 +10,7 @@ ignoreWords:
   - isbot
   - kysely
   - kyselify
+  - mfsum
   - nivo
   - piku
   - pipeable
