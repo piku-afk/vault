@@ -19,7 +19,7 @@ import { CurrencyFormatter } from "../currency-formatter";
 import { Section } from "../shared/section";
 
 export function TransactionHistorySection(props: {
-  title?: string;
+  title: string;
   data: Promise<
     {
       id: string;
@@ -33,7 +33,7 @@ export function TransactionHistorySection(props: {
   >;
 }) {
   return (
-    <Section title={props.title || "Transaction History"}>
+    <Section title={props.title}>
       <Card withBorder>
         <List spacing="md">
           <Suspense

@@ -21,6 +21,7 @@ import { getSavingsCategorySummary } from "#/database/getSummaryBySavingsCategor
 import { getSummaryData } from "#/database/getSummaryData.server";
 
 import type { Route } from "./+types/overview";
+import { AnalysisSection } from "#/components/sections/analysis-section";
 
 export async function loader() {
   return {
@@ -65,7 +66,10 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
       <InvestmentGoals />
       <Divider />
 
-      <TransactionHistorySection data={recentTransactions} />
+      <TransactionHistorySection
+        title="Transaction History"
+        data={recentTransactions}
+      />
     </Stack>
   );
 }

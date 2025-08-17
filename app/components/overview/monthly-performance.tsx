@@ -14,7 +14,7 @@ import { use } from "react";
 import type { getBestAndWorstPerformer } from "#/database/getPortfolioAnalytics.server";
 import { useOverviewLoaderData } from "#/routes/private/overview";
 
-function PerformerSection({
+export function PerformerSection({
   scheme,
   variant,
 }: {

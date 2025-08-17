@@ -13,14 +13,15 @@ import {
   useParams,
 } from "react-router";
 
+import { AnalysisSection } from "#/components/sections/analysis-section";
 import { PerformanceSection } from "#/components/sections/performance-section";
 import { StatsSection } from "#/components/sections/stats-section";
 import { SummarySection } from "#/components/sections/summary-section";
+import { TransactionHistorySection } from "#/components/sections/transaction-history-section";
 import { ROUTES } from "#/constants/routes";
 import { getCategoryDetails } from "#/database/get-category-details";
 
 import type { Route } from "./+types/category-details";
-import { TransactionHistorySection } from "#/components/sections/transaction-history-section";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { category } = params;
@@ -71,13 +72,22 @@ export default function CategoryDetails() {
             />
             <Divider />
 
+            <AnalysisSection
+              title={`${fundName} Analysis`}
+              data={loaderData.categoryAnalysis}
+            />
+            <Divider />
+
             <PerformanceSection
               title={`${fundName} Performance`}
               data={loaderData.schemes}
             />
             <Divider />
 
-            <TransactionHistorySection data={loaderData.recentTransactions} />
+            <TransactionHistorySection
+              title={`${fundName} Transaction History`}
+              data={loaderData.recentTransactions}
+            />
           </Stack>
         </Modal.Body>
       </Modal.Content>

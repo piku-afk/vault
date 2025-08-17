@@ -1,3 +1,5 @@
+import { sql } from "kysely";
+
 import { getRecentTransactions } from "./getOverviewStats.server";
 import {
   netCurrentSql,
@@ -42,6 +44,67 @@ export async function getCategoryDetails(category: string) {
     .where("saving_category", "=", category)
     .executeTakeFirstOrThrow();
 
+  const categoryBreakdown = db
+    .selectFrom(
+      db
+        .selectFrom("mutual_fund_summary as mfs")
+        .innerJoin(
+          "mutual_fund_schemes as mfs2",
+          "mfs.scheme_name",
+          "mfs2.scheme_name",
+        )
+        .select([
+          "mfs2.id",
+          "mfs2.sub_category as name",
+          "mfs2.color as color",
+          netCurrentSql.as("current"),
+        ])
+        .where("mfs2.saving_category", "=", category)
+        .groupBy([
+          "mfs2.id",
+          "mfs2.sub_category",
+          "mfs2.color",
+          "mfs2.created_at",
+        ])
+        .orderBy("mfs2.created_at", "asc")
+        .as("summary_by_category"),
+    )
+    .select([
+      "id",
+      "name",
+      "color",
+      sql<number>`round((current / sum(current) over ()) * 100,2)`.as(
+        "allocation_percentage",
+      ),
+    ])
+    .execute();
+
+  const categoryBestPerformer = db
+    .selectFrom("mutual_fund_summary")
+    .select(["scheme_name", "saving_category", "nav_diff_percentage"])
+    .where("saving_category", "=", category)
+    .orderBy("nav_diff_percentage", "desc")
+    .executeTakeFirstOrThrow();
+
+  const categoryWorstPerformer = db
+    .selectFrom("mutual_fund_summary")
+    .select(["scheme_name", "saving_category", "nav_diff_percentage"])
+    .where("saving_category", "=", category)
+    .orderBy("nav_diff_percentage", "asc")
+    .executeTakeFirstOrThrow();
+
+  const positiveSchemeCount = db
+    .selectFrom("mutual_fund_summary")
+    .select((eb) => [
+      eb.fn
+        .count<number>("scheme_name")
+        .filterWhere("nav_diff_percentage", ">", 0)
+        .as("positive"),
+      eb.fn.count<number>("scheme_name").as("total"),
+    ])
+    .where("saving_category", "=", category)
+    .executeTakeFirstOrThrow();
+
   const schemes = db
     .selectFrom("mutual_fund_summary as mfs")
     .innerJoin(
@@ -74,6 +137,12 @@ export async function getCategoryDetails(category: string) {
     categoryDetails,
     categorySummary,
     categoryStats,
+    categoryAnalysis: {
+      categoryBreakdown,
+      categoryBestPerformer,
+      categoryWorstPerformer,
+      positiveSchemeCount,
+    },
     schemes,
     recentTransactions,
   };
