@@ -19,6 +19,8 @@ import {
 import { Fragment, Suspense } from "react";
 import { Await } from "react-router";
 
+import type { getOverview } from "#/database/get-overview.server";
+
 import { MonthlyPerformanceCard } from "../shared/monthly-performance-card";
 import { Section } from "../shared/section";
 
@@ -26,37 +28,14 @@ const CHART_HEIGHT = 200;
 
 export function AnalysisSection(props: {
   title: string;
-  data: {
-    categoryBreakdown: Promise<
-      {
-        id: string;
-        name: string;
-        color: string;
-        allocation_percentage: number;
-      }[]
-    >;
-    categoryBestPerformer: Promise<{
-      saving_category: string | null;
-      scheme_name: string | null;
-      nav_diff_percentage: number | null;
-    }>;
-    categoryWorstPerformer: Promise<{
-      saving_category: string | null;
-      scheme_name: string | null;
-      nav_diff_percentage: number | null;
-    }>;
-    positiveSchemeCount: Promise<{
-      positive: number;
-      total: number;
-    }>;
-  };
+  data: ReturnType<typeof getOverview>["analysis"];
 }) {
   const theme = useMantineTheme();
 
   return (
     <Section title={props.title}>
       <SimpleGrid cols={{ base: 1, xs: 2 }} spacing="lg">
-        <Card withBorder>
+        {/* <Card withBorder>
           <Text mb="md" size="sm" c="dimmed" ta="center">
             SIP Breakdown
           </Text>
@@ -66,13 +45,13 @@ export function AnalysisSection(props: {
                 <Skeleton circle mx="auto" height={CHART_HEIGHT} width="100%" />
               }
             >
-              <Await resolve={props.data.categoryBreakdown}>
-                {(categoryBreakdown) => {
+              <Await resolve={props.data.breakdown}>
+                {(breakdown) => {
                   const data: Partial<ComputedDatum<DefaultRawDatum>>[] =
-                    categoryBreakdown.map((item) => ({
+                    breakdown.map((item) => ({
                       id: item.id,
-                      value: Math.round(item.allocation_percentage),
                       label: item.name,
+                      value: Math.round(item.allocation_percentage),
                       color: getThemeColor(`${item.color}.5`, theme),
                     }));
 
@@ -109,10 +88,10 @@ export function AnalysisSection(props: {
               )}
             </Await>
           </SimpleGrid>
-        </Card>
+        </Card> */}
 
         <Stack gap="lg">
-          <Card withBorder>
+          {/* <Card withBorder>
             <Text size="md">Last Month's Performance</Text>
             <Stack mt="sm" gap="xs">
               <Suspense
@@ -152,7 +131,7 @@ export function AnalysisSection(props: {
                 </Await>
               </Suspense>
             </Stack>
-          </Card>
+          </Card> */}
 
           <Card withBorder>
             <Stack gap={8}>
@@ -173,7 +152,7 @@ export function AnalysisSection(props: {
                     </Fragment>
                   }
                 >
-                  <Await resolve={props.data.positiveSchemeCount}>
+                  <Await resolve={props.data.positiveCount}>
                     {(positiveSchemeCount) => {
                       const positive = positiveSchemeCount.positive;
                       const total = positiveSchemeCount.total;

@@ -62,18 +62,12 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
 
       <StatsSection title="Portfolio Stats" data={loaderData.overview.stats} />
       <Divider />
-      {/* 
 
       <AnalysisSection
         title="Portfolio Analysis"
-        data={{
-          categoryBreakdown: categoryAllocation,
-          categoryBestPerformer: bestAndWorstPerformer.bestPerformer,
-          categoryWorstPerformer: bestAndWorstPerformer.worstPerformer,
-          positiveSchemeCount: positiveCounts,
-        }}
+        data={loaderData.overview.analysis}
       />
-      <Divider /> */}
+      <Divider />
 
       <PerformanceSection
         title="Category Performance"

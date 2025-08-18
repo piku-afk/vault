@@ -69,11 +69,11 @@ export default function CategoryDetails() {
             <StatsSection title={`${fundName} Stats`} data={loaderData.stats} />
             <Divider />
 
-            {/* <AnalysisSection
+            <AnalysisSection
               title={`${fundName} Analysis`}
-              data={loaderData.categoryAnalysis}
+              data={loaderData.analysis}
             />
-            <Divider /> */}
+            <Divider />
 
             <PerformanceSection
               title={`${fundName} Performance`}
