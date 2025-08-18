@@ -27,6 +27,7 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
 
   return (
     <Stack mt="md" gap="xl">
+      <title>Vault - Overview</title>
       <Outlet />
 
       <SummarySection title="Portfolio Summary" data={loaderData.summary} />

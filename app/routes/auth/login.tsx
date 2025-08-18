@@ -57,6 +57,7 @@ export default function Login() {
 
   return (
     <Fragment>
+      <title>Vault - Login</title>
       <Title mt="xl" order={1} fw={500} ta="center">
         Welcome back
       </Title>

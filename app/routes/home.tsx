@@ -19,6 +19,11 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Home() {
   return (
     <Container p="xl">
+      <title>Vault</title>
+      <meta
+        name="description"
+        content="Vault is an investment tracking tool built by piku-afk."
+      />
       <Center>
         <Button component={NavLink} to={ROUTES.LOGIN}>
           Login
