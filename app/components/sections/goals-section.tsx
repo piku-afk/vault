@@ -15,6 +15,7 @@ import {
 import { Suspense } from "react";
 import { Await } from "react-router";
 
+import type { getOverview } from "#/database/get-overview.server";
 import { getGoalColor } from "#/utils/financialHelpers";
 
 import { CurrencyFormatter } from "../shared/currency-formatter";
@@ -22,17 +23,7 @@ import { Section } from "../shared/section";
 
 export function GoalsSection(props: {
   title: string;
-  data: Promise<
-    {
-      icon: string;
-      current: number;
-      name: string;
-      target: number;
-      remaining: number;
-      progress: number;
-      is_complete: boolean;
-    }[]
-  >;
+  data: ReturnType<typeof getOverview>["goals"];
 }) {
   return (
     <Section title={props.title}>
@@ -69,9 +60,12 @@ export function GoalsSection(props: {
           ))}
         >
           <Await resolve={props.data}>
-            {(goalProgress) =>
-              goalProgress.map((goal) => {
-                const color = getGoalColor(goal.progress, goal.is_complete);
+            {(goals) =>
+              goals.map((goal) => {
+                const color = getGoalColor(
+                  Number(goal.progress),
+                  goal.is_complete,
+                );
 
                 return (
                   <Card
@@ -106,7 +100,11 @@ export function GoalsSection(props: {
                         </Tooltip>
                       </Group>
 
-                      <Progress value={goal.progress} color={color} size="md" />
+                      <Progress
+                        value={Number(goal.progress)}
+                        color={color}
+                        size="md"
+                      />
 
                       <Group justify="space-between">
                         <Box>

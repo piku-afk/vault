@@ -50,8 +50,6 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
     bestAndWorstPerformer,
     positiveCounts,
     savingsCategorySummary,
-    goalProgress,
-    recentTransactions,
   } = loaderData;
 
   count++;
@@ -87,7 +85,7 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
       />
       <Divider /> */}
 
-      <GoalsSection title="Investment Goals" data={goalProgress} />
+      <GoalsSection title="Investment Goals" data={loaderData.overview.goals} />
       <Divider />
 
       <TransactionHistorySection

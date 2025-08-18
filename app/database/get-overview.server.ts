@@ -41,6 +41,49 @@ export function getOverview(category?: string) {
     )
     .executeTakeFirstOrThrow();
 
+  const goals = db
+    .selectFrom("goal as g")
+    .innerJoin("savings_categories as sc", "sc.name", "g.name")
+    .innerJoin("mutual_fund_summary as mfs", "mfs.saving_category", "g.name")
+    .select((eb) => [
+      "g.name",
+      "g.target",
+      "sc.icon",
+      net_current.as("current"),
+      eb
+        .case()
+        .when(net_current, ">=", eb.ref("g.target").$castTo<string>())
+        .then("0")
+        .else(eb(eb.ref("g.target").$castTo<string>(), "-", net_current))
+        .end()
+        .as("remaining"),
+      eb
+        .case()
+        .when(net_current, ">=", eb.ref("g.target").$castTo<string>())
+        .then("100")
+        .else(
+          eb.fn<string>("round", [
+            eb(
+              eb(net_current, "/", eb.ref("g.target").$castTo<string>()),
+              "*",
+              "100",
+            ),
+            eb.lit<number>(2),
+          ]),
+        )
+        .end()
+        .as("progress"),
+      eb
+        .case()
+        .when(net_current.$castTo<number>(), ">=", eb.ref("g.target"))
+        .then(true)
+        .else(false)
+        .end()
+        .as("is_complete"),
+    ])
+    .groupBy(["g.name", "g.target", "sc.icon"])
+    .execute();
+
   const recentTransactions = db
     .selectFrom("transactions as t")
     .innerJoin("mutual_fund_schemes as mfs", "t.scheme_name", "mfs.scheme_name")
@@ -65,5 +108,5 @@ export function getOverview(category?: string) {
     .limit(5)
     .execute();
 
-  return { summary, recentTransactions };
+  return { summary, recentTransactions, goals };
 }

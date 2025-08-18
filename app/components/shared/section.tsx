@@ -1,5 +1,6 @@
 import { Anchor, Box, Title } from "@mantine/core";
 import type { PropsWithChildren, RefObject } from "react";
+import { NavLink } from "react-router";
 
 import { useInContainer } from "#/hooks/use-in-container";
 
@@ -12,7 +13,12 @@ export function Section(
   return (
     <Box ref={props.ref} component="section">
       {props.title && (
-        <Anchor c="black" underline="never" href={`#${sectionId}`}>
+        <Anchor
+          component={NavLink}
+          to={`#${sectionId}`}
+          c="black"
+          underline="never"
+        >
           <Title
             ref={ref as RefObject<HTMLHeadingElement>}
             id={sectionId}
