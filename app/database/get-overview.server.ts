@@ -41,6 +41,30 @@ export function getOverview(category?: string) {
     )
     .executeTakeFirstOrThrow();
 
+  const stats = db
+    .selectFrom("mutual_fund_summary as mfsum")
+    .innerJoin(
+      "mutual_fund_schemes as mfs",
+      "mfs.scheme_name",
+      "mfsum.scheme_name",
+    )
+    .select((eb) => [
+      eb.fn
+        .count<string>("mfsum.scheme_name")
+        // TODO: add net_units in mfsum and use net_units  > 0
+        .filterWhere("mfsum.net_invested", ">", 0)
+        .as("total_schemes"),
+      eb.fn
+        .sum<string>("mfs.sip_amount")
+        .filterWhere("mfs.is_active", "=", true)
+        .as("monthly_sip"),
+      eb.fn.min<string>("mfs.next_sip_date").as("next_sip_date"),
+    ])
+    .$if(!!category, (eb) =>
+      eb.where("mfsum.saving_category", "=", category as string),
+    )
+    .executeTakeFirstOrThrow();
+
   const goals = db
     .selectFrom("goal as g")
     .innerJoin("savings_categories as sc", "sc.name", "g.name")
@@ -108,5 +132,5 @@ export function getOverview(category?: string) {
     .limit(5)
     .execute();
 
-  return { summary, recentTransactions, goals };
+  return { summary, stats, goals, recentTransactions };
 }

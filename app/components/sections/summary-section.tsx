@@ -50,7 +50,7 @@ export function SummarySection(props: {
                 Number(summary.net_returns),
               );
 
-              const metrics = [
+              return [
                 {
                   label: "Net Current",
                   badgeText: "Total",
@@ -95,9 +95,7 @@ export function SummarySection(props: {
                 //   value: summary.xirr,
                 //   description: "Compound Annual Growth Rate",
                 // },
-              ];
-
-              return metrics.map((metric) => (
+              ].map((metric) => (
                 <Card withBorder key={metric.label}>
                   <Group mb="sm" justify="space-between" align="flex-start">
                     <Text size="sm">{metric.label}</Text>

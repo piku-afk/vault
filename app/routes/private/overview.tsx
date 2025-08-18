@@ -65,8 +65,9 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
       />
       <Divider />
 
-      {/* <StatsSection title="Portfolio Stats" data={quickStats} />
+      <StatsSection title="Portfolio Stats" data={loaderData.overview.stats} />
       <Divider />
+      {/* 
 
       <AnalysisSection
         title="Portfolio Analysis"

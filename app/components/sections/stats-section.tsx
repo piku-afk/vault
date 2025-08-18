@@ -20,17 +20,14 @@ import { Suspense } from "react";
 import { Await, NavLink } from "react-router";
 
 import { ROUTES } from "#/constants/routes";
+import type { getOverview } from "#/database/get-overview.server";
 
 import { CurrencyFormatter } from "../shared/currency-formatter";
 import { Section } from "../shared/section";
 
 export function StatsSection(props: {
   title: string;
-  data: Promise<{
-    total_schemes: string;
-    monthly_sip: string;
-    next_sip_date: string;
-  }>;
+  data: ReturnType<typeof getOverview>["stats"];
 }) {
   return (
     <Section title={props.title}>
@@ -49,30 +46,26 @@ export function StatsSection(props: {
           ))}
         >
           <Await resolve={props.data}>
-            {(quickStats) => {
-              const stats = [
+            {(stats) => {
+              return [
                 {
                   icon: Building2,
-                  value: quickStats.total_schemes,
+                  value: stats.total_schemes,
                   label: "Total Schemes",
                 },
                 {
                   icon: CalendarClock,
-                  value:
-                    dayjs(quickStats.next_sip_date).diff(dayjs(), "day") + 1,
+                  value: dayjs(stats.next_sip_date).diff(dayjs(), "day") + 1,
                   label: "Days Till Next SIP",
                 },
                 {
                   icon: ReceiptIndianRupee,
-                  value: quickStats.monthly_sip,
+                  value: stats.monthly_sip,
                   label: "Monthly SIP",
                   isCurrency: true,
-                  showViewDetails: true,
-                  route: ROUTES.SIP_BREAKDOWN,
+                  action_route: ROUTES.SIP_BREAKDOWN,
                 },
-              ];
-
-              return stats.map((stat) => (
+              ].map((stat) => (
                 <Card withBorder key={stat.label}>
                   <Group gap="sm" align="flex-start">
                     <ThemeIcon mt={2} variant="default" size="lg">
@@ -87,9 +80,9 @@ export function StatsSection(props: {
                             stat.value
                           )}
                         </Text>
-                        {stat.showViewDetails && (
+                        {stat.action_route && (
                           <Tooltip label="View Details">
-                            <NavLink to={stat.route} preventScrollReset>
+                            <NavLink to={stat.action_route} preventScrollReset>
                               {({ isPending }) => (
                                 <ActionIcon
                                   size="sm"
