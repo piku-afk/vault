@@ -37,7 +37,7 @@ export function AnalysisSection(props: {
       <SimpleGrid cols={{ base: 1, xs: 2 }} spacing="lg">
         <Card withBorder>
           <Text mb="md" size="sm" c="dimmed" ta="center">
-            SIP Breakdown
+            {props.title.replace("Analysis", "")} Breakdown
           </Text>
           <Box mb="xl" h={CHART_HEIGHT}>
             <Suspense
