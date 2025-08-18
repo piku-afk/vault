@@ -1,8 +1,8 @@
 import { Divider, Stack } from "@mantine/core";
 import { Outlet, useLoaderData } from "react-router";
 
-import { InvestmentGoals } from "#/components/overview/investment-goals";
 import { AnalysisSection } from "#/components/sections/analysis-section";
+import { GoalsSection } from "#/components/sections/goals-section";
 import { PerformanceSection } from "#/components/sections/performance-section";
 import { StatsSection } from "#/components/sections/stats-section";
 import { SummarySection } from "#/components/sections/summary-section";
@@ -47,6 +47,7 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
     bestAndWorstPerformer,
     positiveCounts,
     savingsCategorySummary,
+    goalProgress,
     recentTransactions,
   } = loaderData;
 
@@ -77,7 +78,7 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
       />
       <Divider />
 
-      <InvestmentGoals />
+      <GoalsSection title="Investment Goals" data={goalProgress} />
       <Divider />
 
       <TransactionHistorySection

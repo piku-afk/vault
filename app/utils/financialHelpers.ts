@@ -40,3 +40,12 @@ export function getReturnsPrefix(returns: number): "+" | "-" {
 export function formatSchemeCount(count: number): string {
   return `${count} ${count === 1 ? "Scheme" : "Schemes"}`;
 }
+
+/**
+ * Get the appropriate color for goal progress
+ */
+export function getGoalColor(progress: number, isComplete: boolean) {
+  if (isComplete) return "teal";
+  if (progress > 75) return "yellow";
+  return progress > 50 ? "blue" : "red";
+}
