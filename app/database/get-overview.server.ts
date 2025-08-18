@@ -50,8 +50,7 @@ export function getOverview(category?: string) {
     .select((eb) => [
       eb.fn
         .count<string>("mfsum.scheme_name")
-        // TODO: add net_units in mfsum and use net_units  > 0
-        .filterWhere("mfsum.net_invested", ">", 0)
+        .filterWhere("mfsum.net_units", ">", 0)
         .as("total_schemes"),
       eb.fn
         .sum<string>("mfs.sip_amount")
