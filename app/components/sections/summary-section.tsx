@@ -17,7 +17,7 @@ import {
   isPositiveReturns,
 } from "#/utils/financialHelpers";
 
-import { CurrencyFormatter } from "../currency-formatter";
+import { CurrencyFormatter } from "../shared/currency-formatter";
 import { Section } from "../shared/section";
 
 export function SummarySection(props: {

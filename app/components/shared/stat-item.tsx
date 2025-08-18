@@ -1,6 +1,6 @@
 import { Box, Text } from "@mantine/core";
 
-import { CurrencyFormatter } from "../currency-formatter";
+import { CurrencyFormatter } from "./currency-formatter";
 
 export interface StatItemProps {
   label: string;

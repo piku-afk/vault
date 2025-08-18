@@ -17,7 +17,7 @@ import { Await } from "react-router";
 
 import { getGoalColor } from "#/utils/financialHelpers";
 
-import { CurrencyFormatter } from "../currency-formatter";
+import { CurrencyFormatter } from "../shared/currency-formatter";
 import { Section } from "../shared/section";
 
 export function GoalsSection(props: {

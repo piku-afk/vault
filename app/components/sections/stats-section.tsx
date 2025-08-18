@@ -21,7 +21,7 @@ import { Await, NavLink } from "react-router";
 
 import { ROUTES } from "#/constants/routes";
 
-import { CurrencyFormatter } from "../currency-formatter";
+import { CurrencyFormatter } from "../shared/currency-formatter";
 import { Section } from "../shared/section";
 
 export function StatsSection(props: {

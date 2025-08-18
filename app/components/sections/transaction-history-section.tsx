@@ -15,7 +15,7 @@ import dayjs from "dayjs";
 import { Suspense } from "react";
 import { Await } from "react-router";
 
-import { CurrencyFormatter } from "../currency-formatter";
+import { CurrencyFormatter } from "../shared/currency-formatter";
 import { Section } from "../shared/section";
 
 export function TransactionHistorySection(props: {
