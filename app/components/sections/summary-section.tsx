@@ -11,6 +11,7 @@ import {
 import { Fragment, Suspense } from "react";
 import { Await } from "react-router";
 
+import type { getOverview } from "#/database/get-overview.server";
 import {
   getReturnsColor,
   getReturnsPrefix,
@@ -22,13 +23,7 @@ import { Section } from "../shared/section";
 
 export function SummarySection(props: {
   title: string;
-  data: Promise<{
-    xirr: number;
-    net_invested: number;
-    net_current: number;
-    net_returns: number;
-    net_returns_percentage: number;
-  }>;
+  data: ReturnType<typeof getOverview>["summary"];
 }) {
   return (
     <Section title={props.title}>
@@ -47,9 +42,13 @@ export function SummarySection(props: {
         >
           <Await resolve={props.data}>
             {(summary) => {
-              const isPositiveReturn = isPositiveReturns(summary.net_returns);
-              const returnsColor = getReturnsColor(summary.net_returns);
-              const returnsPrefix = getReturnsPrefix(summary.net_returns);
+              const isPositiveReturn = isPositiveReturns(
+                Number(summary.net_returns),
+              );
+              const returnsColor = getReturnsColor(Number(summary.net_returns));
+              const returnsPrefix = getReturnsPrefix(
+                Number(summary.net_returns),
+              );
 
               const metrics = [
                 {
@@ -71,12 +70,15 @@ export function SummarySection(props: {
                   badgeText: isPositiveReturn ? "Profit" : "Loss",
                   badgeColor: returnsColor,
                   value: summary.net_returns,
-                  prefix: summary.net_returns > 0 ? returnsPrefix : undefined,
+                  prefix:
+                    Number(summary.net_returns) > 0 ? returnsPrefix : undefined,
                   description: (
                     <Fragment>
                       <Text component="span" size="xs" c={returnsColor}>
                         <NumberFormatter
-                          value={Math.abs(summary.net_returns_percentage)}
+                          value={Math.abs(
+                            Number(summary.net_returns_percentage),
+                          )}
                           suffix="%"
                           decimalScale={2}
                           prefix={returnsPrefix}

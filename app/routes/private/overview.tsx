@@ -7,6 +7,7 @@ import { PerformanceSection } from "#/components/sections/performance-section";
 import { StatsSection } from "#/components/sections/stats-section";
 import { SummarySection } from "#/components/sections/summary-section";
 import { TransactionHistorySection } from "#/components/sections/transaction-history-section";
+import { getOverview } from "#/database/get-overview.server";
 import { getGoalProgress } from "#/database/getGoals.server";
 import {
   getQuickStats,
@@ -24,6 +25,7 @@ import type { Route } from "./+types/overview";
 
 export async function loader() {
   return {
+    overview: await getOverview(),
     summary: getSummaryData(),
     savingsCategorySummary: getSavingsCategorySummary(),
     recentTransactions: getRecentTransactions(),
@@ -39,9 +41,10 @@ export function useOverviewLoaderData() {
   return useLoaderData<typeof loader>();
 }
 
+let count = 0;
+
 export default function Overview({ loaderData }: Route.ComponentProps) {
   const {
-    summary,
     quickStats,
     categoryAllocation,
     bestAndWorstPerformer,
@@ -51,14 +54,20 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
     recentTransactions,
   } = loaderData;
 
+  count++;
+  console.log(count);
+
   return (
     <Stack mt="md" gap="xl">
       <Outlet />
 
-      <SummarySection title="Portfolio Summary" data={summary} />
+      <SummarySection
+        title="Portfolio Summary"
+        data={loaderData.overview.summary}
+      />
       <Divider />
 
-      <StatsSection title="Portfolio Stats" data={quickStats} />
+      {/* <StatsSection title="Portfolio Stats" data={quickStats} />
       <Divider />
 
       <AnalysisSection
@@ -76,7 +85,7 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
         title="Category Performance"
         data={savingsCategorySummary}
       />
-      <Divider />
+      <Divider /> */}
 
       <GoalsSection title="Investment Goals" data={goalProgress} />
       <Divider />
