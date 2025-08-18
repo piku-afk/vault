@@ -15,22 +15,14 @@ import dayjs from "dayjs";
 import { Suspense } from "react";
 import { Await } from "react-router";
 
+import type { getOverview } from "#/database/get-overview.server";
+
 import { CurrencyFormatter } from "../shared/currency-formatter";
 import { Section } from "../shared/section";
 
 export function TransactionHistorySection(props: {
   title: string;
-  data: Promise<
-    {
-      id: string;
-      icon: string;
-      name: string;
-      sub_text: string;
-      date: string;
-      amount: number;
-      units: number;
-    }[]
-  >;
+  data: ReturnType<typeof getOverview>["recentTransactions"];
 }) {
   return (
     <Section title={props.title}>

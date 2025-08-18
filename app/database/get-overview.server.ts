@@ -21,9 +21,9 @@ export function getOverview(category?: string) {
       eb
         .case()
         .when(net_invested, "=", "0")
-        .then(0)
+        .then("0")
         .else(
-          eb.fn("round", [
+          eb.fn<string>("round", [
             eb(eb(returns, "/", net_invested), "*", "100"),
             eb.lit<number>(2),
           ]),
@@ -36,10 +36,34 @@ export function getOverview(category?: string) {
         .lit<string>("0")
         .as("xirr"),
     ])
-    .$if(Boolean(category), (eb) =>
+    .$if(!!category, (eb) =>
       eb.where("saving_category", "=", category as string),
     )
     .executeTakeFirstOrThrow();
 
-  return { summary };
+  const recentTransactions = db
+    .selectFrom("transactions as t")
+    .innerJoin("mutual_fund_schemes as mfs", "t.scheme_name", "mfs.scheme_name")
+    .select([
+      "t.id",
+      "t.date",
+      "t.amount",
+      "t.transaction_type",
+      "t.scheme_name as name",
+      "t.units",
+      "t.nav",
+      "mfs.logo as icon",
+    ])
+    .$if(!category, (qb) => qb.select("mfs.saving_category as sub_text"))
+    .$if(!!category, (qb) =>
+      qb
+        .select("mfs.sub_category as sub_text")
+        .where("mfs.saving_category", "=", category as string),
+    )
+    .orderBy("t.date", "desc")
+    .orderBy("t.updated_at", "desc")
+    .limit(5)
+    .execute();
+
+  return { summary, recentTransactions };
 }

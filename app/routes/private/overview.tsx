@@ -25,7 +25,7 @@ import type { Route } from "./+types/overview";
 
 export async function loader() {
   return {
-    overview: await getOverview(),
+    overview: getOverview(),
     summary: getSummaryData(),
     savingsCategorySummary: getSavingsCategorySummary(),
     recentTransactions: getRecentTransactions(),
@@ -92,7 +92,7 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
 
       <TransactionHistorySection
         title="Transaction History"
-        data={recentTransactions}
+        data={loaderData.overview.recentTransactions}
       />
     </Stack>
   );
