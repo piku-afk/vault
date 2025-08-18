@@ -18,6 +18,7 @@ import { Info } from "lucide-react";
 import { type RefObject, Suspense } from "react";
 import { Await, NavLink } from "react-router";
 
+import type { getOverview } from "#/database/get-overview.server";
 import { useInContainer } from "#/hooks/use-in-container";
 import {
   calculateProgressValue,
@@ -30,20 +31,7 @@ import { StatItem } from "../shared/stat-item";
 
 export function PerformanceSection(props: {
   title: string;
-  data: Promise<
-    {
-      name: string;
-      subtitle?: string;
-      icon: string;
-      iconAlt?: string;
-      current: number;
-      invested: number;
-      returns: number;
-      action_route?: string;
-      returns_percentage: number;
-      monthly_sip: number;
-    }[]
-  >;
+  data: ReturnType<typeof getOverview>["performanceData"];
 }) {
   const { isInContainer: isInDialog, ref } = useInContainer("dialog");
 

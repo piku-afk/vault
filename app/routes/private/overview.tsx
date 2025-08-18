@@ -78,13 +78,13 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
           positiveSchemeCount: positiveCounts,
         }}
       />
-      <Divider />
+      <Divider /> */}
 
       <PerformanceSection
         title="Category Performance"
-        data={savingsCategorySummary}
+        data={loaderData.overview.performanceData}
       />
-      <Divider /> */}
+      <Divider />
 
       <GoalsSection title="Investment Goals" data={loaderData.overview.goals} />
       <Divider />

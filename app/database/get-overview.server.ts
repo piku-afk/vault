@@ -10,27 +10,26 @@ const net_invested = mfsumEb.fn<string>("round", [
   mfsumEb.fn.sum("net_invested"),
 ]);
 const returns = mfsumEb.fn<string>("round", [mfsumEb.fn.sum("returns")]);
+const returns_percentage = mfsumEb
+  .case()
+  .when(net_invested, "=", "0")
+  .then("0")
+  .else(
+    mfsumEb.fn<string>("round", [
+      mfsumEb(mfsumEb(returns, "/", net_invested), "*", "100"),
+      mfsumEb.lit<number>(2),
+    ]),
+  )
+  .end();
 
 export function getOverview(category?: string) {
   const summary = db
     .selectFrom("mutual_fund_summary")
-    .select((eb) => [
+    .select([
       net_current.as("net_current"),
       net_invested.as("net_invested"),
       returns.as("net_returns"),
-      eb
-        .case()
-        .when(net_invested, "=", "0")
-        .then("0")
-        .else(
-          eb.fn<string>("round", [
-            eb(eb(returns, "/", net_invested), "*", "100"),
-            eb.lit<number>(2),
-          ]),
-        )
-        .end()
-        .as("net_returns_percentage"),
-
+      returns_percentage.as("net_returns_percentage"),
       // TODO: Replace with actual XIRR calculation when implemented. Currently set to "0" as a placeholder.
       sql
         .lit<string>("0")
@@ -108,6 +107,41 @@ export function getOverview(category?: string) {
     .groupBy(["g.name", "g.target", "sc.icon"])
     .execute();
 
+  const performanceData = db
+    .selectFrom("mutual_fund_summary")
+    .innerJoin("savings_categories as sc", "name", "saving_category")
+    .innerJoin(
+      "mutual_fund_schemes",
+      "mutual_fund_schemes.scheme_name",
+      "mutual_fund_summary.scheme_name",
+    )
+    .$if(!category, (eb) =>
+      eb
+        .select((eb) => [
+          "sc.icon as icon",
+          "sc.name as name",
+          "sc.name as iconAlt",
+          eb
+            .fn<string>("concat", [
+              eb.fn.count("mutual_fund_summary.scheme_name"),
+              sql.lit(" schemes"),
+            ])
+            .as("subtitle"),
+          eb
+            .fn<string>("concat", [sql.lit("category/"), "sc.name"])
+            .as("action_route"),
+
+          eb.fn.sum<number>("mutual_fund_schemes.sip_amount").as("monthly_sip"),
+          net_current.as("current"),
+          net_invested.as("invested"),
+          returns.as("returns"),
+          returns_percentage.as("returns_percentage"),
+        ])
+        .groupBy(["sc.name", "sc.icon", "sc.created_at"])
+        .orderBy("sc.created_at", "asc"),
+    )
+    .execute();
+
   const recentTransactions = db
     .selectFrom("transactions as t")
     .innerJoin("mutual_fund_schemes as mfs", "t.scheme_name", "mfs.scheme_name")
@@ -132,5 +166,11 @@ export function getOverview(category?: string) {
     .limit(5)
     .execute();
 
-  return { summary, stats, goals, recentTransactions };
+  return {
+    summary,
+    stats,
+    performanceData,
+    goals,
+    recentTransactions,
+  };
 }
