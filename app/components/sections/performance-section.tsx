@@ -83,9 +83,17 @@ export function PerformanceSection(props: {
           <Await resolve={props.data}>
             {(data) =>
               data.map((item) => {
-                const progressValue = calculateProgressValue(item);
-                const returnColor = getReturnsColor(item.returns);
-                const returnPrefix = getReturnsPrefix(item.returns);
+                const current = Number(item.current);
+                const invested = Number(item.invested);
+                const returns = Number(item.returns);
+                const monthlySip = Number(item.monthly_sip);
+                const returnColor = getReturnsColor(returns);
+                const returnPrefix = getReturnsPrefix(returns);
+                const progressValue = calculateProgressValue({
+                  current,
+                  invested,
+                  returns,
+                });
 
                 return (
                   <Card key={item.name} withBorder>
@@ -161,19 +169,16 @@ export function PerformanceSection(props: {
                       />
 
                       <SimpleGrid cols={2} spacing="sm">
-                        <StatItem label="Current" value={item.current} />
-                        <StatItem label="Invested" value={item.invested} />
+                        <StatItem label="Current" value={current} />
+                        <StatItem label="Invested" value={invested} />
                         <StatItem
                           label="Returns"
-                          value={item.returns}
+                          value={returns}
                           color={returnColor}
                           prefix={returnPrefix}
                           allowNegative={false}
                         />
-                        <StatItem
-                          label="Monthly SIP"
-                          value={item.monthly_sip}
-                        />
+                        <StatItem label="Monthly SIP" value={monthlySip} />
                       </SimpleGrid>
                     </Stack>
                   </Card>

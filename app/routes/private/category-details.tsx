@@ -19,13 +19,13 @@ import { StatsSection } from "#/components/sections/stats-section";
 import { SummarySection } from "#/components/sections/summary-section";
 import { TransactionHistorySection } from "#/components/sections/transaction-history-section";
 import { ROUTES } from "#/constants/routes";
-import { getCategoryDetails } from "#/database/get-category-details";
+import { getOverview } from "#/database/get-overview.server";
 
 import type { Route } from "./+types/category-details";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { category } = params;
-  return getCategoryDetails(category);
+  return getOverview(category);
 }
 
 export const useCategoryDetailsLoaderData = () => {
@@ -62,25 +62,22 @@ export default function CategoryDetails() {
 
             <SummarySection
               title={`${fundName} Summary`}
-              data={loaderData.categorySummary}
+              data={loaderData.summary}
             />
             <Divider />
 
-            <StatsSection
-              title={`${fundName} Stats`}
-              data={loaderData.categoryStats}
-            />
+            <StatsSection title={`${fundName} Stats`} data={loaderData.stats} />
             <Divider />
 
-            <AnalysisSection
+            {/* <AnalysisSection
               title={`${fundName} Analysis`}
               data={loaderData.categoryAnalysis}
             />
-            <Divider />
+            <Divider /> */}
 
             <PerformanceSection
               title={`${fundName} Performance`}
-              data={loaderData.schemes}
+              data={loaderData.performanceData}
             />
             <Divider />
 

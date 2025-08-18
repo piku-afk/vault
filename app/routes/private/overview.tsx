@@ -44,13 +44,8 @@ export function useOverviewLoaderData() {
 let count = 0;
 
 export default function Overview({ loaderData }: Route.ComponentProps) {
-  const {
-    quickStats,
-    categoryAllocation,
-    bestAndWorstPerformer,
-    positiveCounts,
-    savingsCategorySummary,
-  } = loaderData;
+  const { categoryAllocation, bestAndWorstPerformer, positiveCounts } =
+    loaderData;
 
   count++;
   console.log(count);

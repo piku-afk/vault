@@ -140,6 +140,26 @@ export function getOverview(category?: string) {
         .groupBy(["sc.name", "sc.icon", "sc.created_at"])
         .orderBy("sc.created_at", "asc"),
     )
+    .$if(!!category, (eb) =>
+      eb
+        .select([
+          "mutual_fund_schemes.scheme_name as name",
+          "mutual_fund_schemes.logo as icon",
+          "mutual_fund_schemes.sub_category as subtitle",
+          "mutual_fund_schemes.sip_amount as monthly_sip",
+          net_current.as("current"),
+          net_invested.as("invested"),
+          returns.as("returns"),
+          returns_percentage.as("returns_percentage"),
+        ])
+        .where("mutual_fund_summary.saving_category", "=", category as string)
+        .groupBy([
+          "mutual_fund_schemes.scheme_name",
+          "mutual_fund_schemes.logo",
+          "mutual_fund_schemes.sub_category",
+          "mutual_fund_schemes.sip_amount",
+        ]),
+    )
     .execute();
 
   const recentTransactions = db
