@@ -1,12 +1,3 @@
-// Promise<{
-//     current: string;
-//     icon: string;
-//     name: string;
-//     target: number;
-//     remaining: string;
-//     progress: string;
-//     is_complete: boolean;
-
 import { db } from "./kysely.server";
 
 export async function getNetCurrentGoal() {
@@ -17,6 +8,11 @@ export async function getNetCurrentGoal() {
     )
     .executeTakeFirstOrThrow();
 
+  const { monthly_sip } = await db
+    .selectFrom("mutual_fund_schemes")
+    .select((eb) => eb.fn.sum("sip_amount").as("monthly_sip"))
+    .executeTakeFirstOrThrow();
+
   return db
     .selectFrom("goals as g")
     .innerJoin("savings_categories as sc", "sc.name", "g.name")
@@ -25,6 +21,7 @@ export async function getNetCurrentGoal() {
       "sc.icon",
       "g.target",
       eb.val(net_current).$castTo<string>().as("current"),
+      eb.val(monthly_sip).$castTo<string>().as("monthly_sip"),
       eb
         .case()
         .when(eb.val(net_current), ">=", eb.ref("g.target"))

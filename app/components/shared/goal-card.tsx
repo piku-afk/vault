@@ -13,7 +13,7 @@ import {
 } from "@mantine/core";
 
 import type { getOverview } from "#/database/get-overview.server";
-import { getGoalColor } from "#/utils/financialHelpers";
+import { getGoalColor, getGoalCompletionDate } from "#/utils/financialHelpers";
 
 import { CurrencyFormatter } from "./currency-formatter";
 
@@ -28,6 +28,7 @@ export function GoalCardSkeleton() {
               <Skeleton height={20} width={120} />
             </Group>
             <Skeleton height={16} width={100} />
+            <Skeleton height={12} width={140} mt={4} />
           </Box>
           <Skeleton height={24} width={60} radius="xl" />
         </Group>
@@ -55,6 +56,10 @@ export function GoalCard({
   goal: Awaited<ReturnType<typeof getOverview>["goals"]>[number];
 }) {
   const color = getGoalColor(Number(goal.progress), goal.is_complete);
+  const completionDate = getGoalCompletionDate(
+    Number(goal.remaining),
+    Number(goal.monthly_sip),
+  );
 
   return (
     <Card
@@ -80,6 +85,11 @@ export function GoalCard({
             <Text size="sm" c="dimmed">
               Target: <CurrencyFormatter value={goal.target} />
             </Text>
+            {!goal.is_complete && (
+              <Text size="xs" c="dimmed" mt={4}>
+                Expected completion: {completionDate.format("MMM, YYYY")}
+              </Text>
+            )}
           </Box>
           <Tooltip label="Goal Progress">
             <Badge variant="light" color={color} size="lg">

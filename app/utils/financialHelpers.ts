@@ -1,3 +1,5 @@
+import dayjs, { type Dayjs } from "dayjs";
+
 export interface FinancialData {
   current: number;
   invested: number;
@@ -48,4 +50,13 @@ export function getGoalColor(progress: number, isComplete: boolean) {
   if (isComplete) return "teal";
   if (progress > 75) return "yellow";
   return progress > 50 ? "blue" : "red";
+}
+
+export function getGoalCompletionDate(
+  remaining: number,
+  monthlyContribution: number,
+): Dayjs {
+  if (remaining === 0) return dayjs();
+
+  return dayjs().add(Math.ceil(remaining / monthlyContribution), "months");
 }
