@@ -64,7 +64,66 @@ export function getOverview(category?: string) {
     )
     .executeTakeFirstOrThrow();
 
-  // const breakdown = db.selectFrom().execute();
+  const breakdown = db
+    .selectFrom(
+      db
+        .selectFrom("mutual_fund_summary")
+        .$if(!category, (eb) =>
+          eb
+            .innerJoin("savings_categories", "name", "saving_category")
+            .select([
+              "savings_categories.id",
+              "name",
+              "color",
+              net_current.as("current"),
+            ])
+            .groupBy(["savings_categories.id", "name", "color", "created_at"])
+            .orderBy("created_at", "asc"),
+        )
+        .$if(!!category, (eb) =>
+          eb
+            .innerJoin(
+              "mutual_fund_schemes as mfs",
+              "mfs.scheme_name",
+              "mutual_fund_summary.scheme_name",
+            )
+            .select([
+              "mfs.id",
+              "mfs.sub_category as name",
+              "mfs.color as color",
+              net_current.as("current"),
+            ])
+            .where("mfs.saving_category", "=", category as string)
+            .groupBy([
+              "mfs.id",
+              "mfs.sub_category",
+              "mfs.color",
+              "mfs.created_at",
+            ])
+            .orderBy("mfs.created_at", "asc"),
+        )
+        .as("summary"),
+    )
+    .select((eb) => [
+      "id",
+      "name",
+      "color",
+      eb
+        .fn<number>("round", [
+          eb(
+            eb(
+              eb.ref("current").$castTo<number>(),
+              "/",
+              eb.fn.sum<number>("current").over(),
+            ),
+            "*",
+            eb.lit<number>(100),
+          ),
+          eb.lit(2),
+        ])
+        .as("allocation_percentage"),
+    ])
+    .execute();
 
   const bestPerformer = db
     .selectFrom("mutual_fund_summary")
@@ -224,7 +283,7 @@ export function getOverview(category?: string) {
   return {
     summary,
     stats,
-    analysis: { bestPerformer, worstPerformer, positiveCount },
+    analysis: { breakdown, bestPerformer, worstPerformer, positiveCount },
     performanceData,
     goals,
     recentTransactions,

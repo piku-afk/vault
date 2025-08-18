@@ -35,7 +35,7 @@ export function AnalysisSection(props: {
   return (
     <Section title={props.title}>
       <SimpleGrid cols={{ base: 1, xs: 2 }} spacing="lg">
-        {/* <Card withBorder>
+        <Card withBorder>
           <Text mb="md" size="sm" c="dimmed" ta="center">
             SIP Breakdown
           </Text>
@@ -75,20 +75,20 @@ export function AnalysisSection(props: {
           </Box>
 
           <SimpleGrid mt="auto" cols={{ base: 2, xs: 2 }} spacing="xs">
-            <Await resolve={props.data.categoryBreakdown}>
-              {(categoryBreakdown) => (
+            <Await resolve={props.data.breakdown}>
+              {(breakdown) => (
                 <>
-                  {categoryBreakdown.map((category) => (
-                    <Group key={category.id} gap="xs">
-                      <ThemeIcon size="xs" color={category.color} />
-                      <Text size="xs">{category.name}</Text>
+                  {breakdown.map((item) => (
+                    <Group key={item.id} gap="xs">
+                      <ThemeIcon size="xs" color={item.color} />
+                      <Text size="xs">{item.name}</Text>
                     </Group>
                   ))}
                 </>
               )}
             </Await>
           </SimpleGrid>
-        </Card> */}
+        </Card>
 
         <Stack gap="lg">
           <Card withBorder>
