@@ -1,5 +1,5 @@
 import { Divider, Stack } from "@mantine/core";
-import { Outlet, useLoaderData } from "react-router";
+import { Outlet } from "react-router";
 
 import { AnalysisSection } from "#/components/sections/analysis-section";
 import { GoalsSection } from "#/components/sections/goals-section";
@@ -8,29 +8,25 @@ import { StatsSection } from "#/components/sections/stats-section";
 import { SummarySection } from "#/components/sections/summary-section";
 import { TransactionHistorySection } from "#/components/sections/transaction-history-section";
 import { getOverview } from "#/database/get-overview.server";
+import { getXIRR } from "#/database/get-xirr.server";
 
 import type { Route } from "./+types/overview";
 
 export async function loader() {
-  return getOverview();
+  return { ...getOverview(), xirr: getXIRR() };
 }
-
-export function useOverviewLoaderData() {
-  return useLoaderData<typeof loader>();
-}
-
-let count = 0;
 
 export default function Overview({ loaderData }: Route.ComponentProps) {
-  count++;
-  console.log(count);
-
   return (
     <Stack mt="md" gap="xl">
       <title>Vault - Overview</title>
       <Outlet />
 
-      <SummarySection title="Portfolio Summary" data={loaderData.summary} />
+      <SummarySection
+        title="Portfolio Summary"
+        data={loaderData.summary}
+        xirr={loaderData.xirr}
+      />
       <Divider />
 
       <StatsSection title="Portfolio Stats" data={loaderData.stats} />

@@ -20,24 +20,20 @@ import { SummarySection } from "#/components/sections/summary-section";
 import { TransactionHistorySection } from "#/components/sections/transaction-history-section";
 import { ROUTES } from "#/constants/routes";
 import { getOverview } from "#/database/get-overview.server";
+import { getXIRR } from "#/database/get-xirr.server";
 
 import type { Route } from "./+types/category-details";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { category } = params;
-  return getOverview(category);
+  return { ...getOverview(category), xirr: getXIRR(category) };
 }
 
-export const useCategoryDetailsLoaderData = () => {
-  return useLoaderData<typeof loader>();
-};
-
-export default function CategoryDetails() {
+export default function CategoryDetails({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const { category } = useParams();
   const navigation = useNavigation();
   const isNavigation = Boolean(navigation.location);
-  const loaderData = useCategoryDetailsLoaderData();
 
   const fundName = `${category} Fund`;
 
@@ -63,6 +59,7 @@ export default function CategoryDetails() {
             <SummarySection
               title={`${fundName} Summary`}
               data={loaderData.summary}
+              xirr={loaderData.xirr}
             />
             <Divider />
 

@@ -8,10 +8,12 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { Fragment, Suspense } from "react";
+import { Fragment, type RefObject, Suspense } from "react";
 import { Await } from "react-router";
 
 import type { getOverview } from "#/database/get-overview.server";
+import type { getXIRR } from "#/database/get-xirr.server";
+import { useInContainer } from "#/hooks/use-in-container";
 import {
   getReturnsColor,
   getReturnsPrefix,
@@ -24,10 +26,14 @@ import { Section } from "../shared/section";
 export function SummarySection(props: {
   title: string;
   data: ReturnType<typeof getOverview>["summary"];
+  xirr: ReturnType<typeof getXIRR>;
 }) {
+  const { isInContainer: isInDialog, ref } = useInContainer("dialog");
+  ("dialog");
+
   return (
-    <Section title={props.title}>
-      <SimpleGrid cols={{ base: 1, xs: 3 }} spacing="lg">
+    <Section ref={ref as RefObject<HTMLDivElement>} title={props.title}>
+      <SimpleGrid cols={{ base: 1, xs: isInDialog ? 2 : 4 }} spacing="lg">
         <Suspense
           fallback={Array.from(Array(3).keys()).map((item) => (
             <Card withBorder key={item}>
@@ -88,13 +94,6 @@ export function SummarySection(props: {
                     </Fragment>
                   ),
                 },
-                // {
-                //   label: "XIRR",
-                //   badgeText: isPositiveReturn ? "Profit" : "Loss",
-                //   badgeColor: returnsColor,
-                //   value: summary.xirr,
-                //   description: "Compound Annual Growth Rate",
-                // },
               ].map((metric) => (
                 <Card withBorder key={metric.label}>
                   <Group mb="sm" justify="space-between" align="flex-start">
@@ -117,6 +116,55 @@ export function SummarySection(props: {
                 </Card>
               ));
             }}
+          </Await>
+        </Suspense>
+
+        <Suspense
+          fallback={
+            <Card withBorder>
+              <Group mb="md" justify="space-between">
+                <Skeleton height={14} width={120} />
+                <Skeleton height={18} width={60} />
+              </Group>
+              <Skeleton height={28} width="70%" />
+              <Skeleton mt="md" height={12} width={120} />
+            </Card>
+          }
+        >
+          <Await resolve={props.xirr}>
+            {(xirr) =>
+              [
+                {
+                  label: "XIRR",
+                  badgeText: xirr ? "Profit" : "Loss",
+                  badgeColor: getReturnsColor(xirr),
+                  value: xirr,
+                  description: "Compound Annual Growth Rate",
+                  prefix: Number(xirr) > 0 ? getReturnsPrefix(xirr) : undefined,
+                },
+              ].map((metric) => (
+                <Card withBorder key={metric.label}>
+                  <Group mb="sm" justify="space-between" align="flex-start">
+                    <Text size="sm">{metric.label}</Text>
+                    <Badge variant="light" size="sm" color={metric.badgeColor}>
+                      {metric.badgeText}
+                    </Badge>
+                  </Group>
+                  <Title order={2} fw={500} c={metric.badgeColor}>
+                    <CurrencyFormatter
+                      value={metric.value}
+                      prefix={metric.prefix}
+                      suffix="%"
+                    />
+                  </Title>
+                  <Group mt={6} gap="xs" align="center">
+                    <Text size="xs" c="dimmed">
+                      {metric.description}
+                    </Text>
+                  </Group>
+                </Card>
+              ))
+            }
           </Await>
         </Suspense>
       </SimpleGrid>
