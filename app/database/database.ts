@@ -35,7 +35,7 @@ export type Database = {
         }
         Relationships: []
       }
-      goal: {
+      goals: {
         Row: {
           created_at: string
           id: string
@@ -298,10 +298,7 @@ export type Database = {
       }
     }
     Functions: {
-      health_check: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never

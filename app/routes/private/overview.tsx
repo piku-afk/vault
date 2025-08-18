@@ -7,13 +7,18 @@ import { PerformanceSection } from "#/components/sections/performance-section";
 import { StatsSection } from "#/components/sections/stats-section";
 import { SummarySection } from "#/components/sections/summary-section";
 import { TransactionHistorySection } from "#/components/sections/transaction-history-section";
+import { getNetCurrentGoal } from "#/database/get-net-current-goal";
 import { getOverview } from "#/database/get-overview.server";
 import { getXIRR } from "#/database/get-xirr.server";
 
 import type { Route } from "./+types/overview";
 
 export async function loader() {
-  return { ...getOverview(), xirr: getXIRR() };
+  return {
+    ...getOverview(),
+    netCurrentGoal: getNetCurrentGoal(),
+    xirr: getXIRR(),
+  };
 }
 
 export default function Overview({ loaderData }: Route.ComponentProps) {
@@ -41,7 +46,11 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
       />
       <Divider />
 
-      <GoalsSection title="Investment Goals" data={loaderData.goals} />
+      <GoalsSection
+        title="Investment Goals"
+        data={loaderData.goals}
+        netCurrentGoal={loaderData.netCurrentGoal}
+      />
       <Divider />
 
       <TransactionHistorySection

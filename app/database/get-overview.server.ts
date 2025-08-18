@@ -213,7 +213,7 @@ export function getOverview(category?: string) {
     .execute();
 
   const goals = db
-    .selectFrom("goal as g")
+    .selectFrom("goals as g")
     .innerJoin("savings_categories as sc", "sc.name", "g.name")
     .innerJoin("mutual_fund_summary as mfs", "mfs.saving_category", "g.name")
     .select((eb) => [
@@ -252,7 +252,8 @@ export function getOverview(category?: string) {
         .end()
         .as("is_complete"),
     ])
-    .groupBy(["g.name", "g.target", "sc.icon"])
+    .groupBy(["g.name", "g.target", "sc.icon", "g.created_at"])
+    .orderBy("g.created_at", "asc")
     .execute();
 
   const recentTransactions = db
