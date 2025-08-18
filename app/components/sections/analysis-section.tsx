@@ -91,7 +91,7 @@ export function AnalysisSection(props: {
         </Card> */}
 
         <Stack gap="lg">
-          {/* <Card withBorder>
+          <Card withBorder>
             <Text size="md">Last Month's Performance</Text>
             <Stack mt="sm" gap="xs">
               <Suspense
@@ -110,28 +110,25 @@ export function AnalysisSection(props: {
                   </Card>
                 ))}
               >
-                <Await
-                  resolve={Promise.all([
-                    props.data.categoryBestPerformer,
-                    props.data.categoryWorstPerformer,
-                  ])}
-                >
-                  {([bestPerformer, worstPerformer]) => (
-                    <>
-                      <MonthlyPerformanceCard
-                        variant="best"
-                        scheme={bestPerformer}
-                      />
-                      <MonthlyPerformanceCard
-                        variant="worst"
-                        scheme={worstPerformer}
-                      />
-                    </>
+                <Await resolve={props.data.bestPerformer}>
+                  {(bestPerformer) => (
+                    <MonthlyPerformanceCard
+                      variant="best"
+                      scheme={bestPerformer}
+                    />
+                  )}
+                </Await>
+                <Await resolve={props.data.worstPerformer}>
+                  {(worstPerformer) => (
+                    <MonthlyPerformanceCard
+                      variant="worst"
+                      scheme={worstPerformer}
+                    />
                   )}
                 </Await>
               </Suspense>
             </Stack>
-          </Card> */}
+          </Card>
 
           <Card withBorder>
             <Stack gap={8}>

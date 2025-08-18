@@ -8,33 +8,11 @@ import { StatsSection } from "#/components/sections/stats-section";
 import { SummarySection } from "#/components/sections/summary-section";
 import { TransactionHistorySection } from "#/components/sections/transaction-history-section";
 import { getOverview } from "#/database/get-overview.server";
-import { getGoalProgress } from "#/database/getGoals.server";
-import {
-  getQuickStats,
-  getRecentTransactions,
-} from "#/database/getOverviewStats.server";
-import {
-  getBestAndWorstPerformer,
-  getCategoryAllocation,
-  getPositiveCounts,
-} from "#/database/getPortfolioAnalytics.server";
-import { getSavingsCategorySummary } from "#/database/getSummaryBySavingsCategory.server";
-import { getSummaryData } from "#/database/getSummaryData.server";
 
 import type { Route } from "./+types/overview";
 
 export async function loader() {
-  return {
-    overview: getOverview(),
-    summary: getSummaryData(),
-    savingsCategorySummary: getSavingsCategorySummary(),
-    recentTransactions: getRecentTransactions(),
-    quickStats: getQuickStats(),
-    goalProgress: getGoalProgress(),
-    categoryAllocation: getCategoryAllocation(),
-    bestAndWorstPerformer: getBestAndWorstPerformer(),
-    positiveCounts: getPositiveCounts(),
-  };
+  return getOverview();
 }
 
 export function useOverviewLoaderData() {
@@ -44,9 +22,6 @@ export function useOverviewLoaderData() {
 let count = 0;
 
 export default function Overview({ loaderData }: Route.ComponentProps) {
-  const { categoryAllocation, bestAndWorstPerformer, positiveCounts } =
-    loaderData;
-
   count++;
   console.log(count);
 
@@ -54,33 +29,27 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
     <Stack mt="md" gap="xl">
       <Outlet />
 
-      <SummarySection
-        title="Portfolio Summary"
-        data={loaderData.overview.summary}
-      />
+      <SummarySection title="Portfolio Summary" data={loaderData.summary} />
       <Divider />
 
-      <StatsSection title="Portfolio Stats" data={loaderData.overview.stats} />
+      <StatsSection title="Portfolio Stats" data={loaderData.stats} />
       <Divider />
 
-      <AnalysisSection
-        title="Portfolio Analysis"
-        data={loaderData.overview.analysis}
-      />
+      <AnalysisSection title="Portfolio Analysis" data={loaderData.analysis} />
       <Divider />
 
       <PerformanceSection
         title="Category Performance"
-        data={loaderData.overview.performanceData}
+        data={loaderData.performanceData}
       />
       <Divider />
 
-      <GoalsSection title="Investment Goals" data={loaderData.overview.goals} />
+      <GoalsSection title="Investment Goals" data={loaderData.goals} />
       <Divider />
 
       <TransactionHistorySection
         title="Transaction History"
-        data={loaderData.overview.recentTransactions}
+        data={loaderData.recentTransactions}
       />
     </Stack>
   );

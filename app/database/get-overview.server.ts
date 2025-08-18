@@ -66,6 +66,24 @@ export function getOverview(category?: string) {
 
   // const breakdown = db.selectFrom().execute();
 
+  const bestPerformer = db
+    .selectFrom("mutual_fund_summary")
+    .select(["scheme_name", "saving_category", "nav_diff_percentage"])
+    .$if(!!category, (eb) =>
+      eb.where("saving_category", "=", category as string),
+    )
+    .orderBy("nav_diff_percentage", "desc")
+    .executeTakeFirstOrThrow();
+
+  const worstPerformer = db
+    .selectFrom("mutual_fund_summary")
+    .select(["scheme_name", "saving_category", "nav_diff_percentage"])
+    .$if(!!category, (eb) =>
+      eb.where("saving_category", "=", category as string),
+    )
+    .orderBy("nav_diff_percentage", "asc")
+    .executeTakeFirstOrThrow();
+
   const positiveCount = db
     .selectFrom("mutual_fund_summary")
     .where("net_invested", ">", 0)
@@ -206,7 +224,7 @@ export function getOverview(category?: string) {
   return {
     summary,
     stats,
-    analysis: { positiveCount },
+    analysis: { bestPerformer, worstPerformer, positiveCount },
     performanceData,
     goals,
     recentTransactions,
