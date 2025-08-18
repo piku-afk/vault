@@ -2,7 +2,7 @@ import { Divider, Stack } from "@mantine/core";
 import { Outlet, useLoaderData } from "react-router";
 
 import { InvestmentGoals } from "#/components/overview/investment-goals";
-import { PortfolioAnalysis } from "#/components/overview/portfolio-analysis";
+import { AnalysisSection } from "#/components/sections/analysis-section";
 import { PerformanceSection } from "#/components/sections/performance-section";
 import { StatsSection } from "#/components/sections/stats-section";
 import { SummarySection } from "#/components/sections/summary-section";
@@ -21,7 +21,6 @@ import { getSavingsCategorySummary } from "#/database/getSummaryBySavingsCategor
 import { getSummaryData } from "#/database/getSummaryData.server";
 
 import type { Route } from "./+types/overview";
-import { AnalysisSection } from "#/components/sections/analysis-section";
 
 export async function loader() {
   return {
@@ -41,8 +40,15 @@ export function useOverviewLoaderData() {
 }
 
 export default function Overview({ loaderData }: Route.ComponentProps) {
-  const { summary, quickStats, savingsCategorySummary, recentTransactions } =
-    loaderData;
+  const {
+    summary,
+    quickStats,
+    categoryAllocation,
+    bestAndWorstPerformer,
+    positiveCounts,
+    savingsCategorySummary,
+    recentTransactions,
+  } = loaderData;
 
   return (
     <Stack mt="md" gap="xl">
@@ -54,7 +60,15 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
       <StatsSection title="Portfolio Stats" data={quickStats} />
       <Divider />
 
-      <PortfolioAnalysis />
+      <AnalysisSection
+        title="Portfolio Analysis"
+        data={{
+          categoryBreakdown: categoryAllocation,
+          categoryBestPerformer: bestAndWorstPerformer.bestPerformer,
+          categoryWorstPerformer: bestAndWorstPerformer.worstPerformer,
+          positiveSchemeCount: positiveCounts,
+        }}
+      />
       <Divider />
 
       <PerformanceSection

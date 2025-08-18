@@ -19,8 +19,10 @@ import {
 import { Fragment, Suspense } from "react";
 import { Await } from "react-router";
 
-import { PerformerSection } from "../overview/monthly-performance";
+import { MonthlyPerformanceCard } from "../shared/monthly-performance-card";
 import { Section } from "../shared/section";
+
+const CHART_HEIGHT = 200;
 
 export function AnalysisSection(props: {
   title: string;
@@ -58,9 +60,11 @@ export function AnalysisSection(props: {
           <Text mb="md" size="sm" c="dimmed" ta="center">
             SIP Breakdown
           </Text>
-          <Box h={168}>
+          <Box mb="xl" h={CHART_HEIGHT}>
             <Suspense
-              fallback={<Skeleton circle mx="auto" height={168} width="100%" />}
+              fallback={
+                <Skeleton circle mx="auto" height={CHART_HEIGHT} width="100%" />
+              }
             >
               <Await resolve={props.data.categoryBreakdown}>
                 {(categoryBreakdown) => {
@@ -91,7 +95,7 @@ export function AnalysisSection(props: {
             </Suspense>
           </Box>
 
-          <SimpleGrid mt="xl" cols={{ base: 2, xs: 2 }} spacing="xs">
+          <SimpleGrid mt="auto" cols={{ base: 2, xs: 2 }} spacing="xs">
             <Await resolve={props.data.categoryBreakdown}>
               {(categoryBreakdown) => (
                 <>
@@ -135,8 +139,11 @@ export function AnalysisSection(props: {
                 >
                   {([bestPerformer, worstPerformer]) => (
                     <>
-                      <PerformerSection variant="best" scheme={bestPerformer} />
-                      <PerformerSection
+                      <MonthlyPerformanceCard
+                        variant="best"
+                        scheme={bestPerformer}
+                      />
+                      <MonthlyPerformanceCard
                         variant="worst"
                         scheme={worstPerformer}
                       />
