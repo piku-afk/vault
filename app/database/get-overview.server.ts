@@ -211,7 +211,7 @@ export function getOverview(category?: string) {
   const recentTransactions = db
     .selectFrom("transactions as t")
     .innerJoin("mutual_fund_schemes as mfs", "t.scheme_name", "mfs.scheme_name")
-    .select([
+    .select((eb) => [
       "t.id",
       "t.date",
       "t.amount",
@@ -220,6 +220,9 @@ export function getOverview(category?: string) {
       "t.units",
       "t.nav",
       "mfs.logo as icon",
+      eb("transaction_type", "=", "purchase")
+        .$castTo<boolean>()
+        .as("is_purchase"),
     ])
     .$if(!category, (qb) => qb.select("mfs.saving_category as sub_text"))
     .$if(!!category, (qb) =>
