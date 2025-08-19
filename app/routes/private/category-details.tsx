@@ -75,6 +75,7 @@ export default function CategoryDetails({ loaderData }: Route.ComponentProps) {
             <PerformanceSection
               title={`${fundName} Performance`}
               data={loaderData.performanceData}
+              xirr={loaderData.xirr}
             />
             <Divider />
 

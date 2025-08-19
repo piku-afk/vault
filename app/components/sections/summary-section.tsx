@@ -38,8 +38,8 @@ export function SummarySection(props: {
           fallback={Array.from(Array(3).keys()).map((item) => (
             <Card withBorder key={item}>
               <Group mb="md" justify="space-between">
-                <Skeleton height={14} width={120} />
-                <Skeleton height={18} width={60} />
+                <Skeleton height={14} width={100} />
+                <Skeleton height={18} width={40} />
               </Group>
               <Skeleton height={28} width="70%" />
               <Skeleton mt="md" height={12} width={120} />
@@ -123,8 +123,8 @@ export function SummarySection(props: {
           fallback={
             <Card withBorder>
               <Group mb="md" justify="space-between">
-                <Skeleton height={14} width={120} />
-                <Skeleton height={18} width={60} />
+                <Skeleton height={14} width={100} />
+                <Skeleton height={18} width={40} />
               </Group>
               <Skeleton height={28} width="70%" />
               <Skeleton mt="md" height={12} width={120} />

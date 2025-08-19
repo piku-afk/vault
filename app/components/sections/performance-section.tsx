@@ -14,6 +14,7 @@ import { type RefObject, Suspense } from "react";
 import { Await } from "react-router";
 
 import type { getOverview } from "#/database/get-overview.server";
+import type { getXIRR } from "#/database/get-xirr.server";
 import { useInContainer } from "#/hooks/use-in-container";
 import {
   calculateProgressValue,
@@ -25,10 +26,12 @@ import { ReturnsPercentageBadge } from "../shared/returns-percentage-badge";
 import { Section } from "../shared/section";
 import { StatItem } from "../shared/stat-item";
 import { ViewDetailsActionIcon } from "../shared/view-details-action-icon";
+import { XirrPercentageBadge } from "../shared/xirr-percentage-badge";
 
 export function PerformanceSection(props: {
   title: string;
   data: ReturnType<typeof getOverview>["performanceData"];
+  xirr: ReturnType<typeof getXIRR>;
 }) {
   const { isInContainer: isInDialog, ref } = useInContainer("dialog");
 
@@ -57,10 +60,12 @@ export function PerformanceSection(props: {
                   </ThemeIcon>
                   <Box>
                     <Skeleton height={titleHeight} width={titleWidth} mb={6} />
-                    <Skeleton height={19} width={80} />
+                    <Group mt={4} gap="xs">
+                      <Skeleton height={16} width={80} />
+                      <Skeleton height={12} width={80} />
+                    </Group>
                   </Box>
                   <Skeleton height={28} width={80} ml="auto" />
-                  <Skeleton height={32} width={32} />
                 </Group>
 
                 <Skeleton height={8} radius="xl" />
@@ -118,11 +123,24 @@ export function PerformanceSection(props: {
                               <ViewDetailsActionIcon to={item.action_route} />
                             )}
                           </Group>
-                          {item.subtitle && (
-                            <Text size="xs" c="dimmed">
-                              {item.subtitle}
-                            </Text>
-                          )}
+                          <Group mt={4} gap="xs">
+                            <Suspense
+                              fallback={<Skeleton height={16} width={80} />}
+                            >
+                              <Await resolve={props.xirr}>
+                                {({ scheme }) => (
+                                  <XirrPercentageBadge
+                                    value={scheme[item.name as string] ?? 0}
+                                  />
+                                )}
+                              </Await>
+                            </Suspense>
+                            {item.subtitle && (
+                              <Text size="xs" c="dimmed">
+                                {item.subtitle}
+                              </Text>
+                            )}
+                          </Group>
                         </Box>
                         <ReturnsPercentageBadge
                           value={item.returns_percentage}

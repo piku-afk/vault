@@ -43,6 +43,7 @@ export default function Overview({ loaderData }: Route.ComponentProps) {
       <PerformanceSection
         title="Category Performance"
         data={loaderData.performanceData}
+        xirr={loaderData.xirr}
       />
       <Divider />
 
