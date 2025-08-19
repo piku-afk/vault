@@ -15,7 +15,7 @@ export function XirrPercentageBadge(props: {
   const returnPrefix = getReturnsPrefix(Number(props.value));
 
   return (
-    <Tooltip label="Annualized return rate" position="bottom">
+    <Tooltip label="Annualized return rate">
       <Badge
         size="xs"
         variant="outline"
