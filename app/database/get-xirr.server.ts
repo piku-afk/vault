@@ -2,37 +2,55 @@ import { type CashFlow, xirr } from "@webcarrot/xirr";
 
 import { db } from "./kysely.server";
 
-async function getXirrSummary(category?: string) {
-  const { net_current } = await db
+function calculateXirr(cashFlows: CashFlow[], netCurrent: string): number {
+  if (cashFlows.length === 0) return 0;
+
+  const xirrCashFlows: CashFlow[] = [
+    ...cashFlows.map((flow) => ({ ...flow, amount: Number(flow.amount) })),
+    { date: new Date(), amount: Number(netCurrent) },
+  ];
+
+  return xirr(xirrCashFlows) * 100;
+}
+
+async function getNetCurrentValue(category?: string): Promise<string> {
+  const query = db
     .selectFrom("transactions as t")
     .innerJoin("mutual_fund_schemes as mfs", "mfs.scheme_name", "t.scheme_name")
     .select((eb) =>
       eb.fn
-        .coalesce(
-          eb.fn.sum(
-            eb
-              .case()
-              .when(eb.ref("t.transaction_type"), "=", "purchase")
-              .then(eb(eb.ref("t.units"), "*", eb.ref("mfs.nav")))
-              .when(eb.ref("t.transaction_type"), "=", "redeem")
-              .then(eb(eb(eb.ref("t.units"), "*", eb.ref("mfs.nav")), "*", -1))
-              .else(eb.lit(0))
-              .end(),
-          ),
-          eb.lit(0),
+        .sum(
+          eb
+            .case()
+            .when(eb.ref("t.transaction_type"), "=", "purchase")
+            .then(eb(eb.ref("t.units"), "*", eb.ref("mfs.nav")))
+            .when(eb.ref("t.transaction_type"), "=", "redeem")
+            .then(eb(eb(eb.ref("t.units"), "*", eb.ref("mfs.nav")), "*", -1))
+            .else(eb.lit(0))
+            .end(),
         )
+        .$castTo<string>()
         .as("net_current"),
     )
     .$if(!!category, (eb) =>
       eb.where("mfs.saving_category", "=", category as string),
-    )
-    .executeTakeFirstOrThrow();
+    );
 
-  const cashFlows = await db
+  const { net_current } = await query.executeTakeFirstOrThrow();
+  return net_current;
+}
+
+async function getCashFlows({
+  category,
+  schemeName,
+}: {
+  category?: string;
+  schemeName?: string;
+}): Promise<CashFlow[]> {
+  const query = db
     .selectFrom("transactions as t")
-    .innerJoin("mutual_fund_schemes as mfs", "mfs.scheme_name", "t.scheme_name")
     .select((eb) => [
-      "t.date",
+      eb.cast<Date>("t.date", "date").as("date"),
       eb
         .case()
         .when(eb.ref("t.transaction_type"), "=", "purchase")
@@ -41,23 +59,32 @@ async function getXirrSummary(category?: string) {
         .end()
         .as("amount"),
     ])
-    .$if(!!category, (eb) =>
-      eb.where("mfs.saving_category", "=", category as string),
+    .$if(!!schemeName, (eb) =>
+      eb.where("t.scheme_name", "=", schemeName as string),
     )
-    .orderBy("t.date", "asc")
-    .execute();
+    .$if(!!category, (eb) =>
+      eb
+        .innerJoin(
+          "mutual_fund_schemes as mfs",
+          "mfs.scheme_name",
+          "t.scheme_name",
+        )
+        .where("mfs.saving_category", "=", category as string),
+    );
 
-  if (cashFlows.length === 0) return 0;
-
-  return (
-    xirr([
-      ...cashFlows.map((flow) => ({ ...flow, amount: Number(flow.amount) })),
-      { date: new Date(), amount: Number(net_current) },
-    ] as unknown as CashFlow[]) * 100
-  );
+  return query.orderBy("t.date", "asc").execute();
 }
 
-async function getXirrScheme(category?: string) {
+async function getXirrSummary(category?: string): Promise<number> {
+  const cashFlows = await getCashFlows({ category });
+  const netCurrent = await getNetCurrentValue(category);
+
+  return calculateXirr(cashFlows, netCurrent);
+}
+
+async function getXirrScheme(
+  category?: string,
+): Promise<Record<string, number>> {
   const result: Record<string, number> = {};
 
   if (category) {
@@ -70,34 +97,14 @@ async function getXirrScheme(category?: string) {
     for (const scheme of schemes) {
       const { net_current } = await db
         .selectFrom("mutual_fund_summary")
-        .select("net_current")
+        .select((eb) =>
+          eb.cast<string>("net_current", "numeric").as("net_current"),
+        )
         .where("scheme_name", "=", scheme.name)
         .executeTakeFirstOrThrow();
 
-      const cashFlows = await db
-        .selectFrom("transactions as t")
-        .select((eb) => [
-          "date",
-          eb
-            .case()
-            .when(eb.ref("t.transaction_type"), "=", "purchase")
-            .then(eb("t.amount", "*", -1))
-            .else(eb.ref("t.amount"))
-            .end()
-            .as("amount"),
-        ])
-        .where("t.scheme_name", "=", scheme.name)
-        .orderBy("t.date", "asc")
-        .execute();
-
-      result[scheme.name] =
-        xirr([
-          ...cashFlows.map((flow) => ({
-            ...flow,
-            amount: Number(flow.amount),
-          })),
-          { date: new Date(), amount: Number(net_current) },
-        ] as unknown as CashFlow[]) * 100;
+      const cashFlows = await getCashFlows({ schemeName: scheme.name });
+      result[scheme.name] = calculateXirr(cashFlows, net_current);
     }
   } else {
     const savingCategories = await db
