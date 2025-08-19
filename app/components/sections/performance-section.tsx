@@ -1,11 +1,9 @@
 import {
   ActionIcon,
-  Badge,
   Box,
   Card,
   Group,
   Image,
-  NumberFormatter,
   Progress,
   SimpleGrid,
   Skeleton,
@@ -26,6 +24,7 @@ import {
   getReturnsPrefix,
 } from "#/utils/financialHelpers";
 
+import { ReturnsPercentageBadge } from "../shared/returns-percentage-badge";
 import { Section } from "../shared/section";
 import { StatItem } from "../shared/stat-item";
 
@@ -142,23 +141,10 @@ export function PerformanceSection(props: {
                             </Text>
                           )}
                         </Box>
-                        <Tooltip label="Returns percentage">
-                          <Badge
-                            ml="auto"
-                            variant="light"
-                            color={returnColor}
-                            size={badgeSize}
-                            style={{ flexShrink: 0 }}
-                          >
-                            <NumberFormatter
-                              value={item.returns_percentage}
-                              suffix="%"
-                              decimalScale={2}
-                              allowNegative={false}
-                              prefix={returnPrefix}
-                            />
-                          </Badge>
-                        </Tooltip>
+                        <ReturnsPercentageBadge
+                          value={item.returns_percentage}
+                          badgeProps={{ size: badgeSize }}
+                        />
                       </Group>
 
                       <Progress

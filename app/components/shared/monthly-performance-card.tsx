@@ -1,13 +1,7 @@
-import {
-  Badge,
-  Card,
-  Group,
-  NumberFormatter,
-  Stack,
-  Text,
-  Tooltip,
-} from "@mantine/core";
+import { Badge, Card, Group, Stack, Text } from "@mantine/core";
 import { TrendingDown, TrendingUp } from "lucide-react";
+
+import { ReturnsPercentageBadge } from "./returns-percentage-badge";
 
 export function MonthlyPerformanceCard({
   scheme,
@@ -46,19 +40,10 @@ export function MonthlyPerformanceCard({
             >
               {isBest ? "Best" : "Worst"}
             </Badge>
-            <Tooltip label="Returns percentage">
-              <Badge
-                size="sm"
-                variant="light"
-                color={color}
-                style={{ flexShrink: 0 }}
-              >
-                <NumberFormatter
-                  value={scheme.nav_diff_percentage || 0}
-                  suffix="%"
-                />
-              </Badge>
-            </Tooltip>
+            <ReturnsPercentageBadge
+              value={scheme.nav_diff_percentage || 0}
+              badgeProps={{ size: "xs" }}
+            />
           </Group>
         </Group>
         <Text size="xs" c="dimmed" style={{ flex: 1 }}>
