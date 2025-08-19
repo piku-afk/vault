@@ -136,11 +136,14 @@ export function SummarySection(props: {
               [
                 {
                   label: "XIRR",
-                  badgeText: xirr ? "Profit" : "Loss",
-                  badgeColor: getReturnsColor(xirr),
-                  value: xirr,
+                  badgeText: xirr.summary ? "Profit" : "Loss",
+                  badgeColor: getReturnsColor(xirr.summary),
+                  value: xirr.summary,
                   description: "Annualized return rate",
-                  prefix: Number(xirr) > 0 ? getReturnsPrefix(xirr) : undefined,
+                  prefix:
+                    Number(xirr.summary) > 0
+                      ? getReturnsPrefix(xirr.summary)
+                      : undefined,
                 },
               ].map((metric) => (
                 <Card withBorder key={metric.label}>

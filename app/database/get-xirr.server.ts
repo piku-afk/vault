@@ -47,10 +47,11 @@ export async function getXIRR(category?: string) {
     .orderBy("t.date", "asc")
     .execute();
 
-  return (
-    xirr([
-      ...cashFlows.map((flow) => ({ ...flow, amount: Number(flow.amount) })),
-      { date: new Date(), amount: Number(net_current) },
-    ] as unknown as CashFlow[]) * 100
-  );
+  return {
+    summary:
+      xirr([
+        ...cashFlows.map((flow) => ({ ...flow, amount: Number(flow.amount) })),
+        { date: new Date(), amount: Number(net_current) },
+      ] as unknown as CashFlow[]) * 100,
+  };
 }
