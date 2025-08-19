@@ -139,7 +139,7 @@ export function SummarySection(props: {
                   badgeText: xirr ? "Profit" : "Loss",
                   badgeColor: getReturnsColor(xirr),
                   value: xirr,
-                  description: "Compound Annual Growth Rate",
+                  description: "Annualized return rate",
                   prefix: Number(xirr) > 0 ? getReturnsPrefix(xirr) : undefined,
                 },
               ].map((metric) => (
