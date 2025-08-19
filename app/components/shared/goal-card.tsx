@@ -11,8 +11,9 @@ import {
   ThemeIcon,
   Tooltip,
 } from "@mantine/core";
+import { CircleCheckBig, Target } from "lucide-react";
 
-import type { getOverview } from "#/database/get-overview.server";
+import type { getGoalsProgress } from "#/database/get-goals-progress";
 import { getGoalColor, getGoalCompletionDate } from "#/utils/financialHelpers";
 
 import { CurrencyFormatter } from "./currency-formatter";
@@ -24,25 +25,33 @@ export function GoalCardSkeleton() {
         <Group justify="space-between" align="flex-start">
           <Box>
             <Group gap="xs" mb="xs">
-              <Skeleton height={42} width={40} radius="md" />
-              <Skeleton height={20} width={120} />
+              <Skeleton height={36} width={36} radius="md" />
+              <Skeleton height={24} width={140} />
             </Group>
-            <Skeleton height={16} width={100} />
-            <Skeleton height={12} width={140} mt={4} />
+            <Skeleton height={14} width={180} />
+            <Skeleton height={12} width={160} mt={4} />
           </Box>
-          <Skeleton height={24} width={60} radius="xl" />
+          <Skeleton height={32} width={32} radius="xl" />
         </Group>
 
-        <Skeleton height={12} radius="xl" />
+        <Group>
+          <Skeleton height={16} radius="xl" style={{ flexGrow: 1 }} />
+          <Skeleton
+            height={24}
+            width={50}
+            radius="xl"
+            style={{ flexShrink: 0 }}
+          />
+        </Group>
 
         <Group justify="space-between">
           <Box>
-            <Skeleton height={12} width={80} mb={6} />
-            <Skeleton height={16} width={60} />
+            <Skeleton height={12} width={100} mb={6} />
+            <Skeleton height={16} width={80} />
           </Box>
           <Box ta="right">
-            <Skeleton height={12} width={60} mb={6} ml="auto" />
-            <Skeleton height={16} width={80} />
+            <Skeleton height={12} width={70} mb={6} ml="auto" />
+            <Skeleton height={16} width={90} />
           </Box>
         </Group>
       </Stack>
@@ -53,7 +62,10 @@ export function GoalCardSkeleton() {
 export function GoalCard({
   goal,
 }: {
-  goal: Awaited<ReturnType<typeof getOverview>["goals"]>[number];
+  goal: Exclude<
+    Awaited<ReturnType<typeof getGoalsProgress>>[number],
+    undefined
+  >;
 }) {
   const color = getGoalColor(Number(goal.progress), goal.is_complete);
   const completionDate = getGoalCompletionDate(
@@ -91,14 +103,35 @@ export function GoalCard({
               </Text>
             )}
           </Box>
+          <Tooltip label={goal.is_complete ? "Goal Completed" : "In Progress"}>
+            <ThemeIcon variant="light" color={color} size="md" radius="xl">
+              {goal.is_complete ? (
+                <CircleCheckBig size={16} />
+              ) : (
+                <Target size={16} />
+              )}
+            </ThemeIcon>
+          </Tooltip>
+        </Group>
+
+        <Group>
+          <Progress
+            size="md"
+            value={Number(goal.progress)}
+            color={color}
+            style={{ flexGrow: 1 }}
+          />
           <Tooltip label="Goal Progress">
-            <Badge variant="light" color={color} size="lg">
+            <Badge
+              variant="light"
+              size="sm"
+              color={color}
+              style={{ flexShrink: 0 }}
+            >
               {goal.progress}%
             </Badge>
           </Tooltip>
         </Group>
-
-        <Progress value={Number(goal.progress)} color={color} size="md" />
 
         <Group justify="space-between">
           <Box>
