@@ -1,5 +1,4 @@
 import {
-  ActionIcon,
   Card,
   Group,
   SimpleGrid,
@@ -7,23 +6,18 @@ import {
   Stack,
   Text,
   ThemeIcon,
-  Tooltip,
 } from "@mantine/core";
 import dayjs from "dayjs";
-import {
-  Building2,
-  CalendarClock,
-  Info,
-  ReceiptIndianRupee,
-} from "lucide-react";
+import { Building2, CalendarClock, ReceiptIndianRupee } from "lucide-react";
 import { Suspense } from "react";
-import { Await, NavLink } from "react-router";
+import { Await } from "react-router";
 
 import { ROUTES } from "#/constants/routes";
 import type { getOverview } from "#/database/get-overview.server";
 
 import { CurrencyFormatter } from "../shared/currency-formatter";
 import { Section } from "../shared/section";
+import { ViewDetailsActionIcon } from "../shared/view-details-action-icon";
 
 export function StatsSection(props: {
   title: string;
@@ -81,19 +75,7 @@ export function StatsSection(props: {
                           )}
                         </Text>
                         {stat.action_route && (
-                          <Tooltip label="View Details">
-                            <NavLink to={stat.action_route} preventScrollReset>
-                              {({ isPending }) => (
-                                <ActionIcon
-                                  size="sm"
-                                  variant="light"
-                                  loading={isPending}
-                                >
-                                  <Info size={14} />
-                                </ActionIcon>
-                              )}
-                            </NavLink>
-                          </Tooltip>
+                          <ViewDetailsActionIcon to={stat.action_route} />
                         )}
                       </Group>
                       <Text size="xs" c="dimmed">

@@ -1,5 +1,4 @@
 import {
-  ActionIcon,
   Box,
   Card,
   Group,
@@ -10,11 +9,9 @@ import {
   Stack,
   Text,
   ThemeIcon,
-  Tooltip,
 } from "@mantine/core";
-import { Info } from "lucide-react";
 import { type RefObject, Suspense } from "react";
-import { Await, NavLink } from "react-router";
+import { Await } from "react-router";
 
 import type { getOverview } from "#/database/get-overview.server";
 import { useInContainer } from "#/hooks/use-in-container";
@@ -27,6 +24,7 @@ import {
 import { ReturnsPercentageBadge } from "../shared/returns-percentage-badge";
 import { Section } from "../shared/section";
 import { StatItem } from "../shared/stat-item";
+import { ViewDetailsActionIcon } from "../shared/view-details-action-icon";
 
 export function PerformanceSection(props: {
   title: string;
@@ -117,22 +115,7 @@ export function PerformanceSection(props: {
                               {item.name}
                             </Text>
                             {item.action_route && (
-                              <Tooltip label="View Details">
-                                <NavLink
-                                  to={item.action_route}
-                                  preventScrollReset
-                                >
-                                  {({ isPending }) => (
-                                    <ActionIcon
-                                      variant="light"
-                                      size="sm"
-                                      loading={isPending}
-                                    >
-                                      <Info size={14} />
-                                    </ActionIcon>
-                                  )}
-                                </NavLink>
-                              </Tooltip>
+                              <ViewDetailsActionIcon to={item.action_route} />
                             )}
                           </Group>
                           {item.subtitle && (
