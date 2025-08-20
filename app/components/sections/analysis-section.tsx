@@ -110,20 +110,18 @@ export function AnalysisSection(props: {
                   </Card>
                 ))}
               >
-                <Await resolve={props.data.bestPerformer}>
-                  {(bestPerformer) => (
-                    <MonthlyPerformanceCard
-                      variant="best"
-                      scheme={bestPerformer}
-                    />
-                  )}
-                </Await>
-                <Await resolve={props.data.worstPerformer}>
-                  {(worstPerformer) => (
-                    <MonthlyPerformanceCard
-                      variant="worst"
-                      scheme={worstPerformer}
-                    />
+                <Await resolve={props.data.monthlyPerformers}>
+                  {([worstPerformer, bestPerformer]) => (
+                    <>
+                      <MonthlyPerformanceCard
+                        variant="best"
+                        scheme={bestPerformer}
+                      />
+                      <MonthlyPerformanceCard
+                        variant="worst"
+                        scheme={worstPerformer}
+                      />
+                    </>
                   )}
                 </Await>
               </Suspense>

@@ -120,6 +120,38 @@ export function getOverview(category?: string) {
     ])
     .execute();
 
+  const monthlyPerformers = db
+    .selectFrom(
+      db
+        .selectFrom("mutual_fund_summary as mfsum")
+        .leftJoin(
+          "mutual_fund_schemes as mfs",
+          "mfs.scheme_name",
+          "mfsum.scheme_name",
+        )
+        .$if(!!category, (eb) =>
+          eb
+            .select("mfs.sub_category as sub_text")
+            .where("mfs.saving_category", "=", category as string),
+        )
+        .$if(!category, (eb) => eb.select("mfs.saving_category as sub_text"))
+        .select([
+          "mfs.scheme_name",
+          "mfsum.nav_diff_percentage",
+          sql<number>`row_number() over (order by nav_diff_percentage asc)`.as(
+            "worst_performer",
+          ),
+          sql<number>`row_number() over (order by nav_diff_percentage desc)`.as(
+            "best_performer",
+          ),
+        ])
+        .as("mutual_fund_scheme_ranks"),
+    )
+    .select(["scheme_name", "sub_text", "nav_diff_percentage"])
+    .where((eb) => eb("worst_performer", "=", 1).or("best_performer", "=", 1))
+    .orderBy("nav_diff_percentage", "asc")
+    .execute();
+
   const bestPerformer = db
     .selectFrom("mutual_fund_summary")
     .select(["scheme_name", "saving_category", "returns_percentage"])
@@ -238,7 +270,13 @@ export function getOverview(category?: string) {
   return {
     summary,
     stats,
-    analysis: { breakdown, bestPerformer, worstPerformer, positiveCount },
+    analysis: {
+      breakdown,
+      bestPerformer,
+      worstPerformer,
+      monthlyPerformers,
+      positiveCount,
+    },
     performanceData,
     recentTransactions,
   };

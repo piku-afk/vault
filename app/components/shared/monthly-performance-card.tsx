@@ -8,9 +8,9 @@ export function MonthlyPerformanceCard({
   variant,
 }: {
   scheme: {
-    saving_category: string | null;
+    sub_text?: string | null;
     scheme_name: string | null;
-    returns_percentage: number | null;
+    nav_diff_percentage: number | null;
   };
   variant: "best" | "worst";
 }) {
@@ -41,14 +41,16 @@ export function MonthlyPerformanceCard({
               {isBest ? "Best" : "Worst"}
             </Badge>
             <ReturnsPercentageBadge
-              value={scheme.returns_percentage || 0}
+              value={scheme.nav_diff_percentage || 0}
               badgeProps={{ size: "xs" }}
             />
           </Group>
         </Group>
-        <Text size="xs" c="dimmed" style={{ flex: 1 }}>
-          {scheme.saving_category}
-        </Text>
+        {scheme.sub_text && (
+          <Text size="xs" c="dimmed" style={{ flex: 1 }}>
+            {scheme.sub_text}
+          </Text>
+        )}
       </Stack>
     </Card>
   );
