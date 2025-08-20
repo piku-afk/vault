@@ -122,7 +122,7 @@ export function getOverview(category?: string) {
 
   const bestPerformer = db
     .selectFrom("mutual_fund_summary")
-    .select(["scheme_name", "saving_category", "nav_diff_percentage"])
+    .select(["scheme_name", "saving_category", "returns_percentage"])
     .$if(!!category, (eb) =>
       eb.where("saving_category", "=", category as string),
     )
@@ -131,7 +131,7 @@ export function getOverview(category?: string) {
 
   const worstPerformer = db
     .selectFrom("mutual_fund_summary")
-    .select(["scheme_name", "saving_category", "nav_diff_percentage"])
+    .select(["scheme_name", "saving_category", "returns_percentage"])
     .$if(!!category, (eb) =>
       eb.where("saving_category", "=", category as string),
     )

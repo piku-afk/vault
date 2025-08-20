@@ -10,7 +10,7 @@ export function MonthlyPerformanceCard({
   scheme: {
     saving_category: string | null;
     scheme_name: string | null;
-    nav_diff_percentage: number | null;
+    returns_percentage: number | null;
   };
   variant: "best" | "worst";
 }) {
@@ -41,7 +41,7 @@ export function MonthlyPerformanceCard({
               {isBest ? "Best" : "Worst"}
             </Badge>
             <ReturnsPercentageBadge
-              value={scheme.nav_diff_percentage || 0}
+              value={scheme.returns_percentage || 0}
               badgeProps={{ size: "xs" }}
             />
           </Group>
