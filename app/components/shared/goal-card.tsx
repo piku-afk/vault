@@ -67,10 +67,10 @@ export function GoalCard({
     undefined
   >;
 }) {
-  const color = getGoalColor(Number(goal.progress), goal.is_complete);
+  const color = getGoalColor(Number(goal.progress), goal.is_complete ?? false);
   const completionDate = getGoalCompletionDate(
     Number(goal.remaining),
-    Number(goal.monthly_sip),
+    Number(goal.sip_amount),
   );
 
   return (
@@ -87,7 +87,7 @@ export function GoalCard({
                 <Image
                   loading="lazy"
                   src={goal.icon}
-                  alt={goal.name}
+                  alt={goal.name ?? ""}
                   w="auto"
                   h={20}
                 />
@@ -95,7 +95,7 @@ export function GoalCard({
               <Text size="lg">{goal.name}</Text>
             </Group>
             <Text size="sm" c="dimmed">
-              Target: <CurrencyFormatter value={goal.target} />
+              Target: <CurrencyFormatter value={goal.target ?? 0} />
             </Text>
             {!goal.is_complete && (
               <Text size="xs" c="dimmed" mt={4}>
@@ -139,7 +139,7 @@ export function GoalCard({
               Current Progress
             </Text>
             <Text fw={600} size="sm">
-              <CurrencyFormatter value={goal.current} />
+              <CurrencyFormatter value={goal.current ?? 0} />
             </Text>
           </Box>
           <Box ta="right">
@@ -150,7 +150,7 @@ export function GoalCard({
               {goal.is_complete ? (
                 "Goal Reached!"
               ) : (
-                <CurrencyFormatter value={goal.remaining} />
+                <CurrencyFormatter value={goal.remaining ?? 0} />
               )}
             </Text>
           </Box>

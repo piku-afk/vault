@@ -275,6 +275,27 @@ export type Database = {
       }
     }
     Views: {
+      goals_progress: {
+        Row: {
+          current: number | null
+          icon: string | null
+          is_complete: boolean | null
+          name: string | null
+          progress: number | null
+          remaining: number | null
+          sip_amount: number | null
+          target: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "goal_name_fkey"
+            columns: ["name"]
+            isOneToOne: true
+            referencedRelation: "savings_categories"
+            referencedColumns: ["name"]
+          },
+        ]
+      }
       mutual_fund_summary: {
         Row: {
           nav_diff_percentage: number | null
