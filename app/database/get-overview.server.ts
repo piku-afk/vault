@@ -23,6 +23,7 @@ const returns_percentage = mfsumEb
   .end();
 
 export function getOverview(category?: string) {
+  // TODO: add a summary table with name, subtext, badgeText, and create a view to calculate values
   const summary = db
     .selectFrom("mutual_fund_summary")
     .select([
@@ -37,28 +38,13 @@ export function getOverview(category?: string) {
     .executeTakeFirstOrThrow();
 
   const stats = db
-    .selectFrom("mutual_fund_summary as mfsum")
-    .innerJoin(
-      "mutual_fund_schemes as mfs",
-      "mfs.scheme_name",
-      "mfsum.scheme_name",
-    )
-    .select((eb) => [
-      eb.fn
-        .count<string>("mfsum.scheme_name")
-        .filterWhere("mfsum.net_units", ">", 0)
-        .as("total_schemes"),
-      eb.fn
-        .sum<string>("mfs.sip_amount")
-        .filterWhere("mfs.is_active", "=", true)
-        .as("monthly_sip"),
-      eb.fn.min<string>("mfs.next_sip_date").as("next_sip_date"),
-    ])
-    .$if(!!category, (eb) =>
-      eb.where("mfsum.saving_category", "=", category as string),
-    )
+    .selectFrom("saving_category_stats")
+    .selectAll()
+    .where("category", category ? "=" : "is", category ? category : null)
+    .orderBy("category", "desc")
     .executeTakeFirstOrThrow();
 
+  // TODO: convert to view
   const breakdown = db
     .selectFrom(
       db

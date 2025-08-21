@@ -54,7 +54,7 @@ export function StatsSection(props: {
                 },
                 {
                   icon: ReceiptIndianRupee,
-                  value: stats.monthly_sip,
+                  value: stats.sip_amount,
                   label: "Monthly SIP",
                   isCurrency: true,
                   action_route: ROUTES.SIP_BREAKDOWN,
@@ -69,7 +69,7 @@ export function StatsSection(props: {
                       <Group align="baseline" gap="xs">
                         <Text size="xl" fw={500}>
                           {stat.isCurrency ? (
-                            <CurrencyFormatter value={stat.value} />
+                            <CurrencyFormatter value={stat.value ?? 0} />
                           ) : (
                             stat.value
                           )}

@@ -317,6 +317,15 @@ export type Database = {
           },
         ]
       }
+      saving_category_stats: {
+        Row: {
+          category: string | null
+          next_sip_date: string | null
+          sip_amount: number | null
+          total_schemes: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       get_monthly_performers: {
