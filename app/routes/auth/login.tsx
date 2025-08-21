@@ -10,7 +10,7 @@ import {
 import { createClient } from "app/utils/supabase.server";
 import { TriangleAlert } from "lucide-react";
 import { Fragment } from "react";
-import { Form, redirect, useActionData } from "react-router";
+import { Form, redirect, useActionData, useNavigation } from "react-router";
 import { z } from "zod/v4";
 
 import { ROUTES } from "#/constants/routes";
@@ -50,6 +50,8 @@ export async function action({ request }: Route.ActionArgs) {
 }
 
 export default function Login() {
+  const navigation = useNavigation();
+  const isSubmitting = navigation.formAction === ROUTES.LOGIN;
   const actionData = useActionData<typeof action>();
   const formError = actionData?.formErrors?.[0];
   const emailError = actionData?.fieldErrors?.email?.[0];
@@ -66,7 +68,7 @@ export default function Login() {
       </Title>
 
       <Form method="post" action={ROUTES.LOGIN}>
-        <Fieldset variant="unstyled">
+        <Fieldset variant="unstyled" disabled={isSubmitting}>
           <Stack mt="xl" gap="lg">
             <TextInput
               name="email"
@@ -97,7 +99,7 @@ export default function Login() {
             )}
           </Stack>
 
-          <Button type="submit" fullWidth mt="xl">
+          <Button type="submit" fullWidth mt="xl" loading={isSubmitting}>
             Login
           </Button>
         </Fieldset>
