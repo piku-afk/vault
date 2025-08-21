@@ -9,7 +9,7 @@ const net_current = mfsumEb.fn<string>("round", [
 const net_invested = mfsumEb.fn<string>("round", [
   mfsumEb.fn.sum("net_invested"),
 ]);
-const returns = mfsumEb.fn<string>("round", [mfsumEb.fn.sum("returns")]);
+const returns = mfsumEb.fn<string>("round", [mfsumEb.fn.sum("net_returns")]);
 const returns_percentage = mfsumEb
   .case()
   .when(net_invested, "=", "0")

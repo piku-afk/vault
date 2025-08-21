@@ -301,9 +301,9 @@ export type Database = {
           nav_diff_percentage: number | null
           net_current: number | null
           net_invested: number | null
+          net_returns: number | null
+          net_returns_percentage: number | null
           net_units: number | null
-          returns: number | null
-          returns_percentage: number | null
           saving_category: string | null
           scheme_name: string | null
         }
