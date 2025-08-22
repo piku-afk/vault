@@ -78,6 +78,7 @@ export async function createGoalsSummaryView(db: Kysely<KyselyDatabase>) {
               .else("0")
               .end()
               .as("progress"),
+            "g.sip_amount",
             "sc.name as category",
             eb("g.current", ">=", eb.ref("g.target")).as("is_complete"),
             "i.src as icon",
