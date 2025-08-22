@@ -7,12 +7,13 @@ import type { Database as SupabaseDatabase } from "./database";
 
 export type KyselyDatabase = KyselifyDatabase<SupabaseDatabase>;
 
-export function createDatabaseInstance() {
-  return new Kysely<KyselyDatabase>({
-    dialect: new PostgresJSDialect({
-      postgres: postgres(process.env.DATABASE_URL as string),
+export const db = new Kysely<KyselyDatabase>({
+  dialect: new PostgresJSDialect({
+    postgres: postgres(process.env.DATABASE_URL as string, {
+      max: 15,
+      idle_timeout: 30,
+      max_lifetime: 1800,
+      connect_timeout: 10,
     }),
-  });
-}
-
-export const db = createDatabaseInstance();
+  }),
+});
