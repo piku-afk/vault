@@ -1,8 +1,8 @@
 import { expressionBuilder, sql } from "kysely";
 
-import { type Database, db } from "./kysely.server";
+import { db, type KyselyDatabase } from "./kysely.server";
 
-const mfsumEb = expressionBuilder<Database, "mutual_fund_summary">();
+const mfsumEb = expressionBuilder<KyselyDatabase, "mutual_fund_summary">();
 const net_current = mfsumEb.fn<string>("round", [
   mfsumEb.fn.sum("net_current"),
 ]);

@@ -5,10 +5,14 @@ import postgres from "postgres";
 
 import type { Database as SupabaseDatabase } from "./database";
 
-export type Database = KyselifyDatabase<SupabaseDatabase>;
+export type KyselyDatabase = KyselifyDatabase<SupabaseDatabase>;
 
-export const db = new Kysely<Database>({
-  dialect: new PostgresJSDialect({
-    postgres: postgres(process.env.DATABASE_URL as string),
-  }),
-});
+export function createDatabaseInstance() {
+  return new Kysely<KyselyDatabase>({
+    dialect: new PostgresJSDialect({
+      postgres: postgres(process.env.DATABASE_URL as string),
+    }),
+  });
+}
+
+export const db = createDatabaseInstance();
