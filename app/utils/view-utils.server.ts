@@ -8,11 +8,6 @@ export async function setSecurityInvoker<T>(viewName: string, db: Kysely<T>) {
   );
 }
 
-export function dropViewIfExists<T>(viewName: string, db: Kysely<T>) {
-  logger.info(`drop ${viewName} view`);
-  return db.schema.dropView(viewName).ifExists().execute();
-}
-
 export function logViewCreation(viewName: string) {
   logger.info(`Creating view: ${viewName}`);
 }

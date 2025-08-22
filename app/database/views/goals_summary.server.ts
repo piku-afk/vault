@@ -1,7 +1,6 @@
 import type { Kysely } from "kysely";
 
 import {
-  dropViewIfExists,
   logViewCreation,
   logViewCreationError,
   setSecurityInvoker,
@@ -13,11 +12,10 @@ const VIEW_NAME = "goals_summary";
 
 export async function createGoalsSummaryView(db: Kysely<KyselyDatabase>) {
   try {
-    await dropViewIfExists(VIEW_NAME, db);
-
     logViewCreation(VIEW_NAME);
     await db.schema
       .createView(VIEW_NAME)
+      .orReplace()
       .as(
         db
           .with("goal_summary", (db) =>
@@ -31,11 +29,11 @@ export async function createGoalsSummaryView(db: Kysely<KyselyDatabase>) {
                 eb.fn
                   .coalesce(
                     eb
-                      .selectFrom("savings_category_summary as scs")
+                      .selectFrom("savings_categories_summary as scs")
                       .select("scs.net_current")
                       .where("scs.category", "=", eb.ref("g.name")),
                     eb
-                      .selectFrom("savings_category_summary as scs")
+                      .selectFrom("savings_categories_summary as scs")
                       .select("scs.net_current")
                       .where("scs.category", "is", null),
                   )
@@ -43,11 +41,11 @@ export async function createGoalsSummaryView(db: Kysely<KyselyDatabase>) {
                 eb.fn
                   .coalesce(
                     eb
-                      .selectFrom("savings_category_summary as scs")
+                      .selectFrom("savings_categories_summary as scs")
                       .select("scs.sip_amount")
                       .where("scs.category", "=", eb.ref("g.name")),
                     eb
-                      .selectFrom("savings_category_summary as scs")
+                      .selectFrom("savings_categories_summary as scs")
                       .select("scs.sip_amount")
                       .where("scs.category", "is", null),
                   )

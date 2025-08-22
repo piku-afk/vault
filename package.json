@@ -15,6 +15,7 @@
     "deploy:web": "netlify deploy --prod",
     "db:types": "dotenv supabase gen types typescript --project-id $SUPABASE_PROJECT_ID > app/database/database.ts",
     "db:views": "dotenv tsx app/database/views/index.server.ts",
+    "db:update": "pnpm db:views && pnpm db:types",
     "dev": "react-router dev",
     "build": "react-router build",
     "typecheck": "react-router typegen && tsc",

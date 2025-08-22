@@ -321,19 +321,6 @@ export type Database = {
       }
     }
     Views: {
-      goals_progress: {
-        Row: {
-          current: number | null
-          icon: string | null
-          is_complete: boolean | null
-          name: string | null
-          progress: number | null
-          remaining: number | null
-          sip_amount: number | null
-          target: number | null
-        }
-        Relationships: []
-      }
       goals_summary: {
         Row: {
           category: string | null
@@ -343,6 +330,7 @@ export type Database = {
           name: string | null
           progress: number | null
           remaining: number | null
+          sip_amount: number | null
           target: number | null
         }
         Relationships: []
@@ -369,6 +357,34 @@ export type Database = {
           {
             foreignKeyName: "mutual_fund_schemes_saving_category_fkey"
             columns: ["saving_category"]
+            isOneToOne: false
+            referencedRelation: "savings_categories"
+            referencedColumns: ["name"]
+          },
+        ]
+      }
+      savings_categories_summary: {
+        Row: {
+          category: string | null
+          net_current: number | null
+          net_current_percentage: number | null
+          net_invested: number | null
+          net_returns: number | null
+          next_sip_date: string | null
+          sip_amount: number | null
+          total_schemes: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mutual_fund_schemes_saving_category_fkey"
+            columns: ["category"]
+            isOneToOne: false
+            referencedRelation: "goals_summary"
+            referencedColumns: ["category"]
+          },
+          {
+            foreignKeyName: "mutual_fund_schemes_saving_category_fkey"
+            columns: ["category"]
             isOneToOne: false
             referencedRelation: "savings_categories"
             referencedColumns: ["name"]

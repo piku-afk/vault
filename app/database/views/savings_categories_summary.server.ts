@@ -1,7 +1,6 @@
 import type { Kysely } from "kysely";
 
 import {
-  dropViewIfExists,
   logViewCreation,
   logViewCreationError,
   setSecurityInvoker,
@@ -15,11 +14,10 @@ export async function createSavingCategoriesSummaryView(
   db: Kysely<KyselyDatabase>,
 ) {
   try {
-    await dropViewIfExists(VIEW_NAME, db);
-
     logViewCreation(VIEW_NAME);
     await db.schema
       .createView(VIEW_NAME)
+      .orReplace()
       .as(
         db
           .selectFrom("mutual_fund_summary as mfsum")
