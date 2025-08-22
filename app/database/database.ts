@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.12 (cd3cf9e)"
+    PostgrestVersion: "13.0.4"
   }
   public: {
     Tables: {
@@ -37,38 +37,53 @@ export type Database = {
       }
       goals: {
         Row: {
-          created_at: string
+          icon: string
           id: string
           is_active: boolean
           name: string
           target: number
-          updated_at: string
         }
         Insert: {
-          created_at?: string
+          icon: string
           id?: string
           is_active: boolean
           name: string
           target: number
-          updated_at?: string
         }
         Update: {
-          created_at?: string
+          icon?: string
           id?: string
           is_active?: boolean
           name?: string
           target?: number
-          updated_at?: string
         }
         Relationships: [
           {
-            foreignKeyName: "goal_name_fkey"
-            columns: ["name"]
-            isOneToOne: true
-            referencedRelation: "savings_categories"
+            foreignKeyName: "goals_icon_fkey"
+            columns: ["icon"]
+            isOneToOne: false
+            referencedRelation: "icons"
             referencedColumns: ["name"]
           },
         ]
+      }
+      icons: {
+        Row: {
+          id: string
+          name: string
+          src: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          src: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          src?: string
+        }
+        Relationships: []
       }
       mutual_fund_schemes: {
         Row: {
@@ -147,6 +162,13 @@ export type Database = {
             foreignKeyName: "mutual_fund_schemes_saving_category_fkey"
             columns: ["saving_category"]
             isOneToOne: false
+            referencedRelation: "goals_summary"
+            referencedColumns: ["category"]
+          },
+          {
+            foreignKeyName: "mutual_fund_schemes_saving_category_fkey"
+            columns: ["saving_category"]
+            isOneToOne: false
             referencedRelation: "savings_categories"
             referencedColumns: ["name"]
           },
@@ -194,6 +216,30 @@ export type Database = {
           id?: string
           name?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      summary_section: {
+        Row: {
+          badge: string | null
+          description: string
+          display_order: number
+          id: string
+          title: string
+        }
+        Insert: {
+          badge?: string | null
+          description: string
+          display_order: number
+          id?: string
+          title: string
+        }
+        Update: {
+          badge?: string | null
+          description?: string
+          display_order?: number
+          id?: string
+          title?: string
         }
         Relationships: []
       }
@@ -286,15 +332,20 @@ export type Database = {
           sip_amount: number | null
           target: number | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "goal_name_fkey"
-            columns: ["name"]
-            isOneToOne: true
-            referencedRelation: "savings_categories"
-            referencedColumns: ["name"]
-          },
-        ]
+        Relationships: []
+      }
+      goals_summary: {
+        Row: {
+          category: string | null
+          current: number | null
+          icon: string | null
+          is_complete: boolean | null
+          name: string | null
+          progress: number | null
+          remaining: number | null
+          target: number | null
+        }
+        Relationships: []
       }
       mutual_fund_summary: {
         Row: {
@@ -312,19 +363,45 @@ export type Database = {
             foreignKeyName: "mutual_fund_schemes_saving_category_fkey"
             columns: ["saving_category"]
             isOneToOne: false
+            referencedRelation: "goals_summary"
+            referencedColumns: ["category"]
+          },
+          {
+            foreignKeyName: "mutual_fund_schemes_saving_category_fkey"
+            columns: ["saving_category"]
+            isOneToOne: false
             referencedRelation: "savings_categories"
             referencedColumns: ["name"]
           },
         ]
       }
-      saving_category_stats: {
+      savings_category_summary: {
         Row: {
           category: string | null
+          net_current: number | null
+          net_invested: number | null
+          net_returns: number | null
+          net_returns_percentage: number | null
           next_sip_date: string | null
           sip_amount: number | null
           total_schemes: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "mutual_fund_schemes_saving_category_fkey"
+            columns: ["category"]
+            isOneToOne: false
+            referencedRelation: "goals_summary"
+            referencedColumns: ["category"]
+          },
+          {
+            foreignKeyName: "mutual_fund_schemes_saving_category_fkey"
+            columns: ["category"]
+            isOneToOne: false
+            referencedRelation: "savings_categories"
+            referencedColumns: ["name"]
+          },
+        ]
       }
     }
     Functions: {

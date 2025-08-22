@@ -38,8 +38,8 @@ export function getOverview(category?: string) {
     .executeTakeFirstOrThrow();
 
   const stats = db
-    .selectFrom("saving_category_stats")
-    .selectAll()
+    .selectFrom("savings_category_summary")
+    .select(["total_schemes", "sip_amount", "next_sip_date"])
     .where("category", category ? "=" : "is", category ? category : null)
     .orderBy("category", "desc")
     .executeTakeFirstOrThrow();
