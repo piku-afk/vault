@@ -8,6 +8,7 @@ import type { KyselyDatabase } from "../kysely.server";
 import { createGoalsSummaryView } from "./goals_summary.server";
 import { createMutualFundSummaryView } from "./mutual_fund_schemes_summary.server";
 import { createSavingCategoriesSummaryView } from "./savings_categories_summary.server";
+import { createSipBreakdownView } from "./sip_breakdown_view.server";
 
 logger.info("create database instance");
 const db = new Kysely<KyselyDatabase>({
@@ -20,6 +21,7 @@ const db = new Kysely<KyselyDatabase>({
 
 const start = Date.now();
 try {
+  await createSipBreakdownView(db);
   await createMutualFundSummaryView(db);
   await createSavingCategoriesSummaryView(db);
   await createGoalsSummaryView(db);

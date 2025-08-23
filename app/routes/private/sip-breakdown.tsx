@@ -79,9 +79,9 @@ export default function SipBreakdown({ loaderData }: Route.ComponentProps) {
                   {(sipCategories) => {
                     const data: Partial<ComputedDatum<DefaultRawDatum>>[] =
                       sipCategories.map((category) => ({
-                        id: category.id,
-                        label: category.name,
-                        value: Number(category.monthly_sip),
+                        id: category.id as string,
+                        label: category.name as string,
+                        value: Number(category.sip_amount),
                         color: getThemeColor(`${category.color}.5`, theme),
                       }));
                     return (
@@ -108,7 +108,7 @@ export default function SipBreakdown({ loaderData }: Route.ComponentProps) {
                   <>
                     {sipCategories.map((category) => (
                       <Group key={category.id} gap="xs">
-                        <ThemeIcon size="xs" color={category.color} />
+                        <ThemeIcon size="xs" color={category.color as string} />
                         <Text size="xs">{category.name}</Text>
                       </Group>
                     ))}

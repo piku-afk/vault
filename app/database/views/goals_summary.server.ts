@@ -9,13 +9,13 @@ import {
 import type { KyselyDatabase } from "../kysely.server";
 import { SAVINGS_CATEGORIES_SUMMARY_VIEW } from "./savings_categories_summary.server";
 
-const VIEW_NAME = "goals_summary";
+const GOALS_SUMMARY_VIEW = "goals_summary";
 
 export async function createGoalsSummaryView(db: Kysely<KyselyDatabase>) {
   try {
-    logViewCreation(VIEW_NAME);
+    logViewCreation(GOALS_SUMMARY_VIEW);
     await db.schema
-      .createView(VIEW_NAME)
+      .createView(GOALS_SUMMARY_VIEW)
       .orReplace()
       .as(
         db
@@ -85,8 +85,8 @@ export async function createGoalsSummaryView(db: Kysely<KyselyDatabase>) {
       )
       .execute();
 
-    await setSecurityInvoker(VIEW_NAME, db);
+    await setSecurityInvoker(GOALS_SUMMARY_VIEW, db);
   } catch (error) {
-    logViewCreationError(VIEW_NAME, error);
+    logViewCreationError(GOALS_SUMMARY_VIEW, error);
   }
 }

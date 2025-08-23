@@ -116,7 +116,7 @@ export type Database = {
           logo: string
           nav: number
           nav_date: string
-          next_sip_date?: string
+          next_sip_date: string
           saving_category?: string
           scheme_code: string
           scheme_name: string
@@ -311,13 +311,6 @@ export type Database = {
             referencedColumns: ["scheme_name"]
           },
           {
-            foreignKeyName: "transaction_fund_name_fkey"
-            columns: ["scheme_name"]
-            isOneToOne: false
-            referencedRelation: "mutual_fund_summary"
-            referencedColumns: ["scheme_name"]
-          },
-          {
             foreignKeyName: "transaction_transaction_type_fkey"
             columns: ["transaction_type"]
             isOneToOne: false
@@ -343,34 +336,6 @@ export type Database = {
         Relationships: []
       }
       mutual_fund_schemes_summary: {
-        Row: {
-          nav_diff_percentage: number | null
-          net_current: number | null
-          net_invested: number | null
-          net_returns: number | null
-          net_returns_percentage: number | null
-          net_units: number | null
-          saving_category: string | null
-          scheme_name: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "mutual_fund_schemes_saving_category_fkey"
-            columns: ["saving_category"]
-            isOneToOne: false
-            referencedRelation: "goals_summary"
-            referencedColumns: ["category"]
-          },
-          {
-            foreignKeyName: "mutual_fund_schemes_saving_category_fkey"
-            columns: ["saving_category"]
-            isOneToOne: false
-            referencedRelation: "savings_categories"
-            referencedColumns: ["name"]
-          },
-        ]
-      }
-      mutual_fund_summary: {
         Row: {
           nav_diff_percentage: number | null
           net_current: number | null
@@ -426,33 +391,15 @@ export type Database = {
           },
         ]
       }
-      savings_category_summary: {
+      sip_breakdown: {
         Row: {
           category: string | null
-          net_current: number | null
-          net_invested: number | null
-          net_returns: number | null
-          net_returns_percentage: number | null
-          next_sip_date: string | null
+          color: string | null
+          id: string | null
+          name: string | null
           sip_amount: number | null
-          total_schemes: number | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "mutual_fund_schemes_saving_category_fkey"
-            columns: ["category"]
-            isOneToOne: false
-            referencedRelation: "goals_summary"
-            referencedColumns: ["category"]
-          },
-          {
-            foreignKeyName: "mutual_fund_schemes_saving_category_fkey"
-            columns: ["category"]
-            isOneToOne: false
-            referencedRelation: "savings_categories"
-            referencedColumns: ["name"]
-          },
-        ]
+        Relationships: []
       }
     }
     Functions: {
