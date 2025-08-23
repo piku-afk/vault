@@ -96,7 +96,7 @@ async function getXirrScheme(
 
     for (const scheme of schemes) {
       const { net_current } = await db
-        .selectFrom("mutual_fund_summary")
+        .selectFrom("mutual_fund_schemes_summary")
         .select((eb) =>
           eb.cast<string>("net_current", "numeric").as("net_current"),
         )

@@ -2,7 +2,10 @@ import { expressionBuilder, sql } from "kysely";
 
 import { db, type KyselyDatabase } from "./kysely.server";
 
-const mfsumEb = expressionBuilder<KyselyDatabase, "mutual_fund_summary">();
+const mfsumEb = expressionBuilder<
+  KyselyDatabase,
+  "mutual_fund_schemes_summary"
+>();
 const net_current = mfsumEb.fn<string>("round", [
   mfsumEb.fn.sum("net_current"),
 ]);
@@ -25,7 +28,7 @@ const returns_percentage = mfsumEb
 export function getOverview(category?: string) {
   // TODO: add a summary table with name, subtext, badgeText, and create a view to calculate values
   const summary = db
-    .selectFrom("mutual_fund_summary")
+    .selectFrom("mutual_fund_schemes_summary")
     .select([
       net_current.as("net_current"),
       net_invested.as("net_invested"),
@@ -48,7 +51,7 @@ export function getOverview(category?: string) {
   const breakdown = db
     .selectFrom(
       db
-        .selectFrom("mutual_fund_summary")
+        .selectFrom("mutual_fund_schemes_summary")
         .$if(!category, (eb) =>
           eb
             .innerJoin("savings_categories", "name", "saving_category")
@@ -66,7 +69,7 @@ export function getOverview(category?: string) {
             .innerJoin(
               "mutual_fund_schemes as mfs",
               "mfs.scheme_name",
-              "mutual_fund_summary.scheme_name",
+              "mutual_fund_schemes_summary.scheme_name",
             )
             .select([
               "mfs.id",
@@ -109,7 +112,7 @@ export function getOverview(category?: string) {
   const monthlyPerformers = db
     .selectFrom(
       db
-        .selectFrom("mutual_fund_summary as mfsum")
+        .selectFrom("mutual_fund_schemes_summary as mfsum")
         .leftJoin(
           "mutual_fund_schemes as mfs",
           "mfs.scheme_name",
@@ -139,7 +142,7 @@ export function getOverview(category?: string) {
     .execute();
 
   const positiveCount = db
-    .selectFrom("mutual_fund_summary")
+    .selectFrom("mutual_fund_schemes_summary")
     .where("net_invested", ">", 0)
     .select((eb) => [
       eb.fn
@@ -154,12 +157,12 @@ export function getOverview(category?: string) {
     .executeTakeFirstOrThrow();
 
   const performanceData = db
-    .selectFrom("mutual_fund_summary")
+    .selectFrom("mutual_fund_schemes_summary")
     .innerJoin("savings_categories as sc", "name", "saving_category")
     .innerJoin(
       "mutual_fund_schemes",
       "mutual_fund_schemes.scheme_name",
-      "mutual_fund_summary.scheme_name",
+      "mutual_fund_schemes_summary.scheme_name",
     )
     .$if(!category, (eb) =>
       eb
@@ -169,7 +172,7 @@ export function getOverview(category?: string) {
           "sc.name as iconAlt",
           eb
             .fn<string>("concat", [
-              eb.fn.count("mutual_fund_summary.scheme_name"),
+              eb.fn.count("mutual_fund_schemes_summary.scheme_name"),
               sql.lit(" schemes"),
             ])
             .as("subtitle"),
@@ -198,7 +201,11 @@ export function getOverview(category?: string) {
           returns.as("returns"),
           returns_percentage.as("returns_percentage"),
         ])
-        .where("mutual_fund_summary.saving_category", "=", category as string)
+        .where(
+          "mutual_fund_schemes_summary.saving_category",
+          "=",
+          category as string,
+        )
         .groupBy([
           "mutual_fund_schemes.scheme_name",
           "mutual_fund_schemes.logo",
