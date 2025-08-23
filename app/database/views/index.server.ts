@@ -6,7 +6,7 @@ import { logger } from "#/utils/logger.server";
 
 import type { KyselyDatabase } from "../kysely.server";
 import { createGoalsSummaryView } from "./goals_summary.server";
-import { createMutualFundSummaryView } from "./mutual_fund_summary.server";
+import { createMutualFundSummaryView } from "./mutual_fund_schemes_summary.server";
 import { createSavingCategoriesSummaryView } from "./savings_categories_summary.server";
 
 logger.info("create database instance");

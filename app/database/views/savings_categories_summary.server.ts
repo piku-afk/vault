@@ -7,7 +7,7 @@ import {
 } from "#/utils/view-utils.server";
 
 import type { KyselyDatabase } from "../kysely.server";
-import { MUTUAL_FUND_SUMMARY_VIEW } from "./mutual_fund_summary.server";
+import { MUTUAL_FUND_SUMMARY_VIEW } from "./mutual_fund_schemes_summary.server";
 
 export const SAVINGS_CATEGORIES_SUMMARY_VIEW = "savings_categories_summary";
 
