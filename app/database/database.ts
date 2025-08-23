@@ -307,6 +307,13 @@ export type Database = {
             foreignKeyName: "transaction_fund_name_fkey"
             columns: ["scheme_name"]
             isOneToOne: false
+            referencedRelation: "mutual_fund_schemes_summary"
+            referencedColumns: ["scheme_name"]
+          },
+          {
+            foreignKeyName: "transaction_fund_name_fkey"
+            columns: ["scheme_name"]
+            isOneToOne: false
             referencedRelation: "mutual_fund_summary"
             referencedColumns: ["scheme_name"]
           },
@@ -334,6 +341,34 @@ export type Database = {
           target: number | null
         }
         Relationships: []
+      }
+      mutual_fund_schemes_summary: {
+        Row: {
+          nav_diff_percentage: number | null
+          net_current: number | null
+          net_invested: number | null
+          net_returns: number | null
+          net_returns_percentage: number | null
+          net_units: number | null
+          saving_category: string | null
+          scheme_name: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mutual_fund_schemes_saving_category_fkey"
+            columns: ["saving_category"]
+            isOneToOne: false
+            referencedRelation: "goals_summary"
+            referencedColumns: ["category"]
+          },
+          {
+            foreignKeyName: "mutual_fund_schemes_saving_category_fkey"
+            columns: ["saving_category"]
+            isOneToOne: false
+            referencedRelation: "savings_categories"
+            referencedColumns: ["name"]
+          },
+        ]
       }
       mutual_fund_summary: {
         Row: {

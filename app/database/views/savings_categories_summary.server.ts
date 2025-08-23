@@ -7,20 +7,21 @@ import {
 } from "#/utils/view-utils.server";
 
 import type { KyselyDatabase } from "../kysely.server";
+import { MUTUAL_FUND_SUMMARY_VIEW } from "./mutual_fund_summary.server";
 
-const VIEW_NAME = "savings_categories_summary";
+export const SAVINGS_CATEGORIES_SUMMARY_VIEW = "savings_categories_summary";
 
 export async function createSavingCategoriesSummaryView(
   db: Kysely<KyselyDatabase>,
 ) {
   try {
-    logViewCreation(VIEW_NAME);
+    logViewCreation(SAVINGS_CATEGORIES_SUMMARY_VIEW);
     await db.schema
-      .createView(VIEW_NAME)
+      .createView(SAVINGS_CATEGORIES_SUMMARY_VIEW)
       .orReplace()
       .as(
         db
-          .selectFrom("mutual_fund_summary as mfsum")
+          .selectFrom(`${MUTUAL_FUND_SUMMARY_VIEW} as mfsum`)
           .leftJoin(
             "mutual_fund_schemes as mfs",
             "mfs.scheme_name",
@@ -63,8 +64,8 @@ export async function createSavingCategoriesSummaryView(
       )
       .execute();
 
-    await setSecurityInvoker(VIEW_NAME, db);
+    await setSecurityInvoker(SAVINGS_CATEGORIES_SUMMARY_VIEW, db);
   } catch (error) {
-    logViewCreationError(VIEW_NAME, error);
+    logViewCreationError(SAVINGS_CATEGORIES_SUMMARY_VIEW, error);
   }
 }

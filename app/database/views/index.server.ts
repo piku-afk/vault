@@ -6,6 +6,7 @@ import { logger } from "#/utils/logger.server";
 
 import type { KyselyDatabase } from "../kysely.server";
 import { createGoalsSummaryView } from "./goals_summary.server";
+import { createMutualFundSummaryView } from "./mutual_fund_summary.server";
 import { createSavingCategoriesSummaryView } from "./savings_categories_summary.server";
 
 logger.info("create database instance");
@@ -19,8 +20,9 @@ const db = new Kysely<KyselyDatabase>({
 
 const start = Date.now();
 try {
-  await createGoalsSummaryView(db);
+  await createMutualFundSummaryView(db);
   await createSavingCategoriesSummaryView(db);
+  await createGoalsSummaryView(db);
 } catch (error) {
   logger.error(error);
 } finally {

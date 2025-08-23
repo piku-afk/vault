@@ -7,6 +7,7 @@ import {
 } from "#/utils/view-utils.server";
 
 import type { KyselyDatabase } from "../kysely.server";
+import { SAVINGS_CATEGORIES_SUMMARY_VIEW } from "./savings_categories_summary.server";
 
 const VIEW_NAME = "goals_summary";
 
@@ -29,11 +30,11 @@ export async function createGoalsSummaryView(db: Kysely<KyselyDatabase>) {
                 eb.fn
                   .coalesce(
                     eb
-                      .selectFrom("savings_categories_summary as scs")
+                      .selectFrom(`${SAVINGS_CATEGORIES_SUMMARY_VIEW} as scs`)
                       .select("scs.net_current")
                       .where("scs.category", "=", eb.ref("g.name")),
                     eb
-                      .selectFrom("savings_categories_summary as scs")
+                      .selectFrom(`${SAVINGS_CATEGORIES_SUMMARY_VIEW} as scs`)
                       .select("scs.net_current")
                       .where("scs.category", "is", null),
                   )
@@ -41,11 +42,11 @@ export async function createGoalsSummaryView(db: Kysely<KyselyDatabase>) {
                 eb.fn
                   .coalesce(
                     eb
-                      .selectFrom("savings_categories_summary as scs")
+                      .selectFrom(`${SAVINGS_CATEGORIES_SUMMARY_VIEW} as scs`)
                       .select("scs.sip_amount")
                       .where("scs.category", "=", eb.ref("g.name")),
                     eb
-                      .selectFrom("savings_categories_summary as scs")
+                      .selectFrom(`${SAVINGS_CATEGORIES_SUMMARY_VIEW} as scs`)
                       .select("scs.sip_amount")
                       .where("scs.category", "is", null),
                   )
