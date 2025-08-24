@@ -1,9 +1,22 @@
 import { Stack } from "@mantine/core";
 import { useEffect, useRef } from "react";
+import { useLoaderData } from "react-router";
 
 import { Footer } from "#/components/footer";
 import { Header } from "#/components/header";
 import { Main } from "#/components/main";
+import { db } from "#/database/kysely.server";
+
+export function loader() {
+  return db
+    .selectFrom("mutual_fund_schemes")
+    .select((eb) => eb.fn.max("nav_date").as("nav_date"))
+    .executeTakeFirstOrThrow();
+}
+
+export function useRootLayoutLoaderData() {
+  return useLoaderData<typeof loader>();
+}
 
 export default function RootLayout() {
   // biome-ignore lint/style/noNonNullAssertion: need this for ts error

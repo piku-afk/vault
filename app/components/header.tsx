@@ -1,19 +1,26 @@
 import {
   ActionIcon,
   Anchor,
+  Badge,
   Box,
   Container,
   Group,
   Image,
   Menu,
+  Skeleton,
   Stack,
   Title,
 } from "@mantine/core";
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
 import { LogOut, User } from "lucide-react";
-import type { RefObject } from "react";
-import { Link, matchPath, useLocation } from "react-router";
+import { type RefObject, Suspense } from "react";
+import { Await, Link, matchPath, useLocation } from "react-router";
 
 import { ROUTES } from "#/constants/routes";
+import { useRootLayoutLoaderData } from "#/routes/root-layout";
+
+dayjs.extend(advancedFormat);
 
 function getPageType(pathname: string) {
   const authRoutes = [ROUTES.LOGIN, ROUTES.LOGOUT];
@@ -32,6 +39,7 @@ function getPageType(pathname: string) {
 export function Header(props: { ref: RefObject<HTMLDivElement> }) {
   const { pathname } = useLocation();
   const pageType = getPageType(pathname);
+  const loaderData = useRootLayoutLoaderData();
 
   return (
     <Box
@@ -58,6 +66,15 @@ export function Header(props: { ref: RefObject<HTMLDivElement> }) {
                 </div>
               </Group>
             </Anchor>
+
+            <Badge size="xs" variant="transparent" ml="auto">
+              <Suspense fallback={<Skeleton width={80} h={12} />}>
+                <Await resolve={loaderData.nav_date}>
+                  Data as of:&nbsp;
+                  {dayjs(loaderData.nav_date).format("Do MMMM YYYY")}
+                </Await>
+              </Suspense>
+            </Badge>
 
             {pageType.isPrivatePage && (
               <Menu position="bottom-end">
