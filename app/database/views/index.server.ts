@@ -9,6 +9,7 @@ import { createGoalsSummaryView } from "./goals_summary.server";
 import { createMutualFundSummaryView } from "./mutual_fund_schemes_summary.server";
 import { createSavingCategoriesSummaryView } from "./savings_categories_summary.server";
 import { createSipBreakdownView } from "./sip_breakdown_view.server";
+import { createStatsSectionSummary } from "./stats-section-summary";
 
 logger.info("create database instance");
 const db = new Kysely<KyselyDatabase>({
@@ -25,6 +26,7 @@ try {
   await createMutualFundSummaryView(db);
   await createSavingCategoriesSummaryView(db);
   await createGoalsSummaryView(db);
+  await createStatsSectionSummary(db);
 } catch (error) {
   logger.error(error);
 } finally {

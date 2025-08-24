@@ -198,6 +198,47 @@ export type Database = {
         }
         Relationships: []
       }
+      stats_section: {
+        Row: {
+          action_route: string | null
+          description: string
+          display_order: number
+          icon_name: string | null
+          id: string
+          is_currency: boolean
+          title: string
+          view_more: boolean
+        }
+        Insert: {
+          action_route?: string | null
+          description: string
+          display_order: number
+          icon_name?: string | null
+          id?: string
+          is_currency?: boolean
+          title: string
+          view_more?: boolean
+        }
+        Update: {
+          action_route?: string | null
+          description?: string
+          display_order?: number
+          icon_name?: string | null
+          id?: string
+          is_currency?: boolean
+          title?: string
+          view_more?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stats_section_icon_name_fkey"
+            columns: ["icon_name"]
+            isOneToOne: false
+            referencedRelation: "icons"
+            referencedColumns: ["name"]
+          },
+        ]
+      }
       sub_categories: {
         Row: {
           created_at: string
@@ -400,6 +441,29 @@ export type Database = {
           sip_amount: number | null
         }
         Relationships: []
+      }
+      stats_section_summary: {
+        Row: {
+          action_route: string | null
+          description: string | null
+          display_order: number | null
+          icon: string | null
+          icon_name: string | null
+          id: string | null
+          is_currency: boolean | null
+          title: string | null
+          value: string | null
+          view_more: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stats_section_icon_name_fkey"
+            columns: ["icon_name"]
+            isOneToOne: false
+            referencedRelation: "icons"
+            referencedColumns: ["name"]
+          },
+        ]
       }
     }
     Functions: {
