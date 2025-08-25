@@ -10,10 +10,13 @@ import { TransactionHistorySection } from "#/components/sections/transaction-his
 import { getGoalsProgress } from "#/database/get-goals-progress";
 import { getOverview } from "#/database/get-overview.server";
 import { getXIRR } from "#/database/get-xirr.server";
+import { requireAuth } from "#/middlewares/requireAuth";
 
 import type { Route } from "./+types/overview";
 
-export async function loader() {
+export async function loader({ request }: Route.LoaderArgs) {
+  await requireAuth(request);
+
   return {
     ...getOverview(),
     goalsProgress: getGoalsProgress(),
