@@ -11,6 +11,7 @@ ignoreWords:
   - kysely
   - kyselify
   - mfsum
+  - navs
   - nivo
   - piku
   - pipeable

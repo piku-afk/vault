@@ -42,11 +42,14 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <AppShell header={{ height: headerHeight }}>
+    <AppShell
+      header={{ height: headerHeight }}
+      footer={{ height: footerHeight }}
+    >
       <AppShell.Header>
         <Header ref={calculateHeaderHeight} />
       </AppShell.Header>
-      <AppShell.Main style={{ paddingBottom: footerHeight }}>
+      <AppShell.Main>
         <Box bg="white">
           <Outlet />
         </Box>

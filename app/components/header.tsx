@@ -36,7 +36,7 @@ export function Header(props: { ref: Ref<HTMLDivElement> }) {
 
   return (
     <Box ref={props.ref} bg="white">
-      <Container fluid py="sm" px={{ base: "md", xs: "xl" }}>
+      <Container size="md" py="sm">
         <Stack gap="sm">
           <Group justify="space-between" align="center">
             <Anchor
