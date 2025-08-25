@@ -34,7 +34,7 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   if (response?.status === 200) {
-    throw redirect(ROUTES.OVERVIEW);
+    throw redirect(`${ROUTES.OVERVIEW}#portfolio-summary`);
   }
 
   return null;

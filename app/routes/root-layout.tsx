@@ -1,6 +1,6 @@
 import { AppShell, Box } from "@mantine/core";
 import { useCallback, useEffect, useState } from "react";
-import { Outlet, useLoaderData } from "react-router";
+import { Outlet, useLoaderData, useLocation } from "react-router";
 
 import { Footer } from "#/components/footer";
 import { Header } from "#/components/header";
@@ -18,6 +18,7 @@ export function useRootLayoutLoaderData() {
 }
 
 export default function RootLayout() {
+  const { hash } = useLocation();
   const [headerHeight, setHeaderHeight] = useState(0);
   const [footerHeight, setFooterHeight] = useState(0);
 
@@ -32,14 +33,13 @@ export default function RootLayout() {
   }, []);
 
   useEffect(() => {
-    const hash = window.location.hash;
     if (hash) {
       const element = document.querySelector(hash);
       if (element) {
         element.scrollIntoView({ behavior: "smooth" });
       }
     }
-  }, []);
+  }, [hash]);
 
   return (
     <AppShell
