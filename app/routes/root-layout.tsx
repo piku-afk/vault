@@ -1,10 +1,9 @@
-import { Stack } from "@mantine/core";
-import { useEffect, useRef } from "react";
-import { useLoaderData } from "react-router";
+import { AppShell, Box } from "@mantine/core";
+import { useCallback, useEffect, useState } from "react";
+import { Outlet, useLoaderData } from "react-router";
 
 import { Footer } from "#/components/footer";
 import { Header } from "#/components/header";
-import { Main } from "#/components/main";
 import { db } from "#/database/kysely.server";
 
 export function loader() {
@@ -19,10 +18,18 @@ export function useRootLayoutLoaderData() {
 }
 
 export default function RootLayout() {
-  // biome-ignore lint/style/noNonNullAssertion: need this for ts error
-  const headerRef = useRef<HTMLDivElement>(null!);
-  // biome-ignore lint/style/noNonNullAssertion: need this for ts error
-  const footerRef = useRef<HTMLDivElement>(null!);
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const [footerHeight, setFooterHeight] = useState(0);
+
+  const calculateHeaderHeight = useCallback((header: HTMLDivElement | null) => {
+    const height = (header?.clientHeight ?? 0) + 1;
+    setHeaderHeight(height);
+  }, []);
+
+  const calculateFooterHeight = useCallback((footer: HTMLDivElement | null) => {
+    const height = (footer?.clientHeight ?? 0) + 1;
+    setFooterHeight(height);
+  }, []);
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -35,10 +42,18 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <Stack gap={0} mih="100vh">
-      <Header ref={headerRef} />
-      <Main headerRef={headerRef} footerRef={footerRef} />
-      <Footer ref={footerRef} />
-    </Stack>
+    <AppShell header={{ height: headerHeight }}>
+      <AppShell.Header>
+        <Header ref={calculateHeaderHeight} />
+      </AppShell.Header>
+      <AppShell.Main style={{ paddingBottom: footerHeight }}>
+        <Box bg="white">
+          <Outlet />
+        </Box>
+      </AppShell.Main>
+      <AppShell.Footer style={{ zIndex: -1 }}>
+        <Footer ref={calculateFooterHeight} />
+      </AppShell.Footer>
+    </AppShell>
   );
 }

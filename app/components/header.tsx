@@ -1,54 +1,42 @@
 import {
   ActionIcon,
   Anchor,
-  Badge,
   Box,
   Container,
   Group,
   Image,
   Menu,
-  Skeleton,
   Stack,
   Title,
 } from "@mantine/core";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import { LogOut, User } from "lucide-react";
-import { type RefObject, Suspense } from "react";
-import { Await, Link, matchPath, useLocation } from "react-router";
+import type { Ref } from "react";
+import { Link, matchPath, useLocation } from "react-router";
 
-import { ROUTES } from "#/constants/routes";
-import { useRootLayoutLoaderData } from "#/routes/root-layout";
+import { AUTH_ROUTES, PUBLIC_ROUTES } from "#/constants/routes";
 
 dayjs.extend(advancedFormat);
 
 function getPageType(pathname: string) {
-  const authRoutes = [ROUTES.LOGIN, ROUTES.LOGOUT];
-  const publicRoutes = [ROUTES.HOME, ROUTES.LOGIN, ROUTES.LOGOUT];
-
-  const isAuthPage = authRoutes.some(
+  const isAuthPage = AUTH_ROUTES.some(
     (route) => !!matchPath(route, pathname)?.pathname,
   );
-  const isPublicPage = publicRoutes.some(
+  const isPublicPage = PUBLIC_ROUTES.some(
     (route) => !!matchPath(route, pathname)?.pathname,
   );
 
   return { isAuthPage, isPublicPage, isPrivatePage: !isPublicPage };
 }
 
-export function Header(props: { ref: RefObject<HTMLDivElement> }) {
+export function Header(props: { ref: Ref<HTMLDivElement> }) {
   const { pathname } = useLocation();
   const pageType = getPageType(pathname);
-  const loaderData = useRootLayoutLoaderData();
 
   return (
-    <Box
-      ref={props.ref}
-      component="header"
-      bg="white"
-      style={(theme) => ({ borderBottom: `1px solid ${theme.colors.gray[3]}` })}
-    >
-      <Container size="md" py="sm">
+    <Box ref={props.ref} bg="white">
+      <Container fluid py="sm" px={{ base: "md", xs: "xl" }}>
         <Stack gap="sm">
           <Group justify="space-between" align="center">
             <Anchor
@@ -66,15 +54,6 @@ export function Header(props: { ref: RefObject<HTMLDivElement> }) {
                 </div>
               </Group>
             </Anchor>
-
-            <Badge size="xs" variant="transparent" ml="auto">
-              <Suspense fallback={<Skeleton width={80} h={12} />}>
-                <Await resolve={loaderData.nav_date}>
-                  Data as of:&nbsp;
-                  {dayjs(loaderData.nav_date).format("Do MMMM YYYY")}
-                </Await>
-              </Suspense>
-            </Badge>
 
             {pageType.isPrivatePage && (
               <Menu position="bottom-end">

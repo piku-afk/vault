@@ -8,3 +8,10 @@ export enum ROUTES {
   INVESTMENTS = "/investments",
   ADD_TRANSACTION = "/investments/add",
 }
+
+export const AUTH_ROUTES = [ROUTES.LOGIN, ROUTES.LOGOUT] as const;
+export const PUBLIC_ROUTES = [
+  ROUTES.HOME,
+  ROUTES.LOGIN,
+  ROUTES.LOGOUT,
+] as const;

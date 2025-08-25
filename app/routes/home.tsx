@@ -18,7 +18,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function Home() {
   return (
-    <Container p="xl">
+    <Container py="xl">
       <title>Vault</title>
       <meta
         name="description"
