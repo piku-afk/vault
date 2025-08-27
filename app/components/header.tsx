@@ -30,12 +30,12 @@ function getPageType(pathname: string) {
   return { isAuthPage, isPublicPage, isPrivatePage: !isPublicPage };
 }
 
-export function Header(props: { ref: Ref<HTMLDivElement> }) {
+export function Header() {
   const { pathname } = useLocation();
   const pageType = getPageType(pathname);
 
   return (
-    <Box ref={props.ref} bg="white">
+    <Box bg="white">
       <Container size="md" py="sm">
         <Stack gap="sm">
           <Group justify="space-between" align="center">

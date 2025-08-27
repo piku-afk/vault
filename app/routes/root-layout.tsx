@@ -1,36 +1,15 @@
 import { AppShell, Box } from "@mantine/core";
-import { useCallback, useEffect, useState } from "react";
-import { Outlet, useLoaderData, useLocation } from "react-router";
+import { useEffect } from "react";
+import { Outlet, useLocation } from "react-router";
 
 import { Footer } from "#/components/footer";
 import { Header } from "#/components/header";
-import { db } from "#/database/kysely.server";
 
-export function loader() {
-  return db
-    .selectFrom("mutual_fund_schemes")
-    .select((eb) => eb.fn.max("nav_date").as("nav_date"))
-    .executeTakeFirstOrThrow();
-}
-
-export function useRootLayoutLoaderData() {
-  return useLoaderData<typeof loader>();
-}
+export const HEADER_HEIGHT = 57;
+export const FOOTER_HEIGHT = 38;
 
 export default function RootLayout() {
   const { hash } = useLocation();
-  const [headerHeight, setHeaderHeight] = useState(0);
-  const [footerHeight, setFooterHeight] = useState(0);
-
-  const calculateHeaderHeight = useCallback((header: HTMLDivElement | null) => {
-    const height = (header?.clientHeight ?? 0) + 1;
-    setHeaderHeight(height);
-  }, []);
-
-  const calculateFooterHeight = useCallback((footer: HTMLDivElement | null) => {
-    const height = (footer?.clientHeight ?? 0) + 1;
-    setFooterHeight(height);
-  }, []);
 
   useEffect(() => {
     if (hash) {
@@ -43,11 +22,11 @@ export default function RootLayout() {
 
   return (
     <AppShell
-      header={{ height: headerHeight }}
-      footer={{ height: footerHeight }}
+      header={{ height: HEADER_HEIGHT }}
+      footer={{ height: FOOTER_HEIGHT }}
     >
       <AppShell.Header>
-        <Header ref={calculateHeaderHeight} />
+        <Header />
       </AppShell.Header>
       <AppShell.Main>
         <Box bg="white">
@@ -55,7 +34,7 @@ export default function RootLayout() {
         </Box>
       </AppShell.Main>
       <AppShell.Footer style={{ zIndex: -1 }}>
-        <Footer ref={calculateFooterHeight} />
+        <Footer />
       </AppShell.Footer>
     </AppShell>
   );
