@@ -1,9 +1,9 @@
-import { Anchor, Box, Container, Text } from "@mantine/core";
+import { Anchor, AppShell, Container, Text } from "@mantine/core";
 
 export function Footer() {
   return (
-    <Box bg="violet.0">
-      <Container py="xs">
+    <AppShell.Footer bg="violet.0" style={{ zIndex: "auto" }}>
+      <Container py="md">
         <Text size="xs" ta="center" c="dimmed">
           Vault is an investment tracking tool built by&nbsp;
           <Anchor
@@ -15,6 +15,6 @@ export function Footer() {
           </Anchor>
         </Text>
       </Container>
-    </Box>
+    </AppShell.Footer>
   );
 }

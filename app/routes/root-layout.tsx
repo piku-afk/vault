@@ -1,12 +1,13 @@
-import { AppShell, Box } from "@mantine/core";
+import { AppShell } from "@mantine/core";
 import { useEffect } from "react";
-import { Outlet, useLocation } from "react-router";
+import { useLocation } from "react-router";
 
 import { Footer } from "#/components/footer";
 import { Header } from "#/components/header";
+import { Main } from "#/components/main";
 
-export const HEADER_HEIGHT = 57;
-export const FOOTER_HEIGHT = 38;
+export const HEADER_HEIGHT = 56;
+export const FOOTER_HEIGHT = 49;
 
 export default function RootLayout() {
   const { hash } = useLocation();
@@ -25,17 +26,9 @@ export default function RootLayout() {
       header={{ height: HEADER_HEIGHT }}
       footer={{ height: FOOTER_HEIGHT }}
     >
-      <AppShell.Header>
-        <Header />
-      </AppShell.Header>
-      <AppShell.Main>
-        <Box bg="white">
-          <Outlet />
-        </Box>
-      </AppShell.Main>
-      <AppShell.Footer style={{ zIndex: -1 }}>
-        <Footer />
-      </AppShell.Footer>
+      <Header />
+      <Main />
+      <Footer />
     </AppShell>
   );
 }

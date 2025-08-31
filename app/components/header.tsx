@@ -1,7 +1,7 @@
 import {
   ActionIcon,
   Anchor,
-  Box,
+  AppShell,
   Container,
   Group,
   Image,
@@ -12,7 +12,6 @@ import {
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import { LogOut, User } from "lucide-react";
-import type { Ref } from "react";
 import { Link, matchPath, useLocation } from "react-router";
 
 import { AUTH_ROUTES, PUBLIC_ROUTES } from "#/constants/routes";
@@ -35,7 +34,7 @@ export function Header() {
   const pageType = getPageType(pathname);
 
   return (
-    <Box bg="white">
+    <AppShell.Header bg="violet.0">
       <Container size="md" py="sm">
         <Stack gap="sm">
           <Group justify="space-between" align="center">
@@ -58,7 +57,7 @@ export function Header() {
             {pageType.isPrivatePage && (
               <Menu position="bottom-end">
                 <Menu.Target>
-                  <ActionIcon variant="light">
+                  <ActionIcon variant="outline">
                     <User size={18} />
                   </ActionIcon>
                 </Menu.Target>
@@ -80,6 +79,6 @@ export function Header() {
           </Group>
         </Stack>
       </Container>
-    </Box>
+    </AppShell.Header>
   );
 }
