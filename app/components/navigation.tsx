@@ -17,9 +17,9 @@ const navItems: NavItem[] = [
   },
   {
     label: "Logout",
-    to: "/investments",
+    to: ROUTES.LOGOUT,
     leftSection: <LogOut size={16} />,
-    style: { marginTop: "auto" },
+    mt: "auto",
     color: "red",
   },
 ];

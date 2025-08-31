@@ -46,11 +46,10 @@ export default function RootLayout() {
         collapsed: { desktop: pageType.isPublicPage, mobile: true },
       }}
     >
-      <Header />
+      <Header isPrivatePage={pageType.isPrivatePage} />
       <AppShell.Navbar>
         <Navigation />
       </AppShell.Navbar>
-
       <Main />
     </AppShell>
   );

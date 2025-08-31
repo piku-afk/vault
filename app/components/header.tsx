@@ -19,20 +19,22 @@ import { NAVIGATION_CONTAINER_WIDTH, Navigation } from "./navigation";
 
 dayjs.extend(advancedFormat);
 
-export function Header() {
+export function Header(props: { isPrivatePage?: boolean }) {
   const [opened, { toggle }] = useDisclosure(false);
 
   return (
     <AppShell.Header bg="violet.0" py="sm" px={{ base: "md", xs: "xl" }}>
       <Group gap="md">
-        <ActionIcon
-          size="md"
-          hiddenFrom="xs"
-          variant="outline"
-          onClick={toggle}
-        >
-          <Menu size={18} />
-        </ActionIcon>
+        {props.isPrivatePage && (
+          <ActionIcon
+            size="md"
+            hiddenFrom="xs"
+            variant="outline"
+            onClick={toggle}
+          >
+            <Menu size={18} />
+          </ActionIcon>
+        )}
         <Anchor underline="never" component={Link} to={ROUTES.HOME} c="dark">
           <Group gap="xs">
             <Image src="/vault.svg" alt="Vault Icon" w="auto" h={32} />
@@ -43,6 +45,7 @@ export function Header() {
         </Anchor>
       </Group>
       <Drawer
+        hiddenFrom="xs"
         opened={opened}
         onClose={toggle}
         withCloseButton={false}
