@@ -48,10 +48,15 @@ export function formatSchemeCount(count: number): string {
  */
 export function getGoalColor(progress: number, isComplete: boolean) {
   if (isComplete) return "teal";
-  if (progress > 75) return "yellow";
-  return progress > 50 ? "blue" : "red";
+  if (progress > 90) return "blue";
+  if (progress > 50) return "yellow";
+  return "red";
 }
 
+/**
+ * Calculates the estimated completion date for a financial goal
+ * based on remaining amount and monthly contributions.
+ */
 export function getGoalCompletionDate(
   remaining: number,
   monthlyContribution: number,
