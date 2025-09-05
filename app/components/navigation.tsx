@@ -1,5 +1,5 @@
 import { Box, Button, type ButtonProps, Stack } from "@mantine/core";
-import { BarChart3, LogOut } from "lucide-react";
+import { BarChart3, LogOut, Siren } from "lucide-react";
 import { Link, type LinkProps, useLocation } from "react-router";
 
 import { ROUTES } from "#/constants/routes";
@@ -16,11 +16,16 @@ const navItems: NavItem[] = [
     leftSection: <BarChart3 size={16} />,
   },
   {
+    label: "Emergency Plan",
+    to: ROUTES.EMERGENCY_PLAN,
+    leftSection: <Siren size={16} />,
+  },
+  {
     label: "Logout",
     to: ROUTES.LOGOUT,
     leftSection: <LogOut size={16} />,
     mt: "auto",
-    color: "red",
+    c: "red",
   },
 ];
 
@@ -42,6 +47,8 @@ export function Navigation() {
               miw="fit-content"
               justify="flex-start"
               variant={isActive ? "light" : "subtle"}
+              c={isActive ? "violet" : "dimmed"}
+              fw={isActive ? 500 : 400}
               style={{ whiteSpace: "nowrap" }}
               {...restItem}
             >

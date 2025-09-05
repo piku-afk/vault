@@ -15,6 +15,7 @@ export default [
       route(ROUTES.LOGIN, "routes/auth/login.tsx"),
     ]),
     layout("routes/private/private-layout.tsx", [
+      route(ROUTES.EMERGENCY_PLAN, "routes/private/emergency-plan.tsx"),
       route(ROUTES.OVERVIEW, "routes/private/overview.tsx", [
         route(ROUTES.SIP_BREAKDOWN, "routes/private/sip-breakdown.tsx", {
           id: "overview-sip-breakdown",

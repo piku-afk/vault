@@ -35,6 +35,77 @@ export type Database = {
         }
         Relationships: []
       }
+      credit_cards: {
+        Row: {
+          card_issuer: string
+          card_network: string
+          card_product: string
+          credit_limit: number
+          id: string
+          issue_date: string
+        }
+        Insert: {
+          card_issuer: string
+          card_network: string
+          card_product: string
+          credit_limit: number
+          id?: string
+          issue_date: string
+        }
+        Update: {
+          card_issuer?: string
+          card_network?: string
+          card_product?: string
+          credit_limit?: number
+          id?: string
+          issue_date?: string
+        }
+        Relationships: []
+      }
+      emergency_plan: {
+        Row: {
+          amount: number | null
+          color: string | null
+          icon: string | null
+          id: string
+          is_approx_amount: boolean
+          level: number
+          parent_level: number | null
+          subtext: string | null
+          title: string
+        }
+        Insert: {
+          amount?: number | null
+          color?: string | null
+          icon?: string | null
+          id?: string
+          is_approx_amount?: boolean
+          level: number
+          parent_level?: number | null
+          subtext?: string | null
+          title: string
+        }
+        Update: {
+          amount?: number | null
+          color?: string | null
+          icon?: string | null
+          id?: string
+          is_approx_amount?: boolean
+          level?: number
+          parent_level?: number | null
+          subtext?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "emergency_plan_icon_fkey"
+            columns: ["icon"]
+            isOneToOne: false
+            referencedRelation: "icons"
+            referencedColumns: ["name"]
+          },
+        ]
+      }
       goals: {
         Row: {
           icon: string
@@ -468,6 +539,10 @@ export type Database = {
     }
     Functions: {
       get_monthly_performers: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      temp: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }

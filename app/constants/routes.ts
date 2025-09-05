@@ -5,6 +5,7 @@ export enum ROUTES {
   OVERVIEW = "/overview",
   SIP_BREAKDOWN = "sip-breakdown",
   CATEGORY_DETAILS = "/overview/category/:category",
+  EMERGENCY_PLAN = "/emergency-plan",
   INVESTMENTS = "/investments",
   ADD_TRANSACTION = "/investments/add",
 }

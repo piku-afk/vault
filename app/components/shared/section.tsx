@@ -1,18 +1,24 @@
-import { Anchor, Box, Title } from "@mantine/core";
+import { Anchor, Box, type BoxProps, Title } from "@mantine/core";
 import type { PropsWithChildren, RefObject } from "react";
 import { NavLink } from "react-router";
 
 import { useInContainer } from "#/hooks/use-in-container";
 
 export function Section(
-  props: PropsWithChildren<{ title: string; ref?: RefObject<HTMLDivElement> }>,
+  props: PropsWithChildren<
+    { title: string; ref?: RefObject<HTMLDivElement> } & Omit<
+      BoxProps,
+      "component"
+    >
+  >,
 ) {
-  const sectionId = props.title.toLowerCase().replace(/\s+/g, "-");
+  const { title, children, ...boxProps } = props;
+  const sectionId = title.toLowerCase().replace(/\s+/g, "-");
   const { isInContainer: isInDialog, ref } = useInContainer("dialog");
 
   return (
-    <Box ref={props.ref} component="section">
-      {props.title && (
+    <Box component="section" {...boxProps}>
+      {title && (
         <Anchor
           component={NavLink}
           to={`#${sectionId}`}
@@ -24,15 +30,15 @@ export function Section(
             id={sectionId}
             order={isInDialog ? 3 : 2}
             size={isInDialog ? "h4" : "h3"}
-            mb={props.children ? (isInDialog ? "sm" : "md") : 0}
+            mb={children ? (isInDialog ? "sm" : "md") : 0}
             fw={500}
           >
-            {props.title}
+            {title}
           </Title>
         </Anchor>
       )}
 
-      {props.children}
+      {children}
     </Box>
   );
 }
