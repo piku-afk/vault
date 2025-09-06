@@ -64,7 +64,6 @@ export type Database = {
       }
       emergency_plan: {
         Row: {
-          amount: number | null
           color: string | null
           icon: string | null
           id: string
@@ -75,7 +74,6 @@ export type Database = {
           title: string
         }
         Insert: {
-          amount?: number | null
           color?: string | null
           icon?: string | null
           id?: string
@@ -86,7 +84,6 @@ export type Database = {
           title: string
         }
         Update: {
-          amount?: number | null
           color?: string | null
           icon?: string | null
           id?: string
@@ -433,6 +430,50 @@ export type Database = {
       }
     }
     Views: {
+      emergency_plan_summary: {
+        Row: {
+          amount: number | null
+          color: string | null
+          icon: string | null
+          id: string | null
+          is_approx_amount: boolean | null
+          level: number | null
+          parent_level: number | null
+          subtext: string | null
+          title: string | null
+        }
+        Insert: {
+          amount?: never
+          color?: string | null
+          icon?: string | null
+          id?: string | null
+          is_approx_amount?: boolean | null
+          level?: number | null
+          parent_level?: number | null
+          subtext?: string | null
+          title?: string | null
+        }
+        Update: {
+          amount?: never
+          color?: string | null
+          icon?: string | null
+          id?: string | null
+          is_approx_amount?: boolean | null
+          level?: number | null
+          parent_level?: number | null
+          subtext?: string | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "emergency_plan_icon_fkey"
+            columns: ["icon"]
+            isOneToOne: false
+            referencedRelation: "icons"
+            referencedColumns: ["name"]
+          },
+        ]
+      }
       goals_summary: {
         Row: {
           category: string | null
@@ -457,8 +498,16 @@ export type Database = {
           net_units: number | null
           saving_category: string | null
           scheme_name: string | null
+          sub_category: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "mutual_fund_category_fkey"
+            columns: ["sub_category"]
+            isOneToOne: false
+            referencedRelation: "sub_categories"
+            referencedColumns: ["name"]
+          },
           {
             foreignKeyName: "mutual_fund_schemes_saving_category_fkey"
             columns: ["saving_category"]

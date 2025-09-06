@@ -82,6 +82,7 @@ export async function createMutualFundSummaryView(db: Kysely<KyselyDatabase>) {
           .select((eb) => [
             "nu.scheme_name",
             "mfs.saving_category",
+            "mfs.sub_category",
             "nu.net_units",
             "nu.net_current",
             "nu.net_invested",

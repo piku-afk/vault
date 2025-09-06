@@ -5,6 +5,7 @@ import postgres from "postgres";
 import { logger } from "#/utils/logger.server";
 
 import type { KyselyDatabase } from "../kysely.server";
+import { createEmergencyPlanSummaryView } from "./emergency_plan_summary.server";
 import { createGoalsSummaryView } from "./goals_summary.server";
 import { createMutualFundSummaryView } from "./mutual_fund_schemes_summary.server";
 import { createSavingCategoriesSummaryView } from "./savings_categories_summary.server";
@@ -27,6 +28,7 @@ try {
   await createSavingCategoriesSummaryView(db);
   await createGoalsSummaryView(db);
   await createStatsSectionSummary(db);
+  await createEmergencyPlanSummaryView(db);
 } catch (error) {
   logger.error(error);
 } finally {
