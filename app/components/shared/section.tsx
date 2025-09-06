@@ -13,7 +13,7 @@ export function Section(
   >,
 ) {
   const { title, children, ...boxProps } = props;
-  const sectionId = title.toLowerCase().replace(/\s+/g, "-");
+  const sectionId = title?.toLowerCase().replace(/\s+/g, "-");
   const { isInContainer: isInDialog, ref } = useInContainer("dialog");
 
   return (
