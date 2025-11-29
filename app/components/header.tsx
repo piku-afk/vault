@@ -20,7 +20,7 @@ import { NAVIGATION_CONTAINER_WIDTH, Navigation } from "./navigation";
 dayjs.extend(advancedFormat);
 
 export function Header(props: { isPrivatePage?: boolean }) {
-  const [opened, { toggle }] = useDisclosure(false);
+  const [opened, { toggle, close }] = useDisclosure(false);
 
   return (
     <AppShell.Header bg="violet.0" py="sm" px={{ base: "md", xs: "xl" }}>
@@ -52,7 +52,7 @@ export function Header(props: { isPrivatePage?: boolean }) {
         size={NAVIGATION_CONTAINER_WIDTH}
         styles={{ body: { padding: 0, height: "100%" } }}
       >
-        <Navigation />
+        <Navigation closeDrawer={close} />
       </Drawer>
     </AppShell.Header>
   );

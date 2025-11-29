@@ -29,7 +29,7 @@ const navItems: NavItem[] = [
   },
 ];
 
-export function Navigation() {
+export function Navigation(props: { closeDrawer: () => void }) {
   const { pathname } = useLocation();
 
   return (
@@ -51,6 +51,7 @@ export function Navigation() {
               fw={isActive ? 500 : 400}
               style={{ whiteSpace: "nowrap" }}
               {...restItem}
+              onClick={props.closeDrawer}
             >
               {label}
             </Button>
