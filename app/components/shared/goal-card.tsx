@@ -5,6 +5,7 @@ import {
   Group,
   Image,
   Progress,
+  RingProgress,
   Skeleton,
   Stack,
   Text,
@@ -74,88 +75,97 @@ export function GoalCard({
   );
 
   return (
-    <Card
-      withBorder
-      bg={`${color}.0`}
-      style={(theme) => ({ borderColor: theme.colors[color][3] })}
-    >
-      <Stack gap="md">
-        <Group justify="space-between" align="flex-start">
-          <Box>
-            <Group gap="xs" mb="xs">
-              <ThemeIcon mt={2} variant="default" size="lg">
-                <Image
-                  loading="lazy"
-                  src={goal.icon}
-                  alt={goal.name ?? ""}
-                  w="auto"
-                  h={20}
-                />
-              </ThemeIcon>
-              <Text size="lg">{goal.name}</Text>
-            </Group>
-            <Text size="sm" c="dimmed">
-              Target: <CurrencyFormatter value={goal.target ?? 0} />
-            </Text>
-            {!goal.is_complete && (
-              <Text size="xs" c="dimmed" mt={4}>
-                Expected completion: {completionDate.format("MMM, YYYY")}
-              </Text>
-            )}
-          </Box>
-          <Tooltip label={goal.is_complete ? "Goal Completed" : "In Progress"}>
-            <ThemeIcon variant="light" color={color} size="md" radius="xl">
-              {goal.is_complete ? (
-                <CircleCheckBig size={16} />
-              ) : (
-                <Target size={16} />
-              )}
+    <Stack gap="md" mt="md">
+      <Group justify="space-between" align="flex-start">
+        <Box>
+          <Group gap="xs" mb="xs">
+            <ThemeIcon mt={2} variant="default" size="lg">
+              <Image
+                loading="lazy"
+                src={goal.icon}
+                alt={goal.name ?? ""}
+                w="auto"
+                h={20}
+              />
             </ThemeIcon>
-          </Tooltip>
-        </Group>
+            <Text size="lg">{goal.name}</Text>
+          </Group>
+          <Text size="sm" c="dimmed">
+            Target: <CurrencyFormatter value={goal.target ?? 0} />
+          </Text>
+          {!goal.is_complete && (
+            <Text size="xs" c="dimmed" mt={4}>
+              Expected completion: {completionDate.format("MMM, YYYY")}
+            </Text>
+          )}
+        </Box>
 
-        <Group>
-          <Progress
-            size="md"
-            value={Number(goal.progress)}
+        <RingProgress
+          size={96}
+          thickness={10}
+          roundCaps
+          sections={[{ value: 40, color }]}
+          label={
+            <Tooltip label="Goal Progress">
+              <Text c="dimmed" fw={500} ta="center" size="xs">
+                {Math.round(Number(goal.progress))}%
+              </Text>
+            </Tooltip>
+          }
+        />
+
+        {/* <Tooltip label={goal.is_complete ? "Goal Completed" : "In Progress"}>
+          <ThemeIcon variant="light" color={color} size="md" radius="xl">
+            {goal.is_complete ? (
+              <CircleCheckBig size={16} />
+            ) : (
+              <Target size={16} />
+            )}
+          </ThemeIcon>
+        </Tooltip> */}
+      </Group>
+
+      {/* <Group>
+        <Progress
+          size="md"
+          value={Number(goal.progress)}
+          color={color}
+          style={{ flexGrow: 1 }}
+        />
+        <Tooltip label="Goal Progress">
+          <Badge
+            variant="light"
+            size="sm"
             color={color}
-            style={{ flexGrow: 1 }}
-          />
-          <Tooltip label="Goal Progress">
-            <Badge
-              variant="light"
-              size="sm"
-              color={color}
-              style={{ flexShrink: 0 }}
-            >
-              {goal.progress}%
-            </Badge>
-          </Tooltip>
-        </Group>
+            style={{ flexShrink: 0 }}
+          >
+            {goal.progress}%
+          </Badge>
+        </Tooltip>
+      </Group> */}
 
-        <Group justify="space-between">
-          <Box>
-            <Text size="xs" c="dimmed" mb={2}>
-              Current Progress
-            </Text>
-            <Text fw={600} size="sm">
-              <CurrencyFormatter value={goal.current ?? 0} />
-            </Text>
-          </Box>
-          <Box ta="right">
-            <Text size="xs" c="dimmed" mb={2}>
-              {goal.is_complete ? "Achieved!" : "Remaining"}
-            </Text>
-            <Text fw={600} size="sm" c={goal.is_complete ? "teal" : "dimmed"}>
-              {goal.is_complete ? (
-                "Goal Reached!"
-              ) : (
-                <CurrencyFormatter value={goal.remaining ?? 0} />
-              )}
-            </Text>
-          </Box>
-        </Group>
-      </Stack>
-    </Card>
+      <Group justify="space-between">
+        <Box>
+          <Text size="xs" c="dimmed" mb={2}>
+            Current Progress
+          </Text>
+          <Text fw={600} size="sm">
+            <CurrencyFormatter value={goal.current ?? 0} />
+          </Text>
+        </Box>
+        <Box ta="right">
+          <Text size="xs" c="dimmed" mb={2}>
+            {goal.is_complete ? "Achieved!" : "Remaining"}
+          </Text>
+          <Text fw={600} size="sm" c={goal.is_complete ? "teal" : "dimmed"}>
+            {goal.is_complete ? (
+              "Goal Reached!"
+            ) : (
+              <CurrencyFormatter value={goal.remaining ?? 0} />
+            )}
+          </Text>
+        </Box>
+      </Group>
+    </Stack>
   );
 }

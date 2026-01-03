@@ -16,6 +16,8 @@ export default [
     ]),
     layout("routes/private/private-layout.tsx", [
       route(ROUTES.EMERGENCY_PLAN, "routes/private/emergency-plan.tsx"),
+      route(ROUTES.ADD_TRANSACTION, "routes/private/add-transactions.tsx"),
+      route(ROUTES.OVERVIEW_V2, "routes/private/overview_v2.tsx"),
       route(ROUTES.OVERVIEW, "routes/private/overview.tsx", [
         route(ROUTES.SIP_BREAKDOWN, "routes/private/sip-breakdown.tsx", {
           id: "overview-sip-breakdown",

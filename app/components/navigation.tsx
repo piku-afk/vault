@@ -1,5 +1,5 @@
 import { Box, Button, type ButtonProps, Stack } from "@mantine/core";
-import { BarChart3, LogOut, Siren } from "lucide-react";
+import { BarChart3, LogOut, ReceiptText, Siren } from "lucide-react";
 import { Link, type LinkProps, useLocation } from "react-router";
 
 import { ROUTES } from "#/constants/routes";
@@ -11,6 +11,11 @@ type NavItem = Omit<ButtonProps, "children" | "component"> &
 
 const navItems: NavItem[] = [
   {
+    label: "Overview v2",
+    to: ROUTES.OVERVIEW_V2,
+    leftSection: <BarChart3 size={16} />,
+  },
+  {
     label: "Overview",
     to: ROUTES.OVERVIEW,
     leftSection: <BarChart3 size={16} />,
@@ -19,6 +24,11 @@ const navItems: NavItem[] = [
     label: "Emergency Plan",
     to: ROUTES.EMERGENCY_PLAN,
     leftSection: <Siren size={16} />,
+  },
+  {
+    label: "Add Transactions",
+    to: ROUTES.ADD_TRANSACTION,
+    leftSection: <ReceiptText size={16} />,
   },
   {
     label: "Logout",

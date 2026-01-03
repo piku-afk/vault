@@ -3,11 +3,12 @@ export enum ROUTES {
   LOGIN = "/login",
   LOGOUT = "/logout",
   OVERVIEW = "/overview",
+  OVERVIEW_V2 = "/overview/v2",
   SIP_BREAKDOWN = "sip-breakdown",
   CATEGORY_DETAILS = "/overview/category/:category",
   EMERGENCY_PLAN = "/emergency-plan",
   INVESTMENTS = "/investments",
-  ADD_TRANSACTION = "/investments/add",
+  ADD_TRANSACTION = "/transactions/add",
 }
 
 export const AUTH_ROUTES = [ROUTES.LOGIN, ROUTES.LOGOUT] as const;

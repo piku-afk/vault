@@ -26,8 +26,21 @@ export async function createMutualFundSummaryView(db: Kysely<KyselyDatabase>) {
               .select((eb) => [
                 "mfs.scheme_name",
                 eb.fn
-                  .coalesce(eb.fn.sum("t.amount"), eb.lit(0))
-                  .as("net_invested"),
+                  .coalesce(
+                    eb.fn
+                      .sum("t.amount")
+                      .filterWhere("t.transaction_type", "=", "purchase"),
+                    eb.lit(0),
+                  )
+                  .as("amount_invested"),
+                eb.fn
+                  .coalesce(
+                    eb.fn
+                      .sum("t.amount")
+                      .filterWhere("t.transaction_type", "=", "redeem"),
+                    eb.lit(0),
+                  )
+                  .as("amount_redeemed"),
                 eb.fn
                   .coalesce(
                     eb.fn
@@ -57,7 +70,9 @@ export async function createMutualFundSummaryView(db: Kysely<KyselyDatabase>) {
               )
               .select((eb) => [
                 "ua.scheme_name",
-                "ua.net_invested",
+                eb("ua.amount_invested", "-", eb.ref("ua.amount_redeemed")).as(
+                  "net_invested",
+                ),
                 eb("ua.units_purchased", "-", eb.ref("ua.units_sold")).as(
                   "net_units",
                 ),

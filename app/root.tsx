@@ -32,8 +32,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <html lang="en" {...mantineHtmlProps} style={{ height: "100%" }}>
       <head>
         <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Vault</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <ColorSchemeScript />
         <Meta />
         <Links />

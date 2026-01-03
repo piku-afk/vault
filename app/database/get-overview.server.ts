@@ -6,14 +6,16 @@ const mfsumEb = expressionBuilder<
   KyselyDatabase,
   "mutual_fund_schemes_summary"
 >();
-const net_current = mfsumEb.fn<string>("round", [
+export const net_current = mfsumEb.fn<string>("round", [
   mfsumEb.fn.sum("net_current"),
 ]);
-const net_invested = mfsumEb.fn<string>("round", [
+export const net_invested = mfsumEb.fn<string>("round", [
   mfsumEb.fn.sum("net_invested"),
 ]);
-const returns = mfsumEb.fn<string>("round", [mfsumEb.fn.sum("net_returns")]);
-const returns_percentage = mfsumEb
+export const returns = mfsumEb.fn<string>("round", [
+  mfsumEb.fn.sum("net_returns"),
+]);
+export const returns_percentage = mfsumEb
   .case()
   .when(net_invested, "=", "0")
   .then("0")

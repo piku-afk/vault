@@ -13,6 +13,7 @@ ignoreWords:
   - mfsum
   - navs
   - nivo
+  - nums
   - piku
   - pipeable
   - supabase

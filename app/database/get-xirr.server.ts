@@ -33,7 +33,13 @@ async function getNetCurrentValue(category?: string): Promise<string> {
         .as("net_current"),
     )
     .$if(!!category, (eb) =>
-      eb.where("mfs.saving_category", "=", category as string),
+      eb.where((eb) =>
+        eb(
+          eb.fn("lower", ["mfs.saving_category"]),
+          "=",
+          category?.toLowerCase() as string,
+        ),
+      ),
     );
 
   const { net_current } = await query.executeTakeFirstOrThrow();
@@ -69,15 +75,22 @@ async function getCashFlows({
           "mfs.scheme_name",
           "t.scheme_name",
         )
-        .where("mfs.saving_category", "=", category as string),
+        .where((eb) =>
+          eb(
+            eb.fn("lower", ["mfs.saving_category"]),
+            "=",
+            category?.toLowerCase() as string,
+          ),
+        ),
     );
 
   return query.orderBy("t.date", "asc").execute();
 }
 
-async function getXirrSummary(category?: string): Promise<number> {
+export async function getXirrSummary(category?: string): Promise<number> {
   const cashFlows = await getCashFlows({ category });
   const netCurrent = await getNetCurrentValue(category);
+  console.log(category, netCurrent);
 
   return calculateXirr(cashFlows, netCurrent);
 }
@@ -91,7 +104,11 @@ async function getXirrScheme(
     const schemes = await db
       .selectFrom("mutual_fund_schemes")
       .select(["scheme_name as name"])
-      .where("saving_category", "=", category)
+      .where(
+        (eb) => eb.fn("lower", ["saving_category"]),
+        "=",
+        category?.toLowerCase(),
+      )
       .execute();
 
     for (const scheme of schemes) {
